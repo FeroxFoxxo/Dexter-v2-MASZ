@@ -1,6 +1,7 @@
 ﻿using AutoMods;
 using Bot;
 using Bot.Abstractions;
+using Games;
 using GuildAudits;
 using Invites;
 using Levels;
@@ -30,6 +31,7 @@ public static class ImportModules
 			new UtilityModule(),
 			new MessagingModule(),
 			new LevelsModule(),
+			new GamesModule()
 		};
 	}
 }

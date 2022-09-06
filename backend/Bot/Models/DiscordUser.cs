@@ -5,6 +5,8 @@ namespace Bot.Models;
 
 public class DiscordUser
 {
+	private DiscordUser() { }
+
 	public static DiscordUser GetDiscordUser(IUser user)
 	{
 		if (user is null)
@@ -24,6 +26,20 @@ public class DiscordUser
 		Locale = user is ISelfUser sUser ? sUser.Locale : "en-US";
 		Avatar = user.AvatarId;
 		Bot = user.IsBot;
+	}
+
+	public static DiscordUser FromGuest(ulong guestId)
+    {
+		var u = new DiscordUser();
+		u.Id = guestId;
+		u.Username = "Guest";
+		u.Discriminator = guestId.ToString().PadLeft(4, '0');
+		u.ImageUrl = "https://cdn.discordapp.com/attachments/792661500182790174/1015251897889853510/default_profile.png";
+		u.Locale = "en-US";
+		u.Avatar = "";
+		u.Bot = false;
+		
+		return u;
 	}
 
 	public ulong Id { get; set; }

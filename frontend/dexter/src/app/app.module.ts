@@ -133,6 +133,13 @@ import { CookieTrackerService } from './services/cookie-tracker.service';
 import { EnumManagerService } from './services/enum-manager.service';
 import { TimezoneService } from './services/timezone.service';
 import { DurationPickerModule } from 'ngx-duration-picker';
+import { OffsetEditorComponent } from './components/profiles/rankcard-customizer/offset-editor/offset-editor.component';
+import { SwitchComponent } from './components/basic/switch/switch.component';
+import { RankcardLevelDisplayComponent } from './components/profiles/rankcard-customizer/rankcard-preview/rankcard-level-display/rankcard-level-display.component';
+import { OffsetEditorSettingsDialog } from './components/profiles/rankcard-customizer/offset-editor/settings-dialog/settings-dialog.component';
+import { GamesDashboardComponent } from './components/games/games-dashboard/games-dashboard.component';
+import { GameDisplayComponent } from './components/games/game-display/game-display.component';
+import { ChessComponent } from './components/games/chess/chess.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -224,7 +231,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     OffsetEditorComponent,
     SwitchComponent,
     RankcardLevelDisplayComponent,
-    OffsetEditorSettingsDialog
+    OffsetEditorSettingsDialog,
+    GamesDashboardComponent,
+    GameDisplayComponent,
+    ChessComponent
   ],
   imports: [
     CommonModule,

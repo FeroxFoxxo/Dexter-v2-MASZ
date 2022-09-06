@@ -16,6 +16,8 @@
 		</PackageReference>
 
 		<ProjectReference Include="..\AutoMods\AutoMods.csproj" />
+
+		<ProjectReference Include="..\Games\Games.csproj" />
 		<ProjectReference Include="..\GuildAudits\GuildAudits.csproj" />
 		<ProjectReference Include="..\Levels\Levels.csproj" />
 		<ProjectReference Include="..\Messaging\Messaging.csproj" />

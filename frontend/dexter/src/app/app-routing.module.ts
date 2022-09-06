@@ -20,6 +20,9 @@ import { ProfileDashboardComponent } from './components/profiles/profile-dashboa
 import { StoreDashboardComponent } from './components/profiles/store/store-dashboard/store-dashboard.component';
 import { UserScanComponent } from './components/usergraph/userscan/userscan.component';
 import { AuthGuard } from './guards/auth.guard';
+import { StoreDashboardComponent } from './components/profiles/store/store-dashboard/store-dashboard.component';
+import { ProfileDashboardComponent } from './components/profiles/profile-dashboard/profile-dashboard.component';
+import { GuildLeaderboardComponent } from './components/guilds/guild-leaderboard/guild-leaderboard.component';
 
 const routes: Routes = [
   { path: 'guilds', component: GuildListComponent, canActivate: [AuthGuard] },
@@ -37,6 +40,8 @@ const routes: Routes = [
   { path: 'oauthfailed', component: OauthFailedComponent },
   { path: 'store', component: StoreDashboardComponent },
   { path: 'profile', component: ProfileDashboardComponent },
+  { path: 'games', component: GamesDashboardComponent },
+  { path: 'games/:gamename', component: GameDisplayComponent },
   { path: 'guilds/:guildid/leaderboard', component: GuildLeaderboardComponent},
   { path: 'terms', component: TermsComponent },
   { path: 'legal', component: LegalComponent },

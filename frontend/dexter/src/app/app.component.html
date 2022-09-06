@@ -208,6 +208,13 @@
           </div>
         </a>
 
+        <a class="d-flex" (click)="open('games')">
+          <div [class.activatedNav]="activatedNav[1] === 'games'" class="rounded navitem">
+            <mat-icon aria-hidden="false" aria-label="games icon">games</mat-icon>
+            <span>{{ 'Toolbar.Games' | translate }}</span>
+          </div>
+        </a>
+
         <mat-divider *ngIf="loggedIn"></mat-divider>
 
         <a class="d-flex" (click)="open('adminstats')" *ngIf="this.currentUser?.isAdmin">

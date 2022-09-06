@@ -1,0 +1,26 @@
+.game-container {
+  --item-size: 300px;
+  position: relative;
+  margin: 1em 1em;
+}
+
+.game-title {
+  position: absolute;
+  top: 1em;
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  color: white;
+  text-shadow: -2px -2px 0 black, 2px -2px 0 black, -2px 2px 0 black, 2px 2px black;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 40px;
+}
+
+.game-icon {
+  margin-top: 20px;
+  max-width: var(--item-size);
+  max-height: calc(var(--item-size) - 20px);
+  background-color: var(--primary);
+  border-radius: 50%;
+  border: 10px outset var(--primary);
+}

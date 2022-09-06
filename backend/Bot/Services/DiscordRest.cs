@@ -190,7 +190,7 @@ public class DiscordRest : IHostedService, Event
 		return ban;
 	}
 
-	public async Task<IUser> FetchUserInfo(ulong userId, CacheBehavior cacheBehavior)
+	public async Task<IUser> FetchUserInfo(ulong userId, CacheBehavior cacheBehavior = CacheBehavior.Default)
 	{
 		var cacheKey = CacheKey.User(userId);
 		IUser user = null;
