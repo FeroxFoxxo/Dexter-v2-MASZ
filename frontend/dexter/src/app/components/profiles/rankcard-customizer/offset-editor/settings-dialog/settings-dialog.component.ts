@@ -4,10 +4,12 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { OffsetEditorSettings } from '../offset-editor.component';
 
 @Component({
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'offset-editor-settings-dialog',
   templateUrl: './settings-dialog.component.html',
   styleUrls: ['./settings-dialog.component.css']
 })
+// eslint-disable-next-line @angular-eslint/component-class-suffix
 export class OffsetEditorSettingsDialog {
   fields: {
     controller: FormControl,
