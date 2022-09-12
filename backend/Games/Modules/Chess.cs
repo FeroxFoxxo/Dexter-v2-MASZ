@@ -326,6 +326,15 @@ public class Chess : Game
 			All = 15
 		}
 
+		[Flags]
+		public enum GameFlags
+		{
+			Casual = 0,
+			Ranked = 1,
+			WhiteDrawOffer = 2,
+			BlackDrawOffer = 4
+		}
+
 		public char[] board;
 		public Castling castling;
 		public int enPassant;
@@ -336,7 +345,6 @@ public class Chess : Game
 		public int blackKing;
 		public MoveObj? lastMove;
 
-
 		public long lastTime;
 		public bool timerPaused;
 		public long increment;
@@ -345,7 +353,7 @@ public class Chess : Game
 
 		public ulong whitePlayer;
 		public ulong blackPlayer;
-		public bool casual;
+		public GameFlags flags;
 
 		public Data()
 		{
@@ -373,7 +381,7 @@ public class Chess : Game
 			whiteTime = 600000;
 			blackTime = 600000;
 
-			casual = false;
+			flags = GameFlags.Casual;
 		}
 
 		public Piece? AtPosition(int pos)
@@ -425,7 +433,7 @@ public class Chess : Game
 			info.AddValue("whiteTime", whiteTime);
 			info.AddValue("blackTime", blackTime);
 
-			info.AddValue("casual", casual);
+			info.AddValue("flags", flags);
 			info.AddValue("whitePlayer", whitePlayer.ToString());
 			info.AddValue("blackPlayer", blackPlayer.ToString());
 		}

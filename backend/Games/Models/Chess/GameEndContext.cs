@@ -18,7 +18,7 @@ public class GameEndContext
 		endContext.Reason = reason;
 		endContext.GameResult = result;
 		endContext.EloBalance = new float[2];
-		if (!data.casual)
+		if (data.flags.HasFlag(Modules.Chess.Data.GameFlags.Ranked))
 		{
 			var whiteProfile = await profileRepo.GetOrCreateProfile(data.whitePlayer);
 			var blackProfile = await profileRepo.GetOrCreateProfile(data.blackPlayer);

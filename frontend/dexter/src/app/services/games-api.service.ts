@@ -10,7 +10,7 @@ export class GamesApiService {
 
   constructor(private api: ApiService) { }
 
-  async request(connection: GameConnection, gameId: string, command: string, ...args: object[]) : Promise<any> {
+  async request(connection: GameConnection, gameId: string, command: string, ...args: any[]) : Promise<any> {
     let requestObject = {
       connection: connection,
       request: command,

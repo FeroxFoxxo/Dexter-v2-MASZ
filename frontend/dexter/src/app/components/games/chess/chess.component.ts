@@ -46,7 +46,7 @@ export class ChessComponent implements OnInit, AfterViewInit, OnChanges, IGame {
     tileBlack: "#2a2a42",
     highlightOpacity: 0.65
   }
-  inverted = true;
+  inverted = false;
 
   heldPiece?: Chess.Piece;
   pieces: Chess.Piece[] = [];
@@ -125,6 +125,12 @@ export class ChessComponent implements OnInit, AfterViewInit, OnChanges, IGame {
         this.data.whiteTime = move.timerWhite;
         if (move.gameEnds) {
           this.completeGame(move.gameEndContext!);
+        } else {
+          if (this.premoves.length > 0) {
+            if (this.premoves[0].piece.isWhite == this.data.whiteToMove) {
+              this.tryPushMove();
+            }
+          }
         }
       }
     })
@@ -360,33 +366,41 @@ export class ChessComponent implements OnInit, AfterViewInit, OnChanges, IGame {
       this.heldPiece = undefined; return;
     }
 
-    if (this.data.whiteToMove != piece.isWhite) {
-      this.registerPremove(piece, newpos);
-      return;
-    }
+    this.registerPremove(piece, newpos).then(() => {
+      if (!this.data) return;
+      if (this.data.whiteToMove == piece.isWhite) this.tryPushMove();
+    });
 
-    this.tryPushMove(piece, newpos);
+
   }
 
-  async tryPushMove(piece: Chess.Piece, newpos: number, promotion = ' ') {
-    if (!this.data) {return;}
+  async tryPushMove() {
+    if (!this.data) return;
+    let pm = this.premoves[0];
+    if (pm == undefined) return;
 
-    if (!piece.canMove(this.data, this.pieces, newpos)) {
+    if (!pm.piece.canMove(this.data, this.pieces, pm.target)) {
       this.cancelMove(); return;
     }
 
-    let move = piece.getMove(this.data, this.pieces, newpos);
+    let move = pm.piece.getMove(this.data, this.pieces, pm.target);
     if ((move.value & 0x0f000000) == 0x0f000000) {
-      if (promotion == ' ') {
-        promotion = await this.requestPromotionType(piece.isWhite, newpos);
+      if (!pm.promotesTo || pm.promotesTo == ' ') {
+        pm.promotesTo = await this.requestPromotionType(pm.piece.isWhite, pm.target);
       }
       move.value &= ~0x0f000000;
-      move.value |= promotionSection(promotion);
+      move.value |= promotionSection(pm.promotesTo);
     }
 
     if (this.game && this.connection) {
-      this.gamesApi.request(this.connection, this.game.id, "move", move)
+      try {
+        await this.gamesApi.request(this.connection, this.game.id, "move", move)
+        this.premoves.shift();
+        this.recalcPremoves();
+        return;
+      } catch {}
     }
+    this.cancelMove();
   }
 
   cancelMove() {
@@ -406,10 +420,10 @@ export class ChessComponent implements OnInit, AfterViewInit, OnChanges, IGame {
       return;
     }
 
-    let move = {piece: piece, target: target, promoteTo: ' '}
+    let move = {piece: piece, target: target, promotesTo: ' '}
     if ((piece.isWhite ? target < 8 : target >= (this.data?.board.length ?? 64) - 8) && piece instanceof Chess.Pawn) {
       let p = await this.requestPromotionType(piece.isWhite, target);
-      move.promoteTo = p;
+      move.promotesTo = p;
     }
     this.premoves.push(move);
     this.recalcPremoves();
@@ -418,6 +432,7 @@ export class ChessComponent implements OnInit, AfterViewInit, OnChanges, IGame {
   }
 
   recalcPremoves() {
+    this.pieces = this.pieces.filter(p => p.pos >= 0);
     for (let piece of this.pieces) {
       piece.premoveState.affected = false;
       this.premoveMarkers = [];
@@ -429,6 +444,17 @@ export class ChessComponent implements OnInit, AfterViewInit, OnChanges, IGame {
       if (targetPiece) {
         targetPiece.premoveState.affected = true;
         targetPiece.premoveState.position = -1; // Captured
+      }
+      console.log("Promotion: " + pm.promotesTo);
+      if (pm.promotesTo && pm.promotesTo != ' ') {
+        console.log("Processing promotion to " + pm.promotesTo + " at " + pm.target);
+        pm.piece.premoveState.position = -1;
+        let newPiece = Chess.Piece.fromChar(pm.piece.isWhite ? pm.promotesTo.toUpperCase() : pm.promotesTo.toLowerCase(), -1);
+        if (newPiece) {
+          newPiece.premoveState.affected = true;
+          newPiece.premoveState.position = pm.target;
+          this.pieces.push(newPiece);
+        }
       }
       if (!this.premoveMarkers.includes(pm.piece.pos))
         this.premoveMarkers.push(pm.piece.pos);
@@ -502,16 +528,23 @@ export class ChessComponent implements OnInit, AfterViewInit, OnChanges, IGame {
     });
 
     let result = await lastValueFrom(ref.afterClosed())
-    if (!result || result == "" || !this.game || !this.connection) return;
 
-    try {
-      await this.gamesApi.request(this.connection, this.game.id, "join", result);
-    } catch {
-      this.toastr.error("Couldn't join side " + result + "!");
-      return "";
-    }
+    await this.joinSide(result);
+
     this.dialogActive = false;
     return result;
+  }
+
+  async joinSide(side: string): Promise<boolean> {
+    if (!side || side == "" || !this.game || !this.connection) return false;
+
+    try {
+      await this.gamesApi.request(this.connection, this.game.id, "join", side);
+    } catch {
+      this.toastr.error("Couldn't join side " + side + "!");
+      return false;
+    }
+    return true;
   }
 
   async processJoinSide(playerId: string, white: boolean): Promise<void> {
@@ -666,5 +699,5 @@ export interface ChessData {
 
   whitePlayer: string;
   blackPlayer: string;
-  casual : boolean;
+  flags: number;
 }

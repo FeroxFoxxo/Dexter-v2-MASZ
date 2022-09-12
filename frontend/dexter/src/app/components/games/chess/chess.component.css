@@ -89,6 +89,21 @@
   color: #dddddd;
 }
 
+.join-button {
+  font-size: 2em;
+  background-color: #dddddd;
+  color: #222222;
+}
+
+.join-button mat-icon {
+  translate: 0 -3px;
+}
+
+.alt-button {
+  background-color: #222222;
+  color: #dddddd;
+}
+
 .counter-alignment-container {
   position: absolute;
   top: var(--timer-padding);

@@ -6,12 +6,18 @@
       </div>
       <div class="counter-alignment-container d-flex flex-direction-row">
         <app-profile-display class="profile-display" [gameId]="'chess'" [profile]="inverted ? profileWhite : profileBlack"></app-profile-display>
+        <button mat-raised-button class="join-button" [class.alt-button]="!inverted" (click)="joinSide(inverted ? 'white' : 'black')"
+          *ngIf="data && connection && (inverted ? data.whitePlayer : data.blackPlayer) === '0' && (inverted ? data.blackPlayer : data.whitePlayer) !== connection.userId">
+          <mat-icon>input</mat-icon>
+          Join
+        </button>
       </div>
     </div>
     <!--
     {{data | json}}
     {{game | json}}
     -->
+    {{premoves | json}}
     <div class="w-100 position-relative" (dblclick)="cancelMove()">
       <div class="d-flex flex-wrap" style="height: calc(var(--sq-size) * 8); width: 100%">
         <div *ngFor="let piece of data.board; let i = index" [attr.data-index]="i" class="board-sq position-relative" [class.board-sq-alt]="isAltTile(i)">
@@ -45,6 +51,11 @@
       </div>
       <div class="counter-alignment-container d-flex flex-direction-row">
         <app-profile-display class="profile-display" [gameId]="'chess'" [profile]="inverted ? profileBlack : profileWhite"></app-profile-display>
+        <button mat-raised-button class="join-button" [class.alt-button]="inverted" (click)="joinSide(inverted ? 'black' : 'white')"
+          *ngIf="data && connection && (inverted ? data.blackPlayer : data.whitePlayer) === '0' && (inverted ? data.whitePlayer : data.blackPlayer) !== connection.userId">
+          <mat-icon>input</mat-icon>
+          Join
+        </button>
       </div>
     </div>
   </div>

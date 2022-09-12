@@ -3,7 +3,7 @@ import { Piece } from "../chess";
 export interface Premove {
   piece: Piece,
   target: number,
-  promotesTo?: ' '
+  promotesTo?: string
 }
 
 export interface PremoveState {
