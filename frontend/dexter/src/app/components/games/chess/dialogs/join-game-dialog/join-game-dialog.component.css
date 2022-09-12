@@ -1,0 +1,41 @@
+.dialog-full {
+  margin-left: 0!important;
+  margin-right: 0!important;
+}
+
+.button-join {
+  position: relative;
+}
+
+.button-join img {
+  position: absolute;
+  max-width: calc(100% - 6px);
+  max-height: calc(100% - 6px);
+  left: 3px;
+  top: 3px;
+}
+
+.white {
+  background-color: #ddd;
+}
+
+.random {
+  background: linear-gradient(90deg, #ddd 0%, #555 100%);
+}
+
+.black {
+  background-color: #555;
+}
+
+.random:first-child {
+  clip-path: inset(0 50% 0 0);
+}
+
+.random:last-child {
+  clip-path: inset(0 0 0 50%);
+}
+
+.button-spectate {
+  background-color: #777;
+  color: white;
+}

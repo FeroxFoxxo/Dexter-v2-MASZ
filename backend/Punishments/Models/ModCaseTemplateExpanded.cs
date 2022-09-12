@@ -8,7 +8,7 @@ public class ModCaseTemplateExpanded
 	public ModCaseTemplateExpanded(ModCaseTemplate template, IUser creator, IGuild guild)
 	{
 		CaseTemplate = template;
-		Creator = DiscordUser.GetDiscordUser(creator);
+		Creator = DiscordUser.FromUser(creator);
 		Guild = DiscordGuild.GetDiscordGuild(guild);
 	}
 

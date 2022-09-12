@@ -51,7 +51,7 @@ public class AuthGamesController : AuthenticatedController
 		GameRoom room = game.ToData(c);
 
 		await _gameRepository.RegisterGame(room);
-		var createdGameDto = GameRoomDto.FromData(room, _rest, _profileRepository);
+		var createdGameDto = await GameRoomDto.FromData(room, _rest, _profileRepository);
 
 		_event.GameRoomCreatedEvent.Invoke(room);
 
@@ -66,7 +66,7 @@ public class AuthGamesController : AuthenticatedController
 			return NotFound();
 
 		var identity = await _identity.GetIdentity(HttpContext);
-		if (game.Players.Count != 0 && identity.GetCurrentUser().Id != game.Players.First().UserId)
+		if (game.Players.Count != 0 && identity.GetCurrentUser().Id != game.MasterId)
 			return Forbid();
 
 		await _gameRepository.DeleteGame(gameId);
@@ -82,7 +82,7 @@ public class AuthGamesController : AuthenticatedController
 			return NotFound();
 
 		var identity = await _identity.GetIdentity(HttpContext);
-		if (savegame.Players.First().UserId != identity.GetCurrentUser().Id)
+		if (savegame.MasterId != identity.GetCurrentUser().Id)
 		{
 			return Forbid();
 		}

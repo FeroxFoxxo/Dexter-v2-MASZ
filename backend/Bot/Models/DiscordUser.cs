@@ -7,7 +7,7 @@ public class DiscordUser
 {
 	private DiscordUser() { }
 
-	public static DiscordUser GetDiscordUser(IUser user)
+	public static DiscordUser? FromUser(IUser user)
 	{
 		if (user is null)
 			return null;

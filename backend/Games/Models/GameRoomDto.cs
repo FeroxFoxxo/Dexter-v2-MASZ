@@ -16,7 +16,11 @@ public class GameRoomDto
 		var players = new List<GameProfileDto>();
 		foreach (var p in room.Players)
 		{
-			players.Add(await GameProfileDto.FromConnection(p, await rest.FetchUserInfo(p.UserId), profileRepo));
+			var dto = await GameProfileDto.FromConnection(p, rest, profileRepo);
+			if (dto.Id == room.MasterId)
+				players.Insert(0, dto);
+			else
+				players.Add(dto);
 		}	
 
 		return new GameRoomDto(){

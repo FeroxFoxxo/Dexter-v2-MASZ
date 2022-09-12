@@ -29,8 +29,11 @@ public class GameRoomForPatchDto
 			original.Data = Data;
 
 		if (PlayerIds != null)
+		{
 #pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
 			original.Players = PlayerIds.Select(id => connectionRepo.GetConnection(id)).Where(x => x != null).ToList();
+			original.MasterId = original.Players.FirstOrDefault()?.UserId ?? 0;
+		}
 #pragma warning restore CS8619
 
 		original.TimeUpdated = DateTimeOffset.Now;

@@ -28,7 +28,7 @@ public static class GameHelper
 
 	public static string DefaultData(string gameType)
 	{
-		return gameType switch
+		return gameType.ToLower() switch
 		{
 			"chess" => JsonConvert.SerializeObject(new Chess.Data()),
 			_ => throw new ArgumentException("Bad game type: " + gameType)

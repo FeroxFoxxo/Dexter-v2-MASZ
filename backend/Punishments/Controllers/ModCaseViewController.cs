@@ -79,11 +79,11 @@ public class ModCaseViewController : AuthenticatedController
 
 		if (modCase.LockedByUserId != 0)
 			caseView.LockedBy =
-				DiscordUser.GetDiscordUser(await _discordRest.FetchUserInfo(modCase.LockedByUserId, CacheBehavior.OnlyCache));
+				DiscordUser.FromUser(await _discordRest.FetchUserInfo(modCase.LockedByUserId, CacheBehavior.OnlyCache));
 
 		if (modCase.DeletedByUserId != 0)
 			caseView.DeletedBy =
-				DiscordUser.GetDiscordUser(await _discordRest.FetchUserInfo(modCase.DeletedByUserId, CacheBehavior.OnlyCache));
+				DiscordUser.FromUser(await _discordRest.FetchUserInfo(modCase.DeletedByUserId, CacheBehavior.OnlyCache));
 
 		if (!(await identity.HasPermission(DiscordPermission.Moderator, guildId) || guildConfig.PublishModeratorInfo))
 			caseView.RemoveModeratorInfo();

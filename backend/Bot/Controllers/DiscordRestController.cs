@@ -88,7 +88,7 @@ public class DiscordRestController : AuthenticatedController
 		var user = await _discordRest.FetchUserInfo(userid, CacheBehavior.OnlyCache);
 
 		if (user != null)
-			return Ok(DiscordUser.GetDiscordUser(user));
+			return Ok(DiscordUser.FromUser(user));
 
 		return NotFound();
 	}
@@ -123,7 +123,7 @@ public class DiscordRestController : AuthenticatedController
 		var users = await _discordRest.FetchGuildUsers(guildId, CacheBehavior.OnlyCache);
 
 		if (users != null)
-			return Ok(users.Select(x => DiscordUser.GetDiscordUser(x)));
+			return Ok(users.Select(x => DiscordUser.FromUser(x)));
 
 		return NotFound();
 	}

@@ -1,0 +1,11 @@
+<div *ngIf="profile" class="h-100 d-flex flex-row">
+  <img class="profile-img" style="margin-right: 0.5em" [src]="profile.discordUser?.imageUrl ?? '/assets/img/default_profile.png'">
+  <div class="h-100 d-flex flex-column justify-content-stretch profile-info">
+    <p class="profile-name">
+      {{profile.discordUser?.username ?? 'Guest'}}#{{profile.discordUser?.discriminator ?? '0000'}}
+    </p>
+    <p class="profile-rating">
+      {{getRatingExpr(profile)}}
+    </p>
+  </div>
+</div>

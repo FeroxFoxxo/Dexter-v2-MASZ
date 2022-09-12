@@ -36,14 +36,19 @@ public class GuestGamesController : BaseController
 		if (profile == null || user == null)
 			return NotFound();
 
-		var dto = GameProfileDto.FromData(profile, new DiscordUser(user));
+		var dto = GameProfileDto.FromData(profile, DiscordUser.FromUser(user));
 		return Ok(dto);
 	}
 
 	[HttpPost]
-	public async Task<IActionResult> RegisterGuest([FromBody] string connectionId)
+	public async Task<IActionResult> RegisterGuest([FromBody] GuestRegistration form)
 	{
-		var connection = await _connectionRepository.RegisterGuest(connectionId);
+		var connection = await _connectionRepository.RegisterGuest(form.ConnectionId);
 		return Ok(GameProfileDto.FromGuest(connection.UserId));
 	}
+}
+
+public class GuestRegistration
+{
+	public string ConnectionId { get; set; }
 }

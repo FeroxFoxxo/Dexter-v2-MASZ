@@ -8,8 +8,8 @@ public class UserInviteExpanded
 	public UserInviteExpanded(UserInvite userInvite, IUser invitedUser, IUser invitedBy)
 	{
 		UserInvite = userInvite;
-		InvitedUser = DiscordUser.GetDiscordUser(invitedUser);
-		InvitedBy = DiscordUser.GetDiscordUser(invitedBy);
+		InvitedUser = DiscordUser.FromUser(invitedUser);
+		InvitedBy = DiscordUser.FromUser(invitedBy);
 	}
 
 	public UserInvite UserInvite { get; set; }

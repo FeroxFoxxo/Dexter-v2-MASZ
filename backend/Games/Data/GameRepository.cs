@@ -16,13 +16,13 @@ public class GameRepository : Repository
 {
 	private readonly GamesDatabase _database;
 	private readonly IServiceProvider _services;
-	private readonly Dictionary<Guid, Game> loaded;
+	private readonly GamesCache _cache;
 
-	public GameRepository(DiscordRest rest, GamesDatabase database, IServiceProvider services) : base(rest)
+	public GameRepository(DiscordRest rest, GamesDatabase database, IServiceProvider services, GamesCache cache) : base(rest)
 	{
 		_database = database;
 		_services = services;
-		loaded = new Dictionary<Guid, Game>();
+		_cache = cache;
 	}
 
 	public GameRoom? GetGame(Guid id)
@@ -32,14 +32,15 @@ public class GameRepository : Repository
 
 	public Game? GetLoadedGame(Guid id)
 	{
-		if (loaded.ContainsKey(id))
-			return loaded[id];
+		var lg = _cache.GetLoadedOrDefault(id);
+		if (lg != null)
+			return lg;
 
 		var savedGame = GetGame(id);
 		if (savedGame != null)
 		{
 			var game = GameHelper.LoadGame(savedGame, _services);
-			loaded.Add(id, game);
+			_cache.PushToCache(game);
 			return game;
 		}
 
@@ -48,24 +49,22 @@ public class GameRepository : Repository
 
 	public IEnumerable<Game> GetAllLoadedGames()
 	{
-		return loaded.Values;
+		return _cache.GetAllCached();
 	}
 
 	public async Task RegisterGame(GameRoom game)
 	{
 		var g = GameHelper.LoadGame(game, _services);
 		if (g == null)
-			throw new ArgumentException($"Game couldn't be loaded, game's gameType is {game.GameType}.");
-		loaded.Add(game.GameId, g);
-
+			throw new ArgumentException($"Game couldn't be _cache.loaded, game's gameType is {game.GameType}.");
+		_cache.PushToCache(g);
 
 		await _database.RegisterGameState(game);
 	}
 
 	public async Task<GameRoom?> DeleteGame(Guid id)
 	{
-		if (loaded.ContainsKey(id))
-			loaded.Remove(id);
+		_cache.PopFromCache(id);
 		return await _database.DeleteGame(id);
 	}
 
@@ -95,6 +94,6 @@ public class GameRepository : Repository
 
 	public IEnumerable<GameRoom> GetAllGames()
 	{
-		return _database.GameStates;
+		return _database.GetAllGames();
 	}
 }

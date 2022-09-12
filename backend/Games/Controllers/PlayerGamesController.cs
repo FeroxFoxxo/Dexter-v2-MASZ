@@ -30,17 +30,22 @@ public class PlayerGamesController : AuthenticatedController
 	}
 
 	[HttpPut("{userId}")]
-	public async Task<IActionResult> RegisterPlayer([FromRoute] ulong userId, [FromBody] string connectionId)
+	public async Task<IActionResult> RegisterPlayer([FromRoute] ulong userId, [FromBody] Connection connection)
 	{
+		if (userId != connection.UserId)
+			return BadRequest("User IDs don't match in route and body");
+		if (connection.IsGuest)
+			return BadRequest("Connection has the guest flag active");
+
 		var user = (await _identity.GetIdentity(HttpContext)).GetCurrentUser();
 		if (user == null || userId != user.Id)
 			return Unauthorized();
 
-		if (!await _connectionRepository.RegisterConnection(userId, connectionId))
+		if (!await _connectionRepository.RegisterConnection(userId, connection.ConnectionId))
 			return StatusCode(500);
 
 		var profile = await _gameProfileRepository.GetOrCreateProfile(userId);
-		var dto = GameProfileDto.FromData(profile, new DiscordUser(user));
+		var dto = GameProfileDto.FromData(profile, DiscordUser.FromUser(user));
 		return Ok(dto);
 	}
 }

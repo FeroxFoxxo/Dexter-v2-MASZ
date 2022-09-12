@@ -8,9 +8,9 @@ public class UserMapExpanded
 	public UserMapExpanded(UserMap userMaps, IUser userA, IUser userB, IUser moderator)
 	{
 		UserMap = userMaps;
-		UserA = DiscordUser.GetDiscordUser(userA);
-		UserB = DiscordUser.GetDiscordUser(userB);
-		Moderator = DiscordUser.GetDiscordUser(moderator);
+		UserA = DiscordUser.FromUser(userA);
+		UserB = DiscordUser.FromUser(userB);
+		Moderator = DiscordUser.FromUser(moderator);
 	}
 
 	public UserMap UserMap { get; set; }

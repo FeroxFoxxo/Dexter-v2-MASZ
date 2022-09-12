@@ -8,6 +8,8 @@ import { PatchnotesComponent } from './components/basic/patchnotes/patchnotes.co
 import { TermsComponent } from './components/basic/terms/terms.component';
 import { NotFoundComponent } from './components/errors/not-found/not-found.component';
 import { OauthFailedComponent } from './components/errors/oauth-failed/oauth-failed.component';
+import { GameDisplayComponent } from './components/games/game-display/game-display.component';
+import { GamesDashboardComponent } from './components/games/games-dashboard/games-dashboard.component';
 import { GuildAddComponent } from './components/guilds/guild-add/guild-add.component';
 import { GuildEditComponent } from './components/guilds/guild-edit/guild-edit.component';
 import { GuildLeaderboardComponent } from './components/guilds/guild-leaderboard/guild-leaderboard.component';
@@ -20,9 +22,6 @@ import { ProfileDashboardComponent } from './components/profiles/profile-dashboa
 import { StoreDashboardComponent } from './components/profiles/store/store-dashboard/store-dashboard.component';
 import { UserScanComponent } from './components/usergraph/userscan/userscan.component';
 import { AuthGuard } from './guards/auth.guard';
-import { StoreDashboardComponent } from './components/profiles/store/store-dashboard/store-dashboard.component';
-import { ProfileDashboardComponent } from './components/profiles/profile-dashboard/profile-dashboard.component';
-import { GuildLeaderboardComponent } from './components/guilds/guild-leaderboard/guild-leaderboard.component';
 
 const routes: Routes = [
   { path: 'guilds', component: GuildListComponent, canActivate: [AuthGuard] },
@@ -41,7 +40,7 @@ const routes: Routes = [
   { path: 'store', component: StoreDashboardComponent },
   { path: 'profile', component: ProfileDashboardComponent },
   { path: 'games', component: GamesDashboardComponent },
-  { path: 'games/:gamename', component: GameDisplayComponent },
+  { path: 'games/:gameid', component: GameDisplayComponent },
   { path: 'guilds/:guildid/leaderboard', component: GuildLeaderboardComponent},
   { path: 'terms', component: TermsComponent },
   { path: 'legal', component: LegalComponent },

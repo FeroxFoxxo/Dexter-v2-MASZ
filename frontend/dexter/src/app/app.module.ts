@@ -54,7 +54,6 @@ import { IndexComponent } from './components/basic/index/index.component';
 import { LegalComponent } from './components/basic/legal/legal.component';
 import { MultiSelectComponent } from './components/basic/multi-select/multi-select.component';
 import { PatchnotesComponent } from './components/basic/patchnotes/patchnotes.component';
-import { SwitchComponent } from './components/basic/switch/switch.component';
 import { TermsComponent } from './components/basic/terms/terms.component';
 import { CaseDeleteDialogComponent } from './components/dialogs/case-delete-dialog/case-delete-dialog.component';
 import { CommentEditDialogComponent } from './components/dialogs/comment-edit-dialog/comment-edit-dialog.component';
@@ -132,14 +131,16 @@ import { AuthService } from './services/auth.service';
 import { CookieTrackerService } from './services/cookie-tracker.service';
 import { EnumManagerService } from './services/enum-manager.service';
 import { TimezoneService } from './services/timezone.service';
-import { DurationPickerModule } from 'ngx-duration-picker';
-import { OffsetEditorComponent } from './components/profiles/rankcard-customizer/offset-editor/offset-editor.component';
-import { SwitchComponent } from './components/basic/switch/switch.component';
-import { RankcardLevelDisplayComponent } from './components/profiles/rankcard-customizer/rankcard-preview/rankcard-level-display/rankcard-level-display.component';
-import { OffsetEditorSettingsDialog } from './components/profiles/rankcard-customizer/offset-editor/settings-dialog/settings-dialog.component';
 import { GamesDashboardComponent } from './components/games/games-dashboard/games-dashboard.component';
 import { GameDisplayComponent } from './components/games/game-display/game-display.component';
 import { ChessComponent } from './components/games/chess/chess.component';
+import { SwitchComponent } from './components/basic/switch/switch.component';
+import { DurationPickerModule } from 'ngx-duration-picker';
+import { CreateGameDialogComponent } from './components/games/dialogs/create-game-dialog/create-game-dialog.component';
+import { PasswordRequestDialogComponent } from './components/dialogs/password-request-dialog/password-request-dialog.component';
+import { TimerFormatPipe } from './pipes/timer-format.pipe';
+import { ProfileDisplayComponent } from './components/games/game-display/profile-display/profile-display.component';
+import { JoinGameDialogComponent } from './components/games/chess/dialogs/join-game-dialog/join-game-dialog.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -234,7 +235,12 @@ export function HttpLoaderFactory(http: HttpClient) {
     OffsetEditorSettingsDialog,
     GamesDashboardComponent,
     GameDisplayComponent,
-    ChessComponent
+    ChessComponent,
+    CreateGameDialogComponent,
+    PasswordRequestDialogComponent,
+    TimerFormatPipe,
+    ProfileDisplayComponent,
+    JoinGameDialogComponent
   ],
   imports: [
     CommonModule,
@@ -275,7 +281,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatDatepickerModule,
     MatNativeDateModule,
     DurationPickerModule,
-
     BrowserModule,
     AppRoutingModule,
     NgChartsModule,

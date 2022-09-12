@@ -1,0 +1,42 @@
+<h1 mat-dialog-title>Create Game Room</h1>
+<div mat-dialog-content>
+  <mat-form-field class="w-100">
+    <mat-label>Room Name</mat-label>
+    <input matInput type="text" [(ngModel)]="data.name" class="w-100">
+  </mat-form-field>
+  <div class="rounded navitem w-100 d-flex flex-row align-items-center shaded">
+    <mat-icon aria-hidden="false" aria-label="tune icon">sports_esports</mat-icon>
+    <div style="width: 10px"></div>
+    <mat-select [value]="data.name" #gameSelect (selectionChange)="changeGame(gameSelect.value)">
+      <mat-option [value]="''">None</mat-option>
+      <mat-option *ngFor="let g of gameOptions" [value]="g.gameid">
+        <img style="height: 2.25em" [src]="g.icon">
+        {{ g.name }}
+      </mat-option>
+    </mat-select>
+  </div>
+  <mat-form-field class="w-100">
+    <mat-label>Description</mat-label>
+    <textarea matInput [(ngModel)]="data.description" class="w-100"></textarea>
+  </mat-form-field>
+  <mat-form-field class="w-100">
+    <mat-label>Password</mat-label>
+    <input matInput type="text" [(ngModel)]="data.password" class="w-100">
+    <mat-hint>Leave empty to require no password</mat-hint>
+  </mat-form-field>
+  <mat-form-field class="w-50 mt-4">
+    <mat-label>Max Players</mat-label>
+    <input matInput type="number" [(ngModel)]="data.maxPlayers" class="w-100">
+  </mat-form-field>
+  <div class="shaded rounded navitem w-100 position-relative">
+    <span>Allow Guests</span>
+    <app-switch class="position-absolute end-0 top-0" [(value)]="data.allowGuests"></app-switch>
+  </div>
+  <div *ngIf="errors">
+    <p class="text-danger">{{errors}}</p>
+  </div>
+</div>
+<div mat-dialog-actions class="w-100 d-flex flex-row justify-content-center">
+  <button mat-raised-button color="accent" (click)="onSubmit()" cdkFocusInitial>Create Room</button>
+  <button mat-raised-button color="primary" (click)="onNoClick()">Cancel</button>
+</div>

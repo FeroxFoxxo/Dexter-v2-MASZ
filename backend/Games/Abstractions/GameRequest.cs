@@ -11,9 +11,5 @@ public class GameRequest
 {
 	public Connection connection;
 	public string request;
-
-	public static string[] PreProcessArguments(string request)
-	{
-		return request.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-	}
+	public object[]? args;
 }

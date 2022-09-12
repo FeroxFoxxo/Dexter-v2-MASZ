@@ -20,7 +20,66 @@
   margin-top: 20px;
   max-width: var(--item-size);
   max-height: calc(var(--item-size) - 20px);
-  background-color: var(--primary);
-  border-radius: 50%;
-  border: 10px outset var(--primary);
+}
+
+.game-button {
+  background-color: var(--bs-primary);
+  color: white;
+}
+
+.func-button {
+  background-color: #666666;
+}
+
+.room-list {
+  width: 100%;
+  padding: 12px;
+  display: flex;
+  font-size: 16px;
+}
+
+.room-holder {
+  position: relative;
+  background-color: rgba(200, 200, 200, 15%);
+  border-radius: 12px;
+  padding: 6px;
+  height: 100px;
+  width: calc(100% - 24px);
+  margin-bottom: 12px;
+}
+
+.room-table, .room-table td, .room-table th {
+  text-overflow: ellipsis;
+}
+
+.room-title {
+  font-size: 1.5em;
+}
+
+.room-join {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+}
+
+.room-description {
+  --desc-height: 3.5em;
+  --desc-pad: 6px;
+  padding: var(--desc-pad);
+  clip-path: inset(var(--desc-pad));
+  height: var(--desc-height);
+}
+
+.room-description-text {
+  transition: all 2s linear;
+}
+
+.room-description-text:hover {
+  transform: translateY(calc(-100% + var(--desc-height) - 2 * var(--desc-pad)))
+}
+
+@media (min-width: 992px) {
+  .room-holder {
+    width: calc(50% - 18px);
+  }
 }

@@ -1,1 +1,51 @@
-<p>chess works!</p>
+<div #area class="d-flex flex-row justify-content-start align-items-start h-100 w-100">
+  <div #board [style.--alt-color]="preferences.tileBlack" [style.--light-color]="preferences.tileWhite" [style.--sq-size]="sqSize" *ngIf="game && data" class="board">
+    <div class="timer-container position-relative">
+      <div class="timer" [class.timer-alt]="!inverted" [class.lighten]="!gameActive">
+        {{(inverted ? data.whiteTime : data.blackTime) / 1000 | timerFormat:5}}
+      </div>
+      <div class="counter-alignment-container d-flex flex-direction-row">
+        <app-profile-display class="profile-display" [gameId]="'chess'" [profile]="inverted ? profileWhite : profileBlack"></app-profile-display>
+      </div>
+    </div>
+    <!--
+    {{data | json}}
+    {{game | json}}
+    -->
+    <div class="w-100 position-relative" (dblclick)="cancelMove()">
+      <div class="d-flex flex-wrap" style="height: calc(var(--sq-size) * 8); width: 100%">
+        <div *ngFor="let piece of data.board; let i = index" [attr.data-index]="i" class="board-sq position-relative" [class.board-sq-alt]="isAltTile(i)">
+          <img class="position-absolute top-0 start-0 w-100 h-100" *ngIf="lastMove && (index(i) === lastMove.origin || index(i) === lastMove.target)"
+            [src]="'/assets/img/games/chess/'+preferences.theme+'/SquareHighlight.png'" [style.opacity]="preferences.highlightOpacity * 100 + '%'">
+            <img class="position-absolute top-0 start-0 w-100 h-100" *ngIf="premoveMarkers.includes(index(i))"
+            [src]="'/assets/img/games/chess/'+preferences.theme+'/SquarePremoveMarker.png'" [style.opacity]="preferences.highlightOpacity * 100 + '%'">
+          <img class="position-absolute top-0 start-0 w-100 h-100" *ngIf="check && index(i) === (data.whiteToMove ? data.whiteKing : data.blackKing)"
+            [src]="'/assets/img/games/chess/'+preferences.theme+'/SquareDanger.png'" [style.opacity]="preferences.highlightOpacity * 100 + '%'">
+          <img class="position-absolute top-0 start-0 w-100 h-100" *ngIf="heldPiece && legalMoves.includes(index(i))"
+            [src]="'/assets/img/games/chess/'+preferences.theme+'/'+(data.board[index(i)] === ' ' ? 'SquareReachable.png' : 'SquareCapture.png')" [style.opacity]="preferences.highlightOpacity * 100 + '%'">
+          <img class="position-absolute top-0 start-0 w-100 h-100" *ngIf="heldPiece && potentialPremoves.includes(index(i))"
+            [src]="'/assets/img/games/chess/'+preferences.theme+'/SquarePremove.png'" [style.opacity]="preferences.highlightOpacity * 100 + '%'">
+        </div>
+      </div>
+      <div class="piece" *ngFor="let piece of pieces" [ngStyle]="getPieceStyle(piece)" [class.held-piece]="heldPiece === piece" [class.lighten]="!gameActive">
+        <img [src]="'/assets/img/games/chess/'+preferences.theme+'/'+getPieceAssetName(piece)+'.png'" class="h-100 w-100"
+        (mousedown)="onPieceClicked(piece, $event)" (dblclick)="cancelMove()">
+      </div>
+      <div *ngIf="requestingPromotion >= 0" class="promotion position-absolute" [ngStyle]="getPromoteStyle(requestingPromotion)">
+        <div *ngFor="let piece of promotables">
+          <button mat-fab class="promotion-button h-100 w-100" (click)="promotionResponse.next(piece)">
+            <img [src]="'/assets/img/games/chess/'+preferences.theme+'/'+getPieceCharAssetName(piece)+'.png'">
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="timer-container">
+      <div class="timer" [class.timer-alt]="inverted" [class.lighten]="!gameActive">
+        <span>{{(inverted ? data.blackTime : data.whiteTime) / 1000 | timerFormat:5}}</span>
+      </div>
+      <div class="counter-alignment-container d-flex flex-direction-row">
+        <app-profile-display class="profile-display" [gameId]="'chess'" [profile]="inverted ? profileBlack : profileWhite"></app-profile-display>
+      </div>
+    </div>
+  </div>
+</div>

@@ -9,7 +9,7 @@ public class MotdExpandedView
 	public MotdExpandedView(GuildMotd punishmentsEvent, IUser creator)
 	{
 		Motd = new MotdView(punishmentsEvent);
-		Creator = DiscordUser.GetDiscordUser(creator);
+		Creator = DiscordUser.FromUser(creator);
 	}
 
 	public MotdView Motd { get; set; }

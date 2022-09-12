@@ -1,7 +1,9 @@
 ﻿using Bot.Abstractions;
 using Bot.Events;
 using Games.Data;
+using Games.Middleware;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,24 +17,23 @@ public class GamesTimer : Event
 {
 	const int TickInterval = 5000;
 	const int SaveInterval = 60000;
+	const int HeartbeatInterval = 30000;
 
 	private readonly IServiceProvider _serviceProvider;
 	private readonly BotEventHandler _botEventHandler;
 	private readonly GamesHub _hub;
-	private readonly GameRepository _gameRepository;
-	private readonly GameConnectionRepository _connectionRepository;
-	private readonly GameProfileRepository _gameProfileRepository;
+	private readonly ILogger<GamesTimer> _logger;
 	private int saveTimeRemaining = SaveInterval;
+	private int heartbeatTimeRemaining = HeartbeatInterval;
 
-	public GamesTimer(IServiceProvider serviceProvider, BotEventHandler botEventHandler, GamesHub hub,
-		GameRepository gameRepository, GameConnectionRepository connectionRepository, GameProfileRepository profileRepository)
+	private readonly HashSet<ulong> heartbeats = new();
+
+	public GamesTimer(IServiceProvider serviceProvider, BotEventHandler botEventHandler, GamesHub hub, ILogger<GamesTimer> logger)
 	{
 		_serviceProvider = serviceProvider;
 		_botEventHandler = botEventHandler;
 		_hub = hub;
-		_gameRepository = gameRepository;
-		_connectionRepository = connectionRepository;
-		_gameProfileRepository = profileRepository;
+		_logger = logger;
 	}
 
 	public void RegisterEvents()
@@ -43,38 +44,83 @@ public class GamesTimer : Event
 	private Task SetupTimer()
 	{
 		System.Timers.Timer timer = new(TickInterval);
-		timer.Elapsed += TimerCallback;
+		timer.Elapsed += (object? source, ElapsedEventArgs e) => Task.Run(async () => await TimerCallback(source, e));
 		timer.Start();
 
 		return Task.CompletedTask;
 	}
 
-	private void TimerCallback(object? source, ElapsedEventArgs e)
+	private async Task TimerCallback(object? source, ElapsedEventArgs e)
 	{
-		var tickTask = TickGames();
+		using var scope = _serviceProvider.CreateScope();
+		var gameRepo = scope.ServiceProvider.GetRequiredService<GameRepository>();
+
+		await TickGames(gameRepo);
 
 		saveTimeRemaining -= TickInterval;
 		if (saveTimeRemaining <= 0)
 		{
 			saveTimeRemaining += SaveInterval;
-			Task.Run(async () =>
-			{
-				await tickTask;
-				await SaveGames();
-			});
+			await SaveGames(gameRepo);
+		}
+
+		heartbeatTimeRemaining -= TickInterval;
+		if (heartbeatTimeRemaining <= 0)
+		{
+			heartbeatTimeRemaining += HeartbeatInterval;
+			var connectionRepo = scope.ServiceProvider.GetRequiredService<GameConnectionRepository>();
+			await Heartbeat(gameRepo, connectionRepo);
 		}
 	}
 
-	private async Task TickGames()
+	private async Task TickGames(GameRepository gameRepo)
 	{
-		var games = _gameRepository.GetAllLoadedGames();
-		await Parallel.ForEachAsync(games, async (g, c) => await g.GameTick(_hub));
+		var games = gameRepo.GetAllLoadedGames();
+		await Parallel.ForEachAsync(games.Where(g => g != null), async (g, c) => await g.GameTick(_hub));
 	}
 
-	private async Task SaveGames()
+	private async Task SaveGames(GameRepository gameRepo)
 	{
-		var games = _gameRepository.GetAllLoadedGames();
+		var games = gameRepo.GetAllLoadedGames();
 		foreach (var g in games)
-			await g.SaveData();
+			await g.SaveData(gameRepo);
+	}
+
+	private async Task Heartbeat(GameRepository gameRepo, GameConnectionRepository connectionRepo)
+	{
+		var failed = new HashSet<ulong>();
+		var succeeded = new HashSet<ulong>();
+		var connections = connectionRepo.GetAllConnections().ToArray();
+		foreach (var connection in connections)
+		{
+			if (!_hub.connections.Contains(connection.ConnectionId))
+			{
+				failed.Add(connection.UserId);
+			}
+			else
+			{
+				succeeded.Add(connection.UserId);
+			}
+		}
+
+		foreach (var f in failed)
+		{
+			if (heartbeats.Contains(f))
+			{
+				await connectionRepo.KillConnection(f);
+				_logger.LogInformation($"Dropped connection for user {f}");
+			}
+			else
+			{
+				heartbeats.Add(f);
+			}
+		}
+		foreach (var s in succeeded)
+		{
+			if (heartbeats.Contains(s))
+			{
+				heartbeats.Remove(s);
+			}
+		}
 	}
 }

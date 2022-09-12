@@ -46,7 +46,7 @@ public class LevelsXPController : AuthenticatedController
 		var user = await _rest.FetchUserInfo(level.UserId, CacheBehavior.Default);
 
 		var calc = new CalculatedGuildUserLevel(level, config);
-		return calc.ToDTO(DiscordUser.GetDiscordUser(user));
+		return calc.ToDTO(DiscordUser.FromUser(user));
 	}
 
 	[HttpGet("guilds/{guildId}/users")]

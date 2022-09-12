@@ -361,6 +361,7 @@ public class Initialize
 		app.UseEndpoints(endpoints =>
 		{
 			endpoints.MapControllers();
+			endpoints.MapHub<Games.Middleware.GamesHub>("/games");
 		});
 	}
 }

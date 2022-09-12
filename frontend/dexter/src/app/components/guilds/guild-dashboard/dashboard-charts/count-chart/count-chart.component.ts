@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { ChartDataset, ChartConfiguration, ChartType } from 'chart.js';
-import { BaseChartDirective } from 'ng2-charts';
+import { ChartConfiguration, ChartDataset, ChartType } from 'chart.js';
+import { BaseChartDirective, NgChartsModule } from 'ng2-charts';
 import { Observable } from 'rxjs';
 import 'chartjs-adapter-moment';
 
@@ -16,9 +16,9 @@ export class CountChartComponent implements OnInit {
   @Input() titleKey: string = '';
   @Input() max!: Observable<number>;
   @Input() chartLoading: boolean = true;
-  @Input() public chartData: ChartDataset[] = [];
+  @Input() public chartData : ChartDataset[] = [];
   @Input() public chartLabels: string[] = [];
-  
+
   public chartOptions: ChartConfiguration['options'] = {
     plugins: {
       title: {

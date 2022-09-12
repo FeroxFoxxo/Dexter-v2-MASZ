@@ -3,6 +3,20 @@
   <div *ngIf="user" class="currency"><mat-icon svgIcon="shards"></mat-icon></div>
 </div>
 
-<div class="game-display">
-  <app-chess *ngIf="gamename === 'chess'"></app-chess>
+<div class="game-display" *ngIf="game">
+  <app-chess id="chess" [game]="game" [gameHook]="gameHook" [connection]="connection" *ngIf="game.gameType === 'chess'"></app-chess>
+</div>
+
+<div class="game-footer" style="height: 75px">
+  <div class="d-flex flex-row align-items-center justify-content-evenly" style="height: 75px">
+    <div>
+      <button mat-fab color="secondary"><mat-icon>games</mat-icon></button>
+    </div>
+    <div>
+      <button mat-fab color="secondary"><mat-icon>bar_chart</mat-icon></button>
+    </div>
+    <div>
+      <button mat-fab color="secondary"><mat-icon>group</mat-icon></button>
+    </div>
+  </div>
 </div>

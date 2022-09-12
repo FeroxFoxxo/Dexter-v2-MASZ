@@ -18,6 +18,7 @@ public class GameRoomForCreateDto
 			Description = Description,
 			Password = Password ?? "",
 			AllowGuests = AllowGuests,
+			MasterId = CreatorId,
 			Players = new List<Connection> { creator },
 			MaxPlayers = MaxPlayers,
 			TimeCreated = DateTimeOffset.Now,

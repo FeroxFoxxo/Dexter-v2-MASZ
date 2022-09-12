@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpTransportType, HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
+import { timeout } from '../classes/helpers';
 import { APP_BASE_URL } from '../config/config';
 
 @Injectable({
@@ -11,15 +12,11 @@ export class ConnectionManagerService {
 
   connections: Record<string, HubConnection | null> = {}
 
-  async timeout(ms: number) {
-    return new Promise(r => setTimeout(r, ms));
-  }
-
   async getConnection(endpoint: string): Promise<HubConnection> {
     let knownEndpoints = Object.keys(this.connections);
     if (knownEndpoints.includes(endpoint)) {
       while (this.connections[endpoint] === null) {
-        await this.timeout(1000);
+        await timeout(1000);
       }
       return this.connections[endpoint] ?? await this.startConnection(endpoint);
     }
@@ -28,11 +25,12 @@ export class ConnectionManagerService {
 
   async startConnection(endpoint: string): Promise<HubConnection> {
     this.connections[endpoint] = null;
+    console.log(`Established connection to endpoint ${endpoint}`);
     let connection: HubConnection | undefined;
     try {
-      let connection = new HubConnectionBuilder()
-        .withUrl(APP_BASE_URL + "/" + endpoint, {
-          skipNegotiation: true,
+      connection = new HubConnectionBuilder()
+        .withUrl(APP_BASE_URL + endpoint, {
+          skipNegotiation: false,
           transport: HttpTransportType.WebSockets
         })
         .build();
@@ -43,7 +41,9 @@ export class ConnectionManagerService {
       delete this.connections[endpoint];
     }
 
-    if (connection == undefined) {
+    console.log(`Established connection to endpoint ${endpoint} with ID ${connection?.connectionId}`);
+
+    if (!connection) {
       throw new Error("Connection Attempt Failed")
     }
     this.connections[endpoint] = connection;

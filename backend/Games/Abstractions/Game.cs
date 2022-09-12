@@ -10,18 +10,19 @@ using Games.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System.Runtime.Serialization;
 using Microsoft.AspNetCore.Mvc;
+using Games.Middleware;
 
 namespace Games.Abstractions;
 
 public abstract class Game
 {
 	public GameRoom State { get; set; }
-	private readonly IServiceProvider _serviceProvider;
+	public IServiceProvider Services { get; set; }
 
-	public Game(GameRoom state, IServiceProvider serviceProvider)
+	public Game(GameRoom state, IServiceProvider services)
 	{
 		State = state;
-		_serviceProvider = serviceProvider;
+		Services = services;
 		LoadData();
 	}
 
@@ -49,25 +50,26 @@ public abstract class Game
 		}
 	}
 
-	public abstract Task SaveData();
+	public abstract Task SaveData(GameRepository gameRepository);
 
-	protected async Task SaveData<TData>(TData data)
+	protected async Task SaveData<TData>(TData data, GameRepository gameRepository)
 	{
-		var scope = _serviceProvider.CreateScope();
-		var repo = scope.ServiceProvider.GetRequiredService<GameRepository>();
-
+		var gameRoom = gameRepository.GetGame(State.GameId);
 		State.Data = JsonConvert.SerializeObject(data);
-		await repo.Save();
+		if (gameRoom != null) gameRoom.Data = State.Data;
+		await gameRepository.Save();
 	}
 
 	protected async Task InvokeMethod(GamesHub hub, string method, params object?[] args)
 	{
-		await hub.Clients.Clients(State.GetConnectionIds()).SendCoreAsync(method, args);
+		Console.WriteLine($"SignalR: Invoking method {method} with {args.Length} parameters from game {State.GameId}.");
+		var connections = State.GetConnectionIds();
+		await hub.Clients.Clients(connections).SendCoreAsync(method, args);
 	}
 
 	public abstract Task ProcessCommand(GamesHub hub, GameContext context, string command);
 
-	public abstract Task<IActionResult> ProcessRequest(GamesHub hub, GameContext context, string[] request);
+	public abstract Task<IActionResult> ProcessRequest(GamesHub hub, ControllerBase http, GameContext context, string request, object?[] args);
 
 	public abstract Task GameTick(GamesHub hub);
 }

@@ -34,6 +34,12 @@ public class GameProfileDto
 		return result;
 	}
 
+	public async static Task<GameProfileDto> FromConnection(Connection connection, DiscordRest rest, GameProfileRepository profileRepo)
+	{
+		var user = connection.IsGuest ? null : await rest.FetchUserInfo(connection.UserId);
+		return await FromConnection(connection, user, profileRepo);
+	}
+
 	public async static Task<GameProfileDto> FromConnection(Connection connection, IUser? user, GameProfileRepository profileRepo)
 	{
 		if (user == null)
@@ -48,7 +54,7 @@ public class GameProfileDto
 		else
 		{
 			var p = await profileRepo.GetOrCreateProfile(connection.UserId);
-			return FromData(p, new DiscordUser(user));
+			return FromData(p, DiscordUser.FromUser(user));
 		}
 	}
 

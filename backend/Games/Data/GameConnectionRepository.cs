@@ -1,6 +1,7 @@
 ﻿using Bot.Abstractions;
 using Bot.Services;
 using Games.Models;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +13,13 @@ namespace Games.Data;
 public class GameConnectionRepository : Repository
 {
 	private GamesDatabase _database;
+	private GamesCache _cache;
+	private ILogger<GameConnectionRepository> _logger;
 
-	public GameConnectionRepository(DiscordRest discordRest, GamesDatabase database) : base(discordRest) {
+	public GameConnectionRepository(DiscordRest discordRest, GamesDatabase database, GamesCache cache, ILogger<GameConnectionRepository> logger) : base(discordRest) {
 		_database = database;
+		_cache = cache;
+		_logger = logger;
 	}
 
 	public async Task<bool> RegisterConnection(ulong userId, string connectionId)
@@ -23,23 +28,33 @@ public class GameConnectionRepository : Repository
 		var existing = _database.GetConnection(userId);
 		if (existing == null)
 		{
-			existing = new()
+			_logger.LogInformation($"New connection established for ID {userId} with connection string {connectionId}.");
+			Connection connection = new()
 			{
 				UserId = userId,
 				ConnectionId = connectionId,
 				IsGuest = false
 			};
-			await _database.RegisterConnection(existing);
+			await _database.RegisterConnection(connection);
 			return true;
 		}
 
 		if (!existing.IsGuest)
 		{
+			_logger.LogInformation($"Overwritten user connection for ID {userId} ({existing.ConnectionId} => {connectionId}).");
 			existing.ConnectionId = connectionId;
+			if (existing.Game != null) {
+				var lg = _cache.GetLoadedOrDefault(existing.Game.GameId);
+				if (lg != null)
+				{
+					lg.State.UpdateConnectionId(userId, connectionId);
+				}
+			}
 			await _database.SaveChangesAsync();
 			return true;
 		}
 
+		_logger.LogInformation($"Re-established guest connection for incoming user {userId} (old {existing.ConnectionId} vs new {connectionId}).");
 		await _database.RemoveConnection(userId);
 		var newConnection = new Connection()
 		{
@@ -89,6 +104,11 @@ public class GameConnectionRepository : Repository
 		return result;
 	} 
 
+	public IEnumerable<Connection> GetAllConnections()
+	{
+		return _database.GameConnections;
+	}
+
 	public Connection? GetConnection(ulong userId)
 	{
 		return _database.GetConnection(userId);
@@ -96,6 +116,7 @@ public class GameConnectionRepository : Repository
 
 	public async Task<Connection?> KillConnection(ulong userId)
 	{
+		
 		return await _database.RemoveConnection(userId);
 	}
 

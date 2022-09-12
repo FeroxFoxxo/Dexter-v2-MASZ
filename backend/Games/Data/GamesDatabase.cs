@@ -32,7 +32,7 @@ public class GamesDatabase : DataContext<GamesDatabase>, DataContextCreate
 
 		builder.Entity<GameRoom>()
 			.HasMany(g => g.Players)
-			.WithOne();
+			.WithOne(p => p.Game);
 	}
 
 	/*PROFILES*/
@@ -75,7 +75,32 @@ public class GamesDatabase : DataContext<GamesDatabase>, DataContextCreate
 
 	public GameRoom? GetGame(Guid id)
 	{
-		return GameStates.Find(id);
+		var players = GameConnections.AsQueryable().Where(c => c.Game != null && c.Game.GameId == id);
+		var state = GameStates.Find(id);
+		if (state == null) return null;
+		state.Players = players.ToList();
+		return state;
+	}
+
+	public IEnumerable<GameRoom> GetAllGames()
+	{
+		var playerLists = new Dictionary<Guid, List<Connection>>();
+		foreach (var state in GameStates)
+		{
+			playerLists.Add(state.GameId, new List<Connection>());
+		}
+		foreach (var player in GameConnections)
+		{
+			if (player.Game != null && playerLists.ContainsKey(player.Game.GameId))
+			{
+				playerLists[player.Game.GameId].Add(player);
+			}
+		}
+		foreach (var state in GameStates)
+		{
+			state.Players = playerLists[state.GameId];
+			yield return state;
+		}
 	}
 
 	public async Task RegisterGameState(GameRoom game)
@@ -111,14 +136,16 @@ public class GamesDatabase : DataContext<GamesDatabase>, DataContextCreate
 	{
 		var connection = GameConnections.Find(userId);
 		if (connection == null) return null;
-
-		GameConnections.Remove(connection);
-		await SaveChangesAsync();
+		await RemoveConnection(connection);
 		return connection;
 	}
 
 	public async Task RemoveConnection(Connection c)
 	{
+		if (c.Game != null)
+		{
+			c.Game.RemovePlayer(c.UserId);
+		}
 		GameConnections.Remove(c);
 		await SaveChangesAsync();
 	}

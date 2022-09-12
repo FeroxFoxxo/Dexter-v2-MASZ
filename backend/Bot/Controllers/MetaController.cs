@@ -21,7 +21,7 @@ public class MetaController : BaseController
 	[HttpGet("user")]
 	public IActionResult GetBotUser()
 	{
-		return Ok(DiscordUser.GetDiscordUser(_discordRest.GetCurrentBotInfo()));
+		return Ok(DiscordUser.FromUser(_discordRest.GetCurrentBotInfo()));
 	}
 
 	[HttpGet("embed")]

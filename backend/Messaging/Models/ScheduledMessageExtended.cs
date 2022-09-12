@@ -38,8 +38,8 @@ public class ScheduledMessageExtended
 		LastEditedAt = message.LastEditedAt;
 		FailureReason = message.FailureReason;
 
-		Creator = DiscordUser.GetDiscordUser(creator);
-		LastEdited = DiscordUser.GetDiscordUser(lastEdited);
+		Creator = DiscordUser.FromUser(creator);
+		LastEdited = DiscordUser.FromUser(lastEdited);
 		Channel = DiscordChannel.GetDiscordChannel(channel);
 	}
 }

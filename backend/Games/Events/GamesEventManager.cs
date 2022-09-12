@@ -3,6 +3,7 @@ using Bot.Extensions;
 using Discord.WebSocket;
 using Games.Data;
 using Games.Models;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -18,16 +19,14 @@ public class GamesEventManager : Event
 	private readonly ILogger<GamesEventManager> _logger;
 	private readonly IServiceProvider _serviceProvider;
 	private readonly DiscordSocketClient _client;
-	private readonly GameRepository _gameRepository;
 
 	public GamesEventManager(GamesEventHandler eventHandler, ILogger<GamesEventManager> logger,
-		IServiceProvider serviceProvider, DiscordSocketClient client, GameRepository gameRepository)
+		IServiceProvider serviceProvider, DiscordSocketClient client)
 	{
 		_eventHandler = eventHandler;
 		_logger = logger;
 		_serviceProvider = serviceProvider;
 		_client = client;
-		_gameRepository = gameRepository;
 	}
 
 	public void RegisterEvents()
@@ -37,10 +36,17 @@ public class GamesEventManager : Event
 
 	private async Task HandlePlayerLeft(Connection connection, GameRoom game)
 	{
+		using var scope = _serviceProvider.CreateScope();
+		var gameRepo = scope.ServiceProvider.GetRequiredService<GameRepository>();
+
 		if (game.Players.Count == 0)
 		{
-			var result = await _gameRepository.DeleteGame(game.GameId);
+			var result = await gameRepo.DeleteGame(game.GameId);
 			if (result != null) _eventHandler.GameRoomDeletedEvent.Invoke(game);
+		} 
+		else if (connection.UserId == game.MasterId)
+		{
+			game.MasterId = game.Players.First().UserId;
 		}
 	}
 }
