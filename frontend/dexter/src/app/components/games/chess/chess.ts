@@ -14,12 +14,24 @@ export class Piece {
     };
   }
 
-  get renderPos() {return this.premoveState ? this.premoveState.position : this.pos}
+  get renderPos() {
+    if (this.premoveState.promoted) return this.premoveState.promoted.renderPos;
+    return this.premoveState.affected ? this.premoveState.position : this.pos
+  }
   set renderPos(value: number) {
     if (this.premoveState.affected)
       this.premoveState.position = value;
     else
       this.pos = value;
+  }
+
+  get renderPiece(): Piece {
+    if (this.premoveState.promoted) {
+      this.premoveState.promoted.pos = this.pos;
+      this.premoveState.promoted.premoveState = this.premoveState;
+      return this.premoveState.promoted;
+    }
+    return this
   }
 
   static fromChar(char: string, pos: number) {

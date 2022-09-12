@@ -8,5 +8,6 @@ export interface Premove {
 
 export interface PremoveState {
   affected: boolean;
-  position: number
+  position: number;
+  promoted?: Piece;
 }

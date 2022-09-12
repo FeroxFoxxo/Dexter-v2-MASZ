@@ -99,6 +99,12 @@
   translate: 0 -3px;
 }
 
+.resign-button {
+  background-color: #880000;
+  color: #ffbfbf;
+  margin-right: 0.5em;
+}
+
 .alt-button {
   background-color: #222222;
   color: #dddddd;

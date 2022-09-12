@@ -472,7 +472,7 @@ public class Chess : Game
 			var rt = Chess.Rank(target);
 			var rc = Chess.Rank(position);
 
-			if (ft - fc == rt - rc) // Main diagonal
+			if (ft - fc == rc - rt) // Main diagonal
 			{
 				foreach (int i in InBetween(position, target, target > position ? 9 : -9))
 				{
@@ -481,7 +481,7 @@ public class Chess : Game
 				}
 				return true;
 			}
-			else if (ft - fc == rc - rt) // Antidiagonal
+			else if (ft - fc == rt - rc) // Antidiagonal
 			{
 				foreach (int i in InBetween(position, target, target > position ? 7 : -7))
 				{

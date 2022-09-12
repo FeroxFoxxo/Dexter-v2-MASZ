@@ -370,7 +370,9 @@ export class ChessComponent implements OnInit, AfterViewInit, OnChanges, IGame {
       if (!this.data) return;
       if (this.data.whiteToMove == piece.isWhite) this.tryPushMove();
     });
+  }
 
+  resign() {
 
   }
 
@@ -379,7 +381,7 @@ export class ChessComponent implements OnInit, AfterViewInit, OnChanges, IGame {
     let pm = this.premoves[0];
     if (pm == undefined) return;
 
-    if (!pm.piece.canMove(this.data, this.pieces, pm.target)) {
+    if (!pm.piece.canMoveLegally(this.data, this.pieces, pm.target)) {
       this.cancelMove(); return;
     }
 
@@ -432,28 +434,39 @@ export class ChessComponent implements OnInit, AfterViewInit, OnChanges, IGame {
   }
 
   recalcPremoves() {
-    this.pieces = this.pieces.filter(p => p.pos >= 0);
     for (let piece of this.pieces) {
       piece.premoveState.affected = false;
+      piece.premoveState.promoted = undefined;
       this.premoveMarkers = [];
     }
     for (let pm of this.premoves) {
-      let targetPiece = this.pieces.find(p => p.premoveState.affected ? (p.premoveState.position == pm.target) : (p.pos == pm.target));
+      if (!this.pieces.includes(pm.piece)) {
+        let newRep = this.pieces.find(p => p.renderPos == pm.piece.renderPos)
+        if (newRep)
+          pm.piece = newRep;
+      }
+      console.log("Premove states: " + (this.pieces
+        .filter(p => p.premoveState.affected)
+        .map(p => `${p.char} at ${p.premoveState.position}`)
+        .join(', ')));
+      console.log("Processing premove of " + pm.piece.char + " at " + pm.piece.renderPos + " to " + pm.target);
+
+      console.log("61 holds piece " + this.pieces.find(p => p.renderPos == 61)?.char)
+      let targetPiece = this.pieces.find(p => p.renderPos == pm.target);
       pm.piece.premoveState.affected = true;
       pm.piece.premoveState.position = pm.target;
       if (targetPiece) {
+        console.log("Processing capture of " + targetPiece.char + " at " + targetPiece.renderPos);
         targetPiece.premoveState.affected = true;
         targetPiece.premoveState.position = -1; // Captured
       }
-      console.log("Promotion: " + pm.promotesTo);
       if (pm.promotesTo && pm.promotesTo != ' ') {
-        console.log("Processing promotion to " + pm.promotesTo + " at " + pm.target);
-        pm.piece.premoveState.position = -1;
-        let newPiece = Chess.Piece.fromChar(pm.piece.isWhite ? pm.promotesTo.toUpperCase() : pm.promotesTo.toLowerCase(), -1);
+        console.log("Processing pre-promotion to " + pm.promotesTo + " at " + pm.target);
+        let newPiece = Chess.Piece.fromChar(pm.piece.isWhite ? pm.promotesTo.toUpperCase() : pm.promotesTo.toLowerCase(), pm.piece.pos);
         if (newPiece) {
           newPiece.premoveState.affected = true;
-          newPiece.premoveState.position = pm.target;
-          this.pieces.push(newPiece);
+          newPiece.premoveState.position = pm.piece.pos;
+          pm.piece.premoveState.promoted = newPiece;
         }
       }
       if (!this.premoveMarkers.includes(pm.piece.pos))
@@ -461,6 +474,11 @@ export class ChessComponent implements OnInit, AfterViewInit, OnChanges, IGame {
       if (!this.premoveMarkers.includes(pm.target))
         this.premoveMarkers.push(pm.target);
     }
+
+    console.log("Premove states: " + (this.pieces
+      .filter(p => p.premoveState.affected)
+      .map(p => `${p.renderPiece.char}(${p.char}) at ${p.premoveState.position}`)
+      .join(', ')));
   }
 
   startGame() {
@@ -573,8 +591,11 @@ export class ChessComponent implements OnInit, AfterViewInit, OnChanges, IGame {
   promotionResponse = new Subject<string>();
   async requestPromotionType(white: boolean, position: number): Promise<string> {
     let held = this.heldPiece;
-    let oldpos = held?.renderPos;
+    let oldpremove = held?.premoveState;
     this.heldPiece = undefined;
+    if (held) {
+      held.premoveState = {affected: true, position: position};
+    }
 
     this.promotables = white ? ["Q", "R", "B", "N"] : ["q", "r", "b", "n"];
     this.requestingPromotion = position;
@@ -591,7 +612,7 @@ export class ChessComponent implements OnInit, AfterViewInit, OnChanges, IGame {
 
     this.requestingPromotion = -1;
     this.heldPiece = held;
-    if (oldpos && held) held.renderPos = oldpos;
+    if (oldpremove && held) held.premoveState = oldpremove;
     return result;
   }
 
@@ -604,7 +625,7 @@ export class ChessComponent implements OnInit, AfterViewInit, OnChanges, IGame {
   }
 
   getPieceStyle(p: Chess.Piece) {
-    const held = p == this.heldPiece;
+    const held = p.renderPiece == this.heldPiece;
     let file;
     let rank;
 
@@ -700,4 +721,11 @@ export interface ChessData {
   whitePlayer: string;
   blackPlayer: string;
   flags: number;
+}
+
+export enum ChessFlags {
+  Casual = 0,
+  Ranked = 1,
+  WhiteDrawOffer = 2,
+  BlackDrawOffer = 4
 }

@@ -1,9 +1,14 @@
-<div #area class="d-flex flex-row justify-content-start align-items-start h-100 w-100">
+<div #area class="d-flex flex-row justify-content-center align-items-start h-100 w-100">
   <div #board [style.--alt-color]="preferences.tileBlack" [style.--light-color]="preferences.tileWhite" [style.--sq-size]="sqSize" *ngIf="game && data" class="board">
     <div class="timer-container position-relative">
       <div class="timer" [class.timer-alt]="!inverted" [class.lighten]="!gameActive">
         {{(inverted ? data.whiteTime : data.blackTime) / 1000 | timerFormat:5}}
       </div>
+      <button mat-fab class="resign-button" (click)="resign()" matTooltip="Resign"
+        *ngIf="data && connection && (inverted ? data.whitePlayer : data.blackPlayer) === connection.userId">
+        <mat-icon>flag</mat-icon>
+        Resign
+      </button>
       <div class="counter-alignment-container d-flex flex-direction-row">
         <app-profile-display class="profile-display" [gameId]="'chess'" [profile]="inverted ? profileWhite : profileBlack"></app-profile-display>
         <button mat-raised-button class="join-button" [class.alt-button]="!inverted" (click)="joinSide(inverted ? 'white' : 'black')"
@@ -17,7 +22,6 @@
     {{data | json}}
     {{game | json}}
     -->
-    {{premoves | json}}
     <div class="w-100 position-relative" (dblclick)="cancelMove()">
       <div class="d-flex flex-wrap" style="height: calc(var(--sq-size) * 8); width: 100%">
         <div *ngFor="let piece of data.board; let i = index" [attr.data-index]="i" class="board-sq position-relative" [class.board-sq-alt]="isAltTile(i)">
@@ -34,8 +38,8 @@
         </div>
       </div>
       <div class="piece" *ngFor="let piece of pieces" [ngStyle]="getPieceStyle(piece)" [class.held-piece]="heldPiece === piece" [class.lighten]="!gameActive">
-        <img [src]="'/assets/img/games/chess/'+preferences.theme+'/'+getPieceAssetName(piece)+'.png'" class="h-100 w-100"
-        (mousedown)="onPieceClicked(piece, $event)" (dblclick)="cancelMove()">
+        <img [src]="'/assets/img/games/chess/'+preferences.theme+'/'+getPieceAssetName(piece.renderPiece)+'.png'" class="h-100 w-100"
+        (mousedown)="onPieceClicked(piece.renderPiece, $event)" (dblclick)="cancelMove()">
       </div>
       <div *ngIf="requestingPromotion >= 0" class="promotion position-absolute" [ngStyle]="getPromoteStyle(requestingPromotion)">
         <div *ngFor="let piece of promotables">
@@ -46,9 +50,6 @@
       </div>
     </div>
     <div class="timer-container">
-      <div class="timer" [class.timer-alt]="inverted" [class.lighten]="!gameActive">
-        <span>{{(inverted ? data.blackTime : data.whiteTime) / 1000 | timerFormat:5}}</span>
-      </div>
       <div class="counter-alignment-container d-flex flex-direction-row">
         <app-profile-display class="profile-display" [gameId]="'chess'" [profile]="inverted ? profileBlack : profileWhite"></app-profile-display>
         <button mat-raised-button class="join-button" [class.alt-button]="inverted" (click)="joinSide(inverted ? 'black' : 'white')"
@@ -57,6 +58,13 @@
           Join
         </button>
       </div>
+      <div class="timer" [class.timer-alt]="inverted" [class.lighten]="!gameActive">
+        <span>{{(inverted ? data.blackTime : data.whiteTime) / 1000 | timerFormat:5}}</span>
+      </div>
+      <button mat-fab class="resign-button" (click)="resign()" matTooltip="Resign"
+        *ngIf="data && connection && (inverted ? data.blackPlayer : data.whitePlayer) === connection.userId">
+        <mat-icon>flag</mat-icon>
+      </button>
     </div>
   </div>
 </div>
