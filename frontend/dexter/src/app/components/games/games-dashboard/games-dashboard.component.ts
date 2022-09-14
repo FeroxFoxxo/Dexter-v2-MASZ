@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSidenav } from '@angular/material/sidenav';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HubConnection } from '@microsoft/signalr';
 import { ToastrService } from 'ngx-toastr';
@@ -21,7 +22,9 @@ import { CreateGameDialogComponent } from '../dialogs/create-game-dialog/create-
   templateUrl: './games-dashboard.component.html',
   styleUrls: ['./games-dashboard.component.css']
 })
-export class GamesDashboardComponent implements OnInit {
+export class GamesDashboardComponent implements OnInit, AfterViewInit {
+
+  @ViewChild("sideNav") sideNav!: MatSidenav;
 
   constructor(private api: ApiService, private auth: AuthService, private hub: ConnectionManagerService, private gamesApi: GameConnectionManagerService,
     private toastr: ToastrService, private dialog : MatDialog, private router: Router, private route: ActivatedRoute) {
@@ -62,6 +65,10 @@ export class GamesDashboardComponent implements OnInit {
     }).catch(err => {
       this.toastr.error(err);
     })
+  }
+
+  ngAfterViewInit() {
+    this.sideNav.open();
   }
 
   profileStr() {

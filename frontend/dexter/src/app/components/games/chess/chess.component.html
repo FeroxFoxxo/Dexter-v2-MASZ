@@ -1,23 +1,6 @@
 <div #area class="d-flex flex-row justify-content-center align-items-start h-100 w-100">
   <div #board [style.--alt-color]="preferences.tileBlack" [style.--light-color]="preferences.tileWhite" [style.--sq-size]="sqSize" *ngIf="game && data" class="board">
-    <div class="timer-container position-relative">
-      <div class="timer" [class.timer-alt]="!inverted" [class.lighten]="!gameActive">
-        {{(inverted ? data.whiteTime : data.blackTime) / 1000 | timerFormat:5}}
-      </div>
-      <button mat-fab class="resign-button" (click)="resign()" matTooltip="Resign"
-        *ngIf="data && connection && (inverted ? data.whitePlayer : data.blackPlayer) === connection.userId">
-        <mat-icon>flag</mat-icon>
-        Resign
-      </button>
-      <div class="counter-alignment-container d-flex flex-direction-row">
-        <app-profile-display class="profile-display" [gameId]="'chess'" [profile]="inverted ? profileWhite : profileBlack"></app-profile-display>
-        <button mat-raised-button class="join-button" [class.alt-button]="!inverted" (click)="joinSide(inverted ? 'white' : 'black')"
-          *ngIf="data && connection && (inverted ? data.whitePlayer : data.blackPlayer) === '0' && (inverted ? data.blackPlayer : data.whitePlayer) !== connection.userId">
-          <mat-icon>input</mat-icon>
-          Join
-        </button>
-      </div>
-    </div>
+    <ng-container *ngTemplateOutlet="timer;context:{isWhite:inverted,data:data}"></ng-container>
     <!--
     {{data | json}}
     {{game | json}}
@@ -49,22 +32,26 @@
         </div>
       </div>
     </div>
+    <ng-container *ngTemplateOutlet="timer;context:{isWhite:!inverted,data:data}"></ng-container>
+  </div>
+
+  <ng-template #timer let-isWhite="isWhite" let-data="data">
     <div class="timer-container">
       <div class="counter-alignment-container d-flex flex-direction-row">
-        <app-profile-display class="profile-display" [gameId]="'chess'" [profile]="inverted ? profileBlack : profileWhite"></app-profile-display>
-        <button mat-raised-button class="join-button" [class.alt-button]="inverted" (click)="joinSide(inverted ? 'black' : 'white')"
-          *ngIf="data && connection && (inverted ? data.blackPlayer : data.whitePlayer) === '0' && (inverted ? data.whitePlayer : data.blackPlayer) !== connection.userId">
+        <app-profile-display class="profile-display" [gameId]="'chess'" [profile]="isWhite ? profileWhite : profileBlack"></app-profile-display>
+        <button mat-raised-button class="join-button" [class.alt-button]="!isWhite" (click)="joinSide(isWhite ? 'white' : 'black')"
+          *ngIf="data && connection && (isWhite ? data.whitePlayer : data.blackPlayer) === '0' && (isWhite ? data.blackPlayer : data.whitePlayer) !== connection.userId">
           <mat-icon>input</mat-icon>
           Join
         </button>
       </div>
-      <div class="timer" [class.timer-alt]="inverted" [class.lighten]="!gameActive">
-        <span>{{(inverted ? data.blackTime : data.whiteTime) / 1000 | timerFormat:5}}</span>
+      <div class="timer" [class.timer-alt]="!isWhite" [class.lighten]="!gameActive">
+        <span>{{(isWhite ? data.whiteTime : data.blackTime) / 1000 | timerFormat:5}}</span>
       </div>
       <button mat-fab class="resign-button" (click)="resign()" matTooltip="Resign"
-        *ngIf="data && connection && (inverted ? data.blackPlayer : data.whitePlayer) === connection.userId">
+        *ngIf="data && connection && (isWhite ? data.whitePlayer : data.blackPlayer) === connection.userId">
         <mat-icon>flag</mat-icon>
       </button>
     </div>
-  </div>
+  </ng-template>
 </div>

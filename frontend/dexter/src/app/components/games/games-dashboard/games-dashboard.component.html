@@ -1,67 +1,74 @@
-<div class="d-flex flex-column justify-content-center align-items-center">
-  <div class="game-header" style="height:100px">
-    <!--<div *ngIf="profile && profile.discordUser">
-      <img [src]="profile.discordUser.imageUrl">
-      <p>{{profileStr()}}</p>
-    </div>-->
-  </div>
-  <div class="mat-display-2 font-weight-bold mb-4">
-    Games
-  </div>
-  <p *ngIf="connection">{{json.stringify(connection)}} </p>
-  <div class="d-flex flex-row flex-wrap justify-content-center align-items-center">
-    <a *ngFor="let game of games" [routerLink]="game.gameid">
-      <div class="d-flex flex-column game-container">
-        <img [src]="game.icon" [alt]="game.name + ' icon'" class="game-icon">
-        <h2 class="game-title">{{game.name}}</h2>
-      </div>
-    </a>
-  </div>
-  <div class="rounded-navitem d-flex flex-row">
-    <button mat-button color="primary" class="game-button" [disabled]="!this.connection || this.connection.isGuest" (click)="requestCreateGame()"><mat-icon>add</mat-icon>Create Game</button>
-    <div style="width: 12px"></div>
-    <button mat-button color="secondary" class="func-button" (click)="refreshRooms()"><mat-icon>refresh</mat-icon>Refresh</button>
-  </div>
-  <div class="d-flex flex-row justify-content-evenly room-list flex-wrap">
-    <div *ngFor="let lg of loadedGames" class="room-holder">
-      <table class="room-table w-100">
-        <colgroup>
-          <col span="1" style="width: 2.25em">
-          <col span="1" style="width: calc(50% - 2.25em)">
-          <col span="1">
-          <col span="1" style="width: 105px;">
-        </colgroup>
-        <tr>
-          <th><img [src]="gameIcons[lg.gameType]" style="height: 2.25em"></th>
-          <th class="room-title">{{lg.name}}</th>
-          <th></th>
-          <th style="line-height: 2em;" class="d-flex flex-row-reverse">
-            <div style="font-size: 1.25em; transform: translateY(-4px)">{{lg.players.length > lg.maxPlayers ? lg.players.length : lg.players.length}}/{{lg.maxPlayers}}</div>
-            <div style="width: 24px;"></div>
-            <mat-icon style="color: hsl(100, 80%, 65%)" *ngIf="lg.allowGuests">person_add</mat-icon>
-            <mat-icon style="color: hsl(40, 80%, 65%)" *ngIf="!lg.allowGuests">person_off</mat-icon>
-            <mat-icon style="color: hsl(60, 70%, 50%)" *ngIf="lg.passwordProtected">key</mat-icon>
-            <mat-icon style="color: hsl(75, 20%, 40%)" *ngIf="!lg.passwordProtected">key_off</mat-icon>
-          </th>
-        </tr>
-        <tr>
-          <td colspan="3">
-            <div class="room-description">
-              <div class="room-description-text">
-                {{lg.description}}
+<mat-sidenav-container>
+  <mat-sidenav-content class="d-flex flex-column justify-content-center align-items-center">
+    <div class="game-header" style="height:100px">
+      <!--<div *ngIf="profile && profile.discordUser">
+        <img [src]="profile.discordUser.imageUrl">
+        <p>{{profileStr()}}</p>
+      </div>-->
+    </div>
+    <div class="mat-display-2 font-weight-bold mb-4">
+      Games
+    </div>
+    <p *ngIf="connection">{{json.stringify(connection)}} </p>
+    <div class="d-flex flex-row flex-wrap justify-content-center align-items-center">
+      <a *ngFor="let game of games" [routerLink]="game.gameid">
+        <div class="d-flex flex-column game-container">
+          <img [src]="game.icon" [alt]="game.name + ' icon'" class="game-icon">
+          <h2 class="game-title">{{game.name}}</h2>
+        </div>
+      </a>
+    </div>
+    <div class="rounded-navitem d-flex flex-row">
+      <button mat-button color="primary" class="game-button" [disabled]="!this.connection || this.connection.isGuest" (click)="requestCreateGame()"><mat-icon>add</mat-icon>Create Game</button>
+      <div style="width: 12px"></div>
+      <button mat-button color="secondary" class="func-button" (click)="refreshRooms()"><mat-icon>refresh</mat-icon>Refresh</button>
+    </div>
+    <div class="d-flex flex-row justify-content-evenly room-list flex-wrap">
+      <div *ngFor="let lg of loadedGames" class="room-holder">
+        <table class="room-table w-100">
+          <colgroup>
+            <col span="1" style="width: 2.25em">
+            <col span="1" style="width: calc(50% - 2.25em)">
+            <col span="1">
+            <col span="1" style="width: 105px;">
+          </colgroup>
+          <tr>
+            <th><img [src]="gameIcons[lg.gameType]" style="height: 2.25em"></th>
+            <th class="room-title">{{lg.name}}</th>
+            <th></th>
+            <th style="line-height: 2em;" class="d-flex flex-row-reverse">
+              <div style="font-size: 1.25em; transform: translateY(-4px)">{{lg.players.length > lg.maxPlayers ? lg.players.length : lg.players.length}}/{{lg.maxPlayers}}</div>
+              <div style="width: 24px;"></div>
+              <mat-icon style="color: hsl(100, 80%, 65%)" *ngIf="lg.allowGuests">person_add</mat-icon>
+              <mat-icon style="color: hsl(40, 80%, 65%)" *ngIf="!lg.allowGuests">person_off</mat-icon>
+              <mat-icon style="color: hsl(60, 70%, 50%)" *ngIf="lg.passwordProtected">key</mat-icon>
+              <mat-icon style="color: hsl(75, 20%, 40%)" *ngIf="!lg.passwordProtected">key_off</mat-icon>
+            </th>
+          </tr>
+          <tr>
+            <td colspan="3">
+              <div class="room-description">
+                <div class="room-description-text">
+                  {{lg.description}}
+                </div>
               </div>
-            </div>
-          </td>
-        </tr>
-      </table>
-      <div class="room-join" *ngIf="lg.players.length < lg.maxPlayers">
-        <button mat-button color="primary" class="game-button" [disabled]="!this.connection || (this.connection.isGuest && !lg.allowGuests)"
-        (click)="requestJoinGame(lg)"><mat-icon>login</mat-icon>Join</button>
-      </div>
-      <div class="room-join" *ngIf="lg.players.length >= lg.maxPlayers">
-        <button mat-button color="secondary" class="func-button" [disabled]="!this.connection || (this.connection.isGuest && !lg.allowGuests)"
-        (click)="showError('Game is full')"><mat-icon>remove_red_eye</mat-icon>Spectate</button>
+            </td>
+          </tr>
+        </table>
+        <div class="room-join" *ngIf="lg.players.length < lg.maxPlayers">
+          <button mat-button color="primary" class="game-button" [disabled]="!this.connection || (this.connection.isGuest && !lg.allowGuests)"
+          (click)="requestJoinGame(lg)"><mat-icon>login</mat-icon>Join</button>
+        </div>
+        <div class="room-join" *ngIf="lg.players.length >= lg.maxPlayers">
+          <button mat-button color="secondary" class="func-button" [disabled]="!this.connection || (this.connection.isGuest && !lg.allowGuests)"
+          (click)="showError('Game is full')"><mat-icon>remove_red_eye</mat-icon>Spectate</button>
+        </div>
       </div>
     </div>
-  </div>
-</div>
+
+    <div style="height: 200px"></div>
+  </mat-sidenav-content>
+  <mat-sidenav #sideNav position="end">
+    hewwo
+  </mat-sidenav>
+</mat-sidenav-container>
