@@ -68,17 +68,19 @@
 }
 
 .timer-container {
+  font-size: min(1em, 1.5vh);
   position: relative;
   width: 100%;
   display: flex;
+  height: 6em;
   flex-direction: row-reverse;
-  --timer-padding: 24px;
+  --timer-padding: 1em;
   padding: var(--timer-padding);
 }
 
 .timer {
   font-size: 2em;
-  padding: 20px;
+  padding: calc(var(--timer-padding) * 0.6);
   background-color: #dddddd;
   color: #222222;
   border-radius: 6px;
@@ -100,9 +102,17 @@
 }
 
 .resign-button {
+  height: calc(6em - 2 * var(--timer-padding));
+  width: calc(6em - 2 * var(--timer-padding));
+  padding: calc(1em);
+  font-size: 1em;
   background-color: #880000;
   color: #ffbfbf;
   margin-right: 0.5em;
+}
+
+.button-icon-unshift {
+  translate: 0 -16px;
 }
 
 .alt-button {

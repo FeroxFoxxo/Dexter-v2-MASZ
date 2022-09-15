@@ -11,9 +11,11 @@
 
 .profile-name {
   font-weight: bold;
-  font-size: 1.5em;
+  font-size: calc(1.5em);
+  margin-bottom: 0em;
 }
 
 .profile-rating {
+  margin: calc(0.5em - 6px) 0 0 0;
   font-style: italic;
 }

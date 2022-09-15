@@ -1,6 +1,7 @@
+<div style="height: 50px"></div>
 <div #area class="d-flex flex-row justify-content-center align-items-start h-100 w-100">
   <div #board [style.--alt-color]="preferences.tileBlack" [style.--light-color]="preferences.tileWhite" [style.--sq-size]="sqSize" *ngIf="game && data" class="board">
-    <ng-container *ngTemplateOutlet="timer;context:{isWhite:inverted,data:data}"></ng-container>
+    <ng-container #topTimer *ngTemplateOutlet="timer;context:{isWhite:inverted,data:data}"></ng-container>
     <!--
     {{data | json}}
     {{game | json}}
@@ -50,7 +51,7 @@
       </div>
       <button mat-fab class="resign-button" (click)="resign()" matTooltip="Resign"
         *ngIf="data && connection && (isWhite ? data.whitePlayer : data.blackPlayer) === connection.userId">
-        <mat-icon>flag</mat-icon>
+        <mat-icon class="button-icon-unshift">flag</mat-icon>
       </button>
     </div>
   </ng-template>

@@ -37,6 +37,7 @@ export class ChessComponent implements OnInit, AfterViewInit, OnChanges, IGame {
 
   @ViewChild("area")  areaElement!: ElementRef<HTMLElement>;
   @ViewChild("board") boardElement: ElementRef | undefined;
+  @ViewChild("topTimer") timerElement!: ElementRef<HTMLElement>;
 
   board = "";
   data?: ChessData;
@@ -687,7 +688,9 @@ export class ChessComponent implements OnInit, AfterViewInit, OnChanges, IGame {
     console.log("Recalculating square size from bounds");
     let width = element.clientWidth;
     let height = element.clientHeight;
-    height -= 308; // Timers + Margin
+    let timerh = this.timerElement?.nativeElement.clientHeight ?? 100;
+    height -= 25; // Margins
+    height -= 2 * timerh;
     width -= 116; // Margins
     let size = Math.min(height, width) / 8;
     this.sqSize = `${size}px`;
