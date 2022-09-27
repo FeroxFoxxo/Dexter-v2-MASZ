@@ -27,6 +27,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Messaging", "Messaging\Mess
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Levels", "Levels\Levels.csproj", "{E4EE641A-30EE-4E5D-AB0C-53F8DD0651A0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Social", "Social\Social.csproj", "{8CB63022-C1E1-4B85-BCE4-A9DF441EAA4E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -181,6 +183,18 @@ Global
 		{E4EE641A-30EE-4E5D-AB0C-53F8DD0651A0}.Release|x64.Build.0 = Release|Any CPU
 		{E4EE641A-30EE-4E5D-AB0C-53F8DD0651A0}.Release|x86.ActiveCfg = Release|Any CPU
 		{E4EE641A-30EE-4E5D-AB0C-53F8DD0651A0}.Release|x86.Build.0 = Release|Any CPU
+		{8CB63022-C1E1-4B85-BCE4-A9DF441EAA4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CB63022-C1E1-4B85-BCE4-A9DF441EAA4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CB63022-C1E1-4B85-BCE4-A9DF441EAA4E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{8CB63022-C1E1-4B85-BCE4-A9DF441EAA4E}.Debug|x64.Build.0 = Debug|Any CPU
+		{8CB63022-C1E1-4B85-BCE4-A9DF441EAA4E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8CB63022-C1E1-4B85-BCE4-A9DF441EAA4E}.Debug|x86.Build.0 = Debug|Any CPU
+		{8CB63022-C1E1-4B85-BCE4-A9DF441EAA4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CB63022-C1E1-4B85-BCE4-A9DF441EAA4E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CB63022-C1E1-4B85-BCE4-A9DF441EAA4E}.Release|x64.ActiveCfg = Release|Any CPU
+		{8CB63022-C1E1-4B85-BCE4-A9DF441EAA4E}.Release|x64.Build.0 = Release|Any CPU
+		{8CB63022-C1E1-4B85-BCE4-A9DF441EAA4E}.Release|x86.ActiveCfg = Release|Any CPU
+		{8CB63022-C1E1-4B85-BCE4-A9DF441EAA4E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

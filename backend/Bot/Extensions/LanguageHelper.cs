@@ -26,17 +26,41 @@ public static class LanguageHelper
 		{ 1024, "KB" }
 	};
 
-	public static string ToUnit(this long v, Dictionary<long, string> units = null)
+	public static string ToUnit(this long value, Dictionary<long, string> units = null)
 	{
 		units ??= BasicUnits;
 
 		foreach (var kvp in units)
 		{
-			if (v >= kvp.Key)
+			if (value >= kvp.Key)
 			{
-				return $"{(float)v / kvp.Key:G3}{kvp.Value}";
+				return $"{(float)value / kvp.Key:G3}{kvp.Value}";
 			}
 		}
-		return v.ToString();
+		return value.ToString();
+	}
+
+	public static string Ordinal(this int value)
+	{
+		if (value < 0)
+		{
+			if (value == -1) return "last";
+			else return Ordinal(-value) + " to last";
+		}
+
+		var unit = value % 10;
+		var tens = value % 100 - unit;
+		if (tens == 10)
+		{
+			return value + "th";
+		}
+
+		return value + (unit switch
+		{	
+			1 => "st",
+			2 => "nd",
+			3 => "rd",
+			_ => "th"
+		});
 	}
 }
