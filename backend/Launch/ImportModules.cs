@@ -7,6 +7,7 @@ using Levels;
 using Messaging;
 using MOTDs;
 using Punishments;
+using Social;
 using UserMaps;
 using UserNotes;
 using Utilities;
@@ -30,6 +31,7 @@ public static class ImportModules
 			new UtilityModule(),
 			new MessagingModule(),
 			new LevelsModule(),
+			new SocialModule()
 		};
 	}
 }
