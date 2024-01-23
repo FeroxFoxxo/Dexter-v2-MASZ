@@ -12,11 +12,11 @@ public class StopCommand : MusicCommand<StopCommand>
     {
         if (Player.CurrentItem is null)
         {
-            await RespondAsync("Nothing playing!");
+            await RespondInteraction("Nothing playing!");
             return;
         }
 
         await Player.StopAsync();
-        await RespondAsync("Stopped playing.");
+        await RespondInteraction("Stopped playing.");
     }
 }

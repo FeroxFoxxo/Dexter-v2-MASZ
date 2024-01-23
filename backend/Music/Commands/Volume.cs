@@ -12,11 +12,11 @@ public class VolumeCommand : MusicCommand<StopCommand>
     {
         if (volume is > 1000 or < 0)
         {
-            await RespondAsync("Volume out of range: 0% - 1000%!");
+            await RespondInteraction("Volume out of range: 0% - 1000%!");
             return;
         }
 
         await Player.SetVolumeAsync(volume / 100f);
-        await RespondAsync($"Volume updated: {volume}%");
+        await RespondInteraction($"Volume updated: {volume}%");
     }
 }

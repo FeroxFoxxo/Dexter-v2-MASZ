@@ -15,11 +15,11 @@ public class ResumeCommand : MusicCommand<ResumeCommand>
     {
         if (Player.State is not PlayerState.Paused)
         {
-            await RespondAsync("Player is not paused.");
+            await RespondInteraction("Player is not paused.");
             return;
         }
 
         await Player.ResumeAsync();
-        await RespondAsync("Resumed.");
+        await RespondInteraction("Resumed.");
     }
 }
