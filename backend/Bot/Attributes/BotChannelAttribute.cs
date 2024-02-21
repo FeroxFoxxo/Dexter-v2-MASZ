@@ -38,12 +38,8 @@ public class BotChannelAttribute : PreconditionAttribute
 
         return !guildConfig.BotChannels.Contains(context.Channel.Id)
             ? PreconditionResult.FromError(
-                new UnauthorizedException($"{
-                    translator.Get<BotTranslator>().OnlyBotChannel()
-                    } {
-                    
-                    )}.")
-                )
+                new UnauthorizedException($"{translator.Get<BotTranslator>().OnlyBotChannel()} {channelStr}.")
+            )
             : PreconditionResult.FromSuccess();
     }
 }
