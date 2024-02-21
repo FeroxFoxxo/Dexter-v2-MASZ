@@ -19,16 +19,15 @@ public class BotChannelAttribute : PreconditionAttribute
             .GetService<GuildConfigRepository>()
             ?.GetGuildConfig(context.Guild.Id)!;
 
-        var translator = scope.ServiceProvider.GetService<Translation>();
-
-        if (translator == null)
-            throw new ResourceNotFoundException();
+        var translator = scope.ServiceProvider.GetService<Translation>() ?? throw new ResourceNotFoundException();
 
         translator.SetLanguage(guildConfig);
 
+        var roles = context.Guild.Roles.Where(r => guildConfig.BotChannels.Contains(r.Id)).Select(x => x.Mention);
+
         return !guildConfig.BotChannels.Contains(context.Channel.Id)
             ? PreconditionResult.FromError(
-                new UnauthorizedException(translator.Get<BotTranslator>().OnlyBotChannel()))
+                new UnauthorizedException($"{translator.Get<BotTranslator>().OnlyBotChannel()} {string.Join(", ", roles)}."))
             : PreconditionResult.FromSuccess();
     }
 }
