@@ -25,12 +25,23 @@ public class BotChannelAttribute : PreconditionAttribute
 
         var channels = await context.Guild.GetTextChannelsAsync();
 
+        var gUser = await context.Guild.GetUserAsync(context.User.Id);
+
+        var channelStr = string.Join(", ", channels.Where(c => guildConfig.BotChannels.Contains(c.Id))
+            .Where(c =>
+                c.PermissionOverwrites.Any(c => c.Permissions.ViewChannel is PermValue.Allow or PermValue.Inherit && c.TargetId == gUser.Id || gUser.RoleIds.Contains(c.TargetId))
+                || !c.PermissionOverwrites.Any(c => c.Permissions.ViewChannel == PermValue.Deny))
+            .Select(x => x.Mention));
+
+        if (string.IsNullOrEmpty(channelStr))
+            channelStr = "UNKNOWN";
+
         return !guildConfig.BotChannels.Contains(context.Channel.Id)
             ? PreconditionResult.FromError(
                 new UnauthorizedException($"{
                     translator.Get<BotTranslator>().OnlyBotChannel()
                     } {
-                    string.Join(", ", channels.Where(c => guildConfig.BotChannels.Contains(c.Id)).Select(x => x.Mention)
+                    
                     )}.")
                 )
             : PreconditionResult.FromSuccess();
