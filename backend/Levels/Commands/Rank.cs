@@ -5,6 +5,7 @@ using Discord;
 using Discord.Interactions;
 using Levels.Data;
 using Levels.Models;
+using SixLabors.ImageSharp;
 
 namespace Levels.Commands;
 
