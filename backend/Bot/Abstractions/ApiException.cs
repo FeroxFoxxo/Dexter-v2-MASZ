@@ -2,11 +2,9 @@ using Bot.Enums;
 
 namespace Bot.Abstractions;
 
-public abstract class ApiException : Exception
+public abstract class ApiException(string message, ApiError error) : Exception(message)
 {
-    public ApiError Error { get; set; }
-
-    protected ApiException(string message, ApiError error) : base(message) => Error = error;
+    public ApiError Error { get; set; } = error;
 
     public Exception WithError(ApiError error)
     {

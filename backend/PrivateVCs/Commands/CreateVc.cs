@@ -3,6 +3,7 @@ using Bot.Abstractions;
 using Bot.Attributes;
 using Discord;
 using Discord.Interactions;
+using Discord.WebSocket;
 using Microsoft.Extensions.Logging;
 using PrivateVcs.Data;
 using PrivateVcs.Services;
@@ -32,9 +33,9 @@ public class CreateVc : Command<CreateVc>
             return;
         }
 
-        IGuildUser user = Context.Guild.GetUser(Context.User.Id);
+        var user = Context.Guild.GetUser(Context.User.Id);
 
-        if (!user.RoleIds.Any(r => config.CreatorRoles.Contains(r)))
+        if (!user.Roles.Any(r => config.CreatorRoles.Contains(r.Id)))
         {
             await RespondInteraction(
                 embedBuilder: new EmbedBuilder()

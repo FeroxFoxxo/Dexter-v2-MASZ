@@ -8,10 +8,9 @@ using Lavalink4NET.Players;
 
 namespace Music.Services;
 
-public class MusicService(DiscordSocketClient client, IAudioService lavalink, InactivityTrackingService inactivityTracker) : IEvent
+public class MusicService(DiscordSocketClient client, IAudioService lavalink) : IEvent
 {
     private readonly DiscordSocketClient _client = client;
-    private readonly InactivityTrackingService _inactivityTracker = inactivityTracker;
     private readonly IAudioService _lavalink = lavalink;
 
     public readonly Dictionary<ulong, ulong> GuildMusicChannel = [];
@@ -128,9 +127,7 @@ public class MusicService(DiscordSocketClient client, IAudioService lavalink, In
     {
         lock (ChannelLocker)
         {
-            if (!GuildMusicChannel.ContainsKey(guildId))
-                GuildMusicChannel.Add(guildId, channelId);
-            else
+            if (!GuildMusicChannel.TryAdd(guildId, channelId))
                 GuildMusicChannel[guildId] = channelId;
         }
     }

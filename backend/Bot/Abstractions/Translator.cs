@@ -2,9 +2,7 @@
 
 namespace Bot.Abstractions;
 
-public abstract class Translator
+public abstract class Translator(Language preferredLanguage = Language.En)
 {
-    public Language PreferredLanguage { get; set; }
-
-    protected Translator(Language preferredLanguage = Language.En) => PreferredLanguage = preferredLanguage;
+    public Language PreferredLanguage { get; set; } = preferredLanguage;
 }

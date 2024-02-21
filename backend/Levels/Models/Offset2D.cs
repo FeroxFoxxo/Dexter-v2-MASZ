@@ -1,21 +1,31 @@
-﻿namespace Levels.Models;
+﻿using SixLabors.ImageSharp;
 
-public class Offset2D
+namespace Levels.Models;
+
+public class Offset2D(int x = 0, int y = 0)
 {
-    public int X;
-    public int Y;
+    public int X = x;
+    public int Y = y;
 
-    public Offset2D(int x = 0, int y = 0)
+    public static implicit operator Point(Offset2D o)
     {
-        X = x;
-        Y = y;
+        return new(o.X, o.Y);
     }
 
-    public static implicit operator Point(Offset2D o) => new(o.X, o.Y);
-    public static explicit operator Offset2D(Point p) => new(p.X, p.Y);
+    public static explicit operator Offset2D(Point p)
+    {
+        return new(p.X, p.Y);
+    }
 
-    public static Offset2D operator +(Offset2D o, int n) => new(o.X + n, o.Y + n);
-    public static Offset2D operator -(Offset2D o, int n) => new(o.X - n, o.Y - n);
+    public static Offset2D operator +(Offset2D o, int n)
+    {
+        return new(o.X + n, o.Y + n);
+    }
+
+    public static Offset2D operator -(Offset2D o, int n)
+    {
+        return new(o.X - n, o.Y - n);
+    }
 
     public override string ToString() => $"({X}, {Y})";
 }

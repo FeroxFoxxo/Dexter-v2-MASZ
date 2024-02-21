@@ -41,7 +41,7 @@ public class EnumController<TTranslator>(Translation translator, ILogger<EnumCon
         var enums = Enum.GetValues<TEnumType>().Select(enumValue =>
             new EnumDto(
                 enumValue.GetHashCode(),
-                ((string)method.Invoke(translator, new object[] { enumValue })).Humanize()
+                ((string)method.Invoke(translator, [enumValue])).Humanize()
             )
         ).ToList();
 

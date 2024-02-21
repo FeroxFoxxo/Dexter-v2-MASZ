@@ -6,8 +6,11 @@ using Levels.Enums;
 using Levels.Extensions;
 using Microsoft.Extensions.Logging;
 using SixLabors.Fonts;
+using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing;
 using SixLabors.ImageSharp.Drawing.Processing;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using Color = SixLabors.ImageSharp.Color;
@@ -16,7 +19,7 @@ using IOPath = System.IO.Path;
 
 namespace Levels.Models;
 
-public static class Rankcard
+public static partial class Rankcard
 {
     private const int Widthmain = 1000;
     private const int Height = 450;
@@ -157,7 +160,7 @@ public static class Rankcard
         }
         catch (FileNotFoundException)
         {
-            var bgc = Regex.IsMatch(rankcardConfig.Background, @"^(#|0x)?[0-9A-F]{6}$", RegexOptions.IgnoreCase)
+            var bgc = LevelRegex().IsMatch(rankcardConfig.Background)
                 ? (0xff000000 | uint.Parse(rankcardConfig.Background[^6..], NumberStyles.HexNumber))
                 .ColorFromArgb()
                 : (0xff000000 | rankcardConfig.XpColor).ColorFromArgb();
@@ -401,4 +404,7 @@ public static class Rankcard
         public float Percent => ResidualXp / (float)LevelXp;
         public string XpExpr => $"{ResidualXp.ToUnit()} / {LevelXp.ToUnit()}{(IsHybrid ? "" : " XP")}";
     }
+
+    [GeneratedRegex(@"^(#|0x)?[0-9A-F]{6}$", RegexOptions.IgnoreCase, "en-NZ")]
+    private static partial Regex LevelRegex();
 }

@@ -57,10 +57,10 @@ public class LeftUserDto : IUser
     public virtual UserStatus Status => UserStatus.Offline;
 
     /// <inheritdoc />
-    public virtual IReadOnlyCollection<ClientType> ActiveClients => ImmutableHashSet<ClientType>.Empty;
+    public virtual IReadOnlyCollection<ClientType> ActiveClients => [];
 
     /// <inheritdoc />
-    public virtual IReadOnlyCollection<IActivity> Activities => ImmutableList<IActivity>.Empty;
+    public virtual IReadOnlyCollection<IActivity> Activities => [];
 
     /// <inheritdoc />
     public virtual bool IsWebhook => false;

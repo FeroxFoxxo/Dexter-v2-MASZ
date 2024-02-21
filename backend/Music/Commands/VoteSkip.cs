@@ -30,6 +30,6 @@ public class VoteSkipCommand : MusicCommand<VoteSkipCommand>
         if (info == UserVoteResult.Skipped)
             await RespondInteraction($"Skipped - {Format.Bold(Format.Sanitize(track.Title))} by {Format.Bold(Format.Sanitize(track.Author))}");
         else
-            await RespondInteraction($"Votes required: {votes.Votes.Count()}/{Math.Ceiling(votes.Percentage * votes.TotalUsers)}");
+            await RespondInteraction($"Votes required: {votes.Votes.Length}/{Math.Ceiling(votes.Percentage * votes.TotalUsers)}");
     }
 }

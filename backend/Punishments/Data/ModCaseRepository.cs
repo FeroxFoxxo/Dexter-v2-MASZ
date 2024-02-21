@@ -215,7 +215,7 @@ public class ModCaseRepository : Repository,
             modCase.LastEditedAt = modCase.CreatedAt;
             modCase.LastEditedByModId = Identity.Id;
 
-            modCase.Labels = modCase.Labels != null ? modCase.Labels.Distinct().ToArray() : Array.Empty<string>();
+            modCase.Labels = modCase.Labels != null ? modCase.Labels.Distinct().ToArray() : [];
 
             modCase.Valid = true;
 
@@ -325,7 +325,7 @@ public class ModCaseRepository : Repository,
             modCase.LastEditedAt = modCase.CreatedAt;
             modCase.LastEditedByModId = Identity.Id;
 
-            modCase.Labels = modCase.Labels != null ? modCase.Labels.Distinct().ToArray() : Array.Empty<string>();
+            modCase.Labels = modCase.Labels != null ? modCase.Labels.Distinct().ToArray() : [];
 
             modCase.Valid = true;
 

@@ -130,7 +130,7 @@ public class DiscordBot(ILogger<DiscordBot> logger, DiscordSocketClient client, 
 
         try
         {
-            await _client.BulkOverwriteGlobalApplicationCommandsAsync(Array.Empty<ApplicationCommandProperties>());
+            await _client.BulkOverwriteGlobalApplicationCommandsAsync([]);
         }
         catch (Exception ex)
         {

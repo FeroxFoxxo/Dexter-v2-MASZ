@@ -62,7 +62,7 @@ public class LevelsDatabase(DbContextOptions<LevelsDatabase> options) : DataCont
 
     public GuildUserLevel[] GetGuildUserLevelByGuild(ulong guildid) =>
         CheckNullAndReport(GuildUserLevels, "GuildUserLevels")
-            ? Array.Empty<GuildUserLevel>()
+            ? []
             : [.. GuildUserLevels.AsQueryable().Where(x => x.GuildId == guildid)];
 
     public async Task UpdateGuildUserLevel(GuildUserLevel guildUserLevel)
@@ -138,7 +138,7 @@ public class LevelsDatabase(DbContextOptions<LevelsDatabase> options) : DataCont
         CheckNullAndReport(GuildLevelConfigs, "GuildLevelsConfigs") ? null : GuildLevelConfigs.Find(guildid);
 
     public GuildLevelConfig[] GetAllGuildLevelConfigs() => CheckNullAndReport(GuildLevelConfigs, "GuildLevelsConfigs")
-        ? Array.Empty<GuildLevelConfig>()
+        ? []
         : [.. GuildLevelConfigs];
 
     public async Task UpdateGuildLevelConfig()

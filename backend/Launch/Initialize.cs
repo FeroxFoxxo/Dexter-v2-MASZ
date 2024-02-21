@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
 using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
@@ -131,7 +132,7 @@ public class Initialize
         WebApplicationBuilder builder, Action<DbContextOptionsBuilder> database)
     {
         foreach (var type in cachedServices.GetClassTypes<IDataContextInitialize>())
-            type.GetMethod("AddContextToServiceProvider")?.Invoke(null, new object[] { database, builder.Services });
+            type.GetMethod("AddContextToServiceProvider")?.Invoke(null, [database, builder.Services]);
 
         var app = builder.Build();
 
@@ -320,8 +321,12 @@ public class Initialize
         foreach (var assembly in cachedServices.Dependents)
             controller.AddApplicationPart(assembly);
 
-        builder.Services.AddAuthorization(options => options.DefaultPolicy = new AuthorizationPolicyBuilder([.. authorizationPolicies])
-                .RequireAuthenticatedUser().Build());
+        builder.Services.AddAuthorizationBuilder()
+            .SetDefaultPolicy(
+                new AuthorizationPolicyBuilder([.. authorizationPolicies])
+                .RequireAuthenticatedUser()
+                .Build()
+            );
 
         ConsoleHelper.AddSubHeading("Started authorization policies for", string.Join(',', authorizationPolicies));
     }
@@ -363,6 +368,6 @@ public class Initialize
         app.UseAuthentication();
         app.UseAuthorization();
 
-        app.UseEndpoints(endpoints => endpoints.MapControllers());
+        app.MapControllers();
     }
 }
