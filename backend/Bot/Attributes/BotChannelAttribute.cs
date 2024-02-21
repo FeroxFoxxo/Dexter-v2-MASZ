@@ -23,11 +23,16 @@ public class BotChannelAttribute : PreconditionAttribute
 
         translator.SetLanguage(guildConfig);
 
-        var roles = context.Guild.Roles.Where(r => guildConfig.BotChannels.Contains(r.Id)).Select(x => x.Mention);
+        var channels = await context.Guild.GetTextChannelsAsync();
 
         return !guildConfig.BotChannels.Contains(context.Channel.Id)
             ? PreconditionResult.FromError(
-                new UnauthorizedException($"{translator.Get<BotTranslator>().OnlyBotChannel()} {string.Join(", ", roles)}."))
+                new UnauthorizedException($"{
+                    translator.Get<BotTranslator>().OnlyBotChannel()
+                    } {
+                    string.Join(", ", channels.Where(c => guildConfig.BotChannels.Contains(c.Id)).Select(x => x.Mention)
+                    )}.")
+                )
             : PreconditionResult.FromSuccess();
     }
 }
