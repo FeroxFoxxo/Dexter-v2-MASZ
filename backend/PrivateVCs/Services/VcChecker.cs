@@ -80,7 +80,7 @@ public class VcChecker(DiscordSocketClient client, IServiceProvider serviceProvi
             }
         }
 
-        if (!voiceLobbyExists)
+        if (!voiceLobbyExists && config.DeleteWaitingRoom)
         {
             var waitingLobby = categoryChannel.Guild.VoiceChannels
                 .FirstOrDefault(check => check.Name == config.WaitingVcName);
