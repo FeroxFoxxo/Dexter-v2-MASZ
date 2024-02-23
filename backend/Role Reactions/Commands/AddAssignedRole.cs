@@ -75,7 +75,14 @@ public class AddAssignedRole : RoleMenuCommand<AddAssignedRole>
         menu.RoleToEmote.Add(roleToAssign.Id, emote);
 
         if (prerequesiteRole != null)
-            menu.RoleToPrerequesite.Add(roleToAssign.Id, prerequesiteRole.Id);
+        {
+            if (menu.RoleToPrerequesite.ContainsKey(roleToAssign.Id))
+                menu.RoleToPrerequesite[roleToAssign.Id] = prerequesiteRole.Id;
+            else
+                menu.RoleToPrerequesite.Add(roleToAssign.Id, prerequesiteRole.Id);
+        }
+        else if (menu.RoleToPrerequesite.ContainsKey(roleToAssign.Id))
+            menu.RoleToPrerequesite.Remove(roleToAssign.Id);
 
         await Database.SaveChangesAsync();
 
