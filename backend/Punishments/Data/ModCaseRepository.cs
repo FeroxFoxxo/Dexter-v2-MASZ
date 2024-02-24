@@ -176,8 +176,14 @@ public class ModCaseRepository : Repository,
                     activeInfo.Append($"{translator.Get<PunishmentEnumTranslator>().Enum(modCase.PunishmentType)} ");
 
                     if (modCase.PunishedUntil != null)
-                        activeInfo.Append(
-                            $"({translator.Get<BotTranslator>().Until()} {modCase.PunishedUntil.Value.ToDiscordTs()}) ");
+                    {
+                        activeInfo.Append('(');
+
+                        if (modCase.PunishmentType == PunishmentType.FinalWarn)
+                            activeInfo.Append($"{translator.Get<PunishmentEnumTranslator>().Enum(PunishmentType.Mute)} ");
+
+                        activeInfo.Append($"{translator.Get<BotTranslator>().Until()} {modCase.PunishedUntil.Value.ToDiscordTs()}) ");
+                    }
 
                     activeInfo.Append($"[{modCase.CaseId} - {modCase.Title.Truncate(50)}]");
                     activeInfo.Append($"({config.GetServiceUrl()}/guilds/{modCase.GuildId}/cases/{modCase.CaseId})\n");
