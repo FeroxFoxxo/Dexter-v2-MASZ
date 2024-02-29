@@ -1,7 +1,7 @@
 <html>
    <body>
       <h1 align="center" style="position: relative;">
-         <img src="LogoBanner.png?raw=true" swidth="200" style="border-radius: 50%;" align="center">
+         <img src="LogoBanner.png?raw=true" width="200" style="border-radius: 50%;" align="center">
          <br>
          Dexter MASZ
       </h1>
