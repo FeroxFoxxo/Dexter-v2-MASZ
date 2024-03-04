@@ -30,6 +30,18 @@ public class LevelsDatabase(DbContextOptions<LevelsDatabase> options) : DataCont
             .Property(e => e.LevelUpMessageOverrides)
             .HasConversion(new DictionaryDataConverter<int, string>(),
                 new DictionaryDataComparer<int, string>());
+
+        modelBuilder
+            .Entity<GuildLevelConfig>()
+            .Property(e => e.Experience)
+            .HasConversion(new JsonDataConverter<ExperienceConfig>(),
+                new JsonDataComparer<ExperienceConfig>());
+
+        modelBuilder
+            .Entity<GuildLevelConfig>()
+            .Property(e => e.ExperienceOverrides)
+            .HasConversion(new DictionaryDataConverter<ulong, ExperienceConfig>(),
+                new DictionaryDataComparer<ulong, ExperienceConfig>());
     }
 
     private static bool CheckNullAndReport([NotNullWhen(false)] object o, string name)
@@ -145,7 +157,7 @@ public class LevelsDatabase(DbContextOptions<LevelsDatabase> options) : DataCont
     {
         if (CheckNullAndReport(GuildLevelConfigs, "GuildLevelsConfigs"))
             return;
-        //GuildLevelConfigs.Update(guildLevelConfig);
+
         await SaveChangesAsync();
     }
 

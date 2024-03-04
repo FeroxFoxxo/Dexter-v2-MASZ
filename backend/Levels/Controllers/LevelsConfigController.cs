@@ -4,6 +4,7 @@ using Bot.Exceptions;
 using Bot.Services;
 using Discord;
 using Levels.Data;
+using Levels.DTOs;
 using Levels.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -33,7 +34,7 @@ public class LevelsConfigController(IdentityManager identityManager, GuildLevelC
     }
 
     [HttpPut]
-    public async Task<IActionResult> PutConfig([FromRoute] ulong guildId, [FromBody] GuildLevelConfig config)
+    public async Task<IActionResult> PutConfig([FromRoute] ulong guildId, [FromBody] GuildLevelConfigDto config)
     {
         var identity = await SetupAuthentication();
 
@@ -54,6 +55,7 @@ public class LevelsConfigController(IdentityManager identityManager, GuildLevelC
                 "The IDs supplied in the request route and in the object in the request body do not match.");
 
         var validationErrors = ValidateConfig(config);
+
         if (validationErrors is not null)
             return validationErrors;
 
@@ -61,10 +63,14 @@ public class LevelsConfigController(IdentityManager identityManager, GuildLevelC
 
         existing.Coefficients = config.Coefficients;
         existing.XpInterval = config.XpInterval;
-        existing.MinimumTextXpGiven = config.MinimumTextXpGiven;
-        existing.MaximumTextXpGiven = config.MaximumTextXpGiven;
-        existing.MinimumVoiceXpGiven = config.MinimumVoiceXpGiven;
-        existing.MaximumVoiceXpGiven = config.MaximumVoiceXpGiven;
+
+        existing.Experience = new ExperienceConfig() {
+            MaximumTextXpGiven = config.MaximumTextXpGiven,
+            MaximumVoiceXpGiven = config.MaximumVoiceXpGiven,
+            MinimumTextXpGiven = config.MinimumTextXpGiven,
+            MinimumVoiceXpGiven = config.MinimumVoiceXpGiven
+        };
+        
         existing.VoiceXpRequiredMembers = config.VoiceXpRequiredMembers;
         existing.VoiceXpCountMutedMembers = config.VoiceXpCountMutedMembers;
 
@@ -84,11 +90,11 @@ public class LevelsConfigController(IdentityManager identityManager, GuildLevelC
         existing.Levels = config.Levels;
         existing.LevelUpMessageOverrides = config.LevelUpMessageOverrides;
 
-        await _levelsConfigRepository.UpdateConfig(config);
+        await _levelsConfigRepository.UpdateConfig(existing);
         return Ok();
     }
 
-    private IActionResult ValidateConfig(GuildLevelConfig config)
+    private BadRequestObjectResult ValidateConfig(GuildLevelConfigDto config)
     {
         if (config.Coefficients.Length is < 2 or > 10)
             return BadRequest("Leveling coefficients must have between 2 and 10 elements!");
@@ -112,19 +118,17 @@ public class LevelsConfigController(IdentityManager identityManager, GuildLevelC
         {
             var found = false;
             foreach (var roleIds in config.Levels.Values)
-            {
                 if (roleIds.Contains(config.NicknameDisabledReplacement))
                 {
                     found = true;
                     break;
                 }
-            }
 
             if (!found) return BadRequest("Nickname Disabled Replacement must be a level role.");
         }
 
         return string.IsNullOrWhiteSpace(config.LevelUpTemplate)
             ? BadRequest("Level Up Template must not be empty.")
-            : config.LevelUpTemplate.Length > 250 ? BadRequest("The Length of Level Up Template may not exceed 200 characters.") : (IActionResult)null;
+            : config.LevelUpTemplate.Length > 250 ? BadRequest("The Length of Level Up Template may not exceed 200 characters.") : null;
     }
 }

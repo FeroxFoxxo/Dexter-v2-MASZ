@@ -203,7 +203,10 @@ public class LevelingService(DiscordSocketClient client, ILogger<LevelingService
                    await _client.Rest.GetGuildUserAsync(guild.Id, message.Author.Id);
 
         var levelrepo = scope.ServiceProvider.GetRequiredService<GuildUserLevelRepository>();
-        await GrantXp(_random.Next(config.MinimumTextXpGiven, config.MaximumTextXpGiven + 1),
+
+        var experience = config.GetExperienceConfig(message.Channel);
+
+        await GrantXp(_random.Next(experience.MinimumTextXpGiven, experience.MaximumTextXpGiven + 1),
             XpType.Text, await levelrepo.GetOrCreateLevel(user), config, user, guildChannel, scope);
     }
 
@@ -231,13 +234,13 @@ public class LevelingService(DiscordSocketClient client, ILogger<LevelingService
                 continue;
             }
 
-            foreach (var vchannel in guild.VoiceChannels)
+            foreach (var vChannel in guild.VoiceChannels)
             {
-                if (config.DisabledXpChannels.Contains(vchannel.Id)) continue;
+                if (config.DisabledXpChannels.Contains(vChannel.Id)) continue;
 
                 var nonbotusers = 0;
                 List<IGuildUser> toLevel = [];
-                foreach (IGuildUser uservc in vchannel.ConnectedUsers)
+                foreach (IGuildUser uservc in vChannel.ConnectedUsers)
                 {
                     // CHECK IF USER IS RESTRICTED ON VOICE XP
 
@@ -254,14 +257,16 @@ public class LevelingService(DiscordSocketClient client, ILogger<LevelingService
 
                 if (nonbotusers < config.VoiceXpRequiredMembers) continue;
 
+                var experience = config.GetExperienceConfig(vChannel);
+
                 foreach (var u in toLevel)
                 {
-                    await GrantXp(_random.Next(config.MinimumVoiceXpGiven, config.MaximumVoiceXpGiven + 1),
+                    await GrantXp(_random.Next(experience.MinimumVoiceXpGiven, experience.MaximumVoiceXpGiven + 1),
                         XpType.Voice,
                         await levelrepo.GetOrCreateLevel(u.GuildId, u.Id),
                         config,
                         u,
-                        vchannel,
+                        vChannel,
                         scope
                     );
                 }
