@@ -35,29 +35,6 @@ public class GuildLevelConfig
 
     public GuildLevelConfig()
     {
-        Experience = new ExperienceConfig()
-        {
-            MaximumTextXpGiven = 15,
-            MaximumVoiceXpGiven = 15,
-            MinimumTextXpGiven = 25,
-            MinimumVoiceXpGiven = 10
-        };
-
-        Coefficients = [0f, 75.83333f, 22.5f, 1.66667f];
-        XpInterval = 60;
-        LevelUpTemplate = "{USER} leveled up to level {LEVEL}!";
-
-        DisabledXpChannels = [];
-
-        HandleRoles = false;
-        SendVoiceLevelUps = true;
-        SendTextLevelUps = true;
-        VoiceXpCountMutedMembers = true;
-        VoiceXpRequiredMembers = 3;
-
-        Levels = [];
-        LevelUpMessageOverrides = [];
-        ExperienceOverrides = [];
     }
 
     public GuildLevelConfig(ulong guildId) {
@@ -88,6 +65,18 @@ public class GuildLevelConfig
         ExperienceOverrides = [];
     }
 
-    public ExperienceConfig GetExperienceConfig(IChannel channel) =>
-        ExperienceOverrides.TryGetValue(channel.Id, out var channelOverride) ? channelOverride : Experience;
+    public ExperienceConfig GetExperienceConfig(IChannel channel)
+    {
+        Experience ??= new ExperienceConfig()
+            {
+                MaximumTextXpGiven = 0,
+                MaximumVoiceXpGiven = 0,
+                MinimumTextXpGiven = 0,
+                MinimumVoiceXpGiven = 0
+            };
+
+        ExperienceOverrides ??= [];
+
+        return ExperienceOverrides.TryGetValue(channel.Id, out var channelOverride) ? channelOverride : Experience;
+    }
 }
