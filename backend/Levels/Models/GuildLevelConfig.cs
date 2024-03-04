@@ -42,10 +42,10 @@ public class GuildLevelConfig
 
         Experience = new ExperienceConfig()
         {
-            MaximumTextXpGiven = 15,
-            MaximumVoiceXpGiven = 15,
-            MinimumTextXpGiven = 25,
-            MinimumVoiceXpGiven = 10
+            MaximumTextXpGiven = 0,
+            MaximumVoiceXpGiven = 0,
+            MinimumTextXpGiven = 0,
+            MinimumVoiceXpGiven = 0
         };
 
         Coefficients = [0f, 75.83333f, 22.5f, 1.66667f];
