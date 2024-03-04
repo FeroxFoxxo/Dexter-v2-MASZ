@@ -201,22 +201,22 @@ public class PunishmentNotificationTranslator : Translator
         PreferredLanguage switch
         {
             Language.De => $"Bestrafung für vorfall #{caseId} durch Moderator {modId} ausgeführt: \"{reason}\"",
-            Language.Fr => $"Punition pour mod case #{caseId} par le modérateur {modId} exécutée : \"{reason}\"",
-            Language.Es => $"Castigo por mod case # {caseId} por el moderador {modId} ejecutado: \"{reason} \"",
-            Language.Ru => $"Наказание за mod case # {caseId} модератором {modId} выполнено: \"{reason} \"",
-            Language.It => $"Punizione per mod case #{caseId} eseguita dal moderatore {modId}: \"{reason}\"",
-            _ => $"Punishment for mod case #{caseId} by moderator {modId} executed: \"{reason}\""
+            Language.Fr => $"Punition pour mod-case #{caseId} par le modérateur {modId} exécutée : \"{reason}\"",
+            Language.Es => $"Castigo por mod-case # {caseId} por el moderador {modId} ejecutado: \"{reason} \"",
+            Language.Ru => $"Наказание за mod-case # {caseId} модератором {modId} выполнено: \"{reason} \"",
+            Language.It => $"Punizione per mod-case #{caseId} eseguita dal moderatore {modId}: \"{reason}\"",
+            _ => $"Punishment for mod-case #{caseId} by moderator {modId} executed: \"{reason}\""
         };
 
     public string NotificationDiscordAuditLogPunishmentsUndone(int caseId, string reason) =>
         PreferredLanguage switch
         {
             Language.De => $"Bestrafung für vorfall #{caseId} rückgängig gemacht: \"{reason}\"",
-            Language.Fr => $"Punition pour mod case #{caseId} annulée : \"{reason}\"",
-            Language.Es => $"Castigo por mod case # {caseId} deshecho: \"{reason} \"",
-            Language.Ru => $"Наказание за mod case # {caseId} отменено: \"{reason} \"",
-            Language.It => $"Punizione per mod case #{caseId} annullata: \"{reason}\"",
-            _ => $"Punishment for mod case #{caseId} undone: \"{reason}\""
+            Language.Fr => $"Punition pour mod-case #{caseId} annulée : \"{reason}\"",
+            Language.Es => $"Castigo por mod-case # {caseId} deshecho: \"{reason} \"",
+            Language.Ru => $"Наказание за mod-case # {caseId} отменено: \"{reason} \"",
+            Language.It => $"Punizione per mod-case #{caseId} annullata: \"{reason}\"",
+            _ => $"Punishment for mod-case #{caseId} undone: \"{reason}\""
         };
 
     public string NotificationModCaseDmBanTemp(ModCase modCase, IGuild guild, string reason, string caseUrl) =>
@@ -263,15 +263,15 @@ public class PunishmentNotificationTranslator : Translator
             Language.De =>
                 $"Ein **vorfall** für <@{modCase.UserId}> ({modCase.Username}) wurde von <@{moderator.Id}> ({moderator.Username}) erstellt.",
             Language.Fr =>
-                $"Un **mod case** pour <@{modCase.UserId}> ({modCase.Username}) a été créé par <@{moderator.Id}> ({moderator.Username}).",
+                $"Un **mod-case** pour <@{modCase.UserId}> ({modCase.Username}) a été créé par <@{moderator.Id}> ({moderator.Username}).",
             Language.Es =>
-                $"Un **mod case** para <@{modCase.UserId}> ({modCase.Username}) ha sido creado por <@{moderator.Id}> ({moderator.Username}).",
+                $"Un **mod-case** para <@{modCase.UserId}> ({modCase.Username}) ha sido creado por <@{moderator.Id}> ({moderator.Username}).",
             Language.Ru =>
                 $"**Modcase** для <@{modCase.UserId}> ({modCase.Username}) был создан <@{moderator.Id}> ({moderator.Username}).",
             Language.It =>
-                $"Un **mod case** per <@{modCase.UserId}> ({modCase.Username}) è stato creato da <@{moderator.Id}> ({moderator.Username}).",
+                $"Un **mod-case** per <@{modCase.UserId}> ({modCase.Username}) è stato creato da <@{moderator.Id}> ({moderator.Username}).",
             _ =>
-                $"A **mod case** for <@{modCase.UserId}> ({modCase.Username}) has been created by <@{moderator.Id}> ({moderator.Username})."
+                $"A **mod-case** for <@{modCase.UserId}> ({modCase.Username}) has been created by <@{moderator.Id}> ({moderator.Username})."
         };
 
     public string NotificationModCaseUpdate(ModCase modCase, IUser moderator) =>
@@ -280,15 +280,15 @@ public class PunishmentNotificationTranslator : Translator
             Language.De =>
                 $"Ein **vorfall** für <@{modCase.UserId}> ({modCase.Username}) wurde von <@{moderator.Id}> ({moderator.Username}) aktualisiert.",
             Language.Fr =>
-                $"Un **mod case** pour <@{modCase.UserId}> ({modCase.Username}) a été mis à jour par <@{moderator.Id}> ({moderator.Username}).",
+                $"Un **mod-case** pour <@{modCase.UserId}> ({modCase.Username}) a été mis à jour par <@{moderator.Id}> ({moderator.Username}).",
             Language.Es =>
-                $"Un **mod case** para <@{modCase.UserId}> ({modCase.Username}) ha sido actualizado por <@{moderator.Id}> ({moderator.Username}).",
+                $"Un **mod-case** para <@{modCase.UserId}> ({modCase.Username}) ha sido actualizado por <@{moderator.Id}> ({moderator.Username}).",
             Language.Ru =>
                 $"**Modcase** для <@{modCase.UserId}> ({modCase.Username}) был обновлен <@{moderator.Id}> ({moderator.Username}).",
             Language.It =>
-                $"Un **mod case** per <@{modCase.UserId}> ({modCase.Username}) è stato aggiornato da <@{moderator.Id}> ({moderator.Username}).",
+                $"Un **mod-case** per <@{modCase.UserId}> ({modCase.Username}) è stato aggiornato da <@{moderator.Id}> ({moderator.Username}).",
             _ =>
-                $"A **mod case** for <@{modCase.UserId}> ({modCase.Username}) has been updated by <@{moderator.Id}> ({moderator.Username})."
+                $"A **mod-case** for <@{modCase.UserId}> ({modCase.Username}) has been updated by <@{moderator.Id}> ({moderator.Username})."
         };
 
     public string NotificationModCaseDelete(ModCase modCase, IUser moderator) =>
@@ -297,14 +297,14 @@ public class PunishmentNotificationTranslator : Translator
             Language.De =>
                 $"Ein **vorfall** für <@{modCase.UserId}> ({modCase.Username} wurde von <@{moderator.Id}> ({moderator.Username}) gelöscht.",
             Language.Fr =>
-                $"Un **mod case** pour <@{modCase.UserId}> ({modCase.Username} a été supprimé par <@{moderator.Id}> ({moderator.Username}).",
+                $"Un **mod-case** pour <@{modCase.UserId}> ({modCase.Username} a été supprimé par <@{moderator.Id}> ({moderator.Username}).",
             Language.Es =>
-                $"Un **mod case** para <@{modCase.UserId}> ({modCase.Username} ha sido eliminado por <@{moderator.Id}> ({moderator.Username}).",
+                $"Un **mod-case** para <@{modCase.UserId}> ({modCase.Username} ha sido eliminado por <@{moderator.Id}> ({moderator.Username}).",
             Language.Ru =>
                 $"**Modcase** для <@{modCase.UserId}> ({modCase.Username} был удален <@{moderator.Id}> ({moderator.Username}).",
             Language.It =>
-                $"Un **mod case** per <@{modCase.UserId}> ({modCase.Username} è stato eliminato da <@{moderator.Id}> ({moderator.Username}).",
+                $"Un **mod-case** per <@{modCase.UserId}> ({modCase.Username} è stato eliminato da <@{moderator.Id}> ({moderator.Username}).",
             _ =>
-                $"A **mod case** for <@{modCase.UserId}> ({modCase.Username} has been deleted by <@{moderator.Id}> ({moderator.Username})."
+                $"A **mod-case** for <@{modCase.UserId}> ({modCase.Username} has been deleted by <@{moderator.Id}> ({moderator.Username})."
         };
 }

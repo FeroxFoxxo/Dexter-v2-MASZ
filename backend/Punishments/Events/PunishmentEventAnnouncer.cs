@@ -49,7 +49,7 @@ public class PunishmentEventAnnouncer(DiscordRest discordRest, PunishmentEventHa
     {
         using var scope = _serviceProvider.CreateScope();
 
-        _logger.LogInformation($"Announcing mod case {modCase.Id} in guild {modCase.GuildId}.");
+        _logger.LogInformation($"Announcing mod-case {modCase.Id} in guild {modCase.GuildId}.");
 
         await _discordRest.FetchUserInfo(modCase.UserId, false);
 
@@ -60,7 +60,7 @@ public class PunishmentEventAnnouncer(DiscordRest discordRest, PunishmentEventHa
             .GetAppSettings();
 
         _logger.LogInformation(
-            $"Sending webhook for mod case {modCase.GuildId}/{modCase.CaseId} to {guildConfig.StaffLogs}.");
+            $"Sending webhook for mod-case {modCase.GuildId}/{modCase.CaseId} to {guildConfig.StaffLogs}.");
 
         try
         {
@@ -72,7 +72,7 @@ public class PunishmentEventAnnouncer(DiscordRest discordRest, PunishmentEventHa
         catch (Exception e)
         {
             _logger.LogError(e,
-                $"Error while announcing mod case {modCase.GuildId}/{modCase.CaseId} to {guildConfig.StaffLogs}.");
+                $"Error while announcing mod-case {modCase.GuildId}/{modCase.CaseId} to {guildConfig.StaffLogs}.");
         }
     }
 
@@ -80,7 +80,7 @@ public class PunishmentEventAnnouncer(DiscordRest discordRest, PunishmentEventHa
     {
         using var scope = _serviceProvider.CreateScope();
 
-        _logger.LogInformation($"Announcing mod case {modCase.Id} in guild {modCase.GuildId}.");
+        _logger.LogInformation($"Announcing mod-case {modCase.Id} in guild {modCase.GuildId}.");
 
         await _discordRest.FetchUserInfo(modCase.UserId, false);
 
@@ -88,7 +88,7 @@ public class PunishmentEventAnnouncer(DiscordRest discordRest, PunishmentEventHa
             .GetGuildConfig(modCase.GuildId);
 
         _logger.LogInformation(
-            $"Sending webhook for mod case {modCase.GuildId}/{modCase.CaseId} to {guildConfig.StaffLogs}.");
+            $"Sending webhook for mod-case {modCase.GuildId}/{modCase.CaseId} to {guildConfig.StaffLogs}.");
 
         try
         {
@@ -99,7 +99,7 @@ public class PunishmentEventAnnouncer(DiscordRest discordRest, PunishmentEventHa
         catch (Exception e)
         {
             _logger.LogError(e,
-                $"Error while announcing mod case {modCase.GuildId}/{modCase.CaseId} to {guildConfig.StaffLogs}.");
+                $"Error while announcing mod-case {modCase.GuildId}/{modCase.CaseId} to {guildConfig.StaffLogs}.");
         }
     }
 

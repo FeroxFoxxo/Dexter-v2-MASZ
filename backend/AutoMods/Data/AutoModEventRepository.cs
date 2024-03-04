@@ -154,7 +154,7 @@ public class AutoModEventRepository : Repository,
             catch (Exception e)
             {
                 _logger.LogError(e,
-                    $"Failed to create mod case for mod event {modEvent.GuildId}/{modEvent.UserId}/{modEvent.AutoModType}");
+                    $"Failed to create mod-case for mod event {modEvent.GuildId}/{modEvent.UserId}/{modEvent.AutoModType}");
             }
         }
 
