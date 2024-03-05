@@ -30,7 +30,37 @@ public class LevelsConfigController(IdentityManager identityManager, GuildLevelC
         }
 
         var config = await _levelsConfigRepository.GetOrCreateConfig(guildId);
-        return Ok(config);
+
+        var dto = new GuildLevelConfigDto
+        {
+            Id = guildId,
+            
+            Coefficients = config.Coefficients,
+            XpInterval = config.XpInterval,
+
+            MaximumTextXpGiven = config.Experience.MaximumTextXpGiven,
+            MaximumVoiceXpGiven = config.Experience.MaximumVoiceXpGiven,
+            MinimumTextXpGiven = config.Experience.MinimumTextXpGiven,
+            MinimumVoiceXpGiven = config.Experience.MinimumVoiceXpGiven,
+
+            VoiceXpRequiredMembers = config.VoiceXpRequiredMembers,
+            VoiceXpCountMutedMembers = config.VoiceXpCountMutedMembers,
+
+            HandleRoles = config.HandleRoles,
+            NicknameDisabledRole = config.NicknameDisabledRole,
+            NicknameDisabledReplacement = config.NicknameDisabledReplacement,
+            Levels = config.Levels,
+            LevelUpMessageOverrides = config.LevelUpMessageOverrides,
+            DisabledXpChannels = config.DisabledXpChannels,
+
+            LevelUpTemplate = config.LevelUpTemplate,
+            SendTextLevelUps = config.SendTextLevelUps,
+            SendVoiceLevelUps = config.SendVoiceLevelUps,
+            TextLevelUpChannel = config.TextLevelUpChannel,
+            VoiceLevelUpChannel = config.VoiceLevelUpChannel
+        };
+
+        return Ok(dto);
     }
 
     [HttpPut]
@@ -86,9 +116,6 @@ public class LevelsConfigController(IdentityManager identityManager, GuildLevelC
         existing.SendVoiceLevelUps = config.SendVoiceLevelUps;
         existing.TextLevelUpChannel = config.TextLevelUpChannel;
         existing.VoiceLevelUpChannel = config.VoiceLevelUpChannel;
-
-        existing.Levels = config.Levels;
-        existing.LevelUpMessageOverrides = config.LevelUpMessageOverrides;
 
         await _levelsConfigRepository.UpdateConfig(existing);
         return Ok();
