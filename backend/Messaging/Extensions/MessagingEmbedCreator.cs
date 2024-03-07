@@ -5,7 +5,6 @@ using Bot.Translators;
 using Discord;
 using Messaging.Translators;
 using Microsoft.Extensions.DependencyInjection;
-using System.Text.RegularExpressions;
 
 namespace Messaging.Extensions;
 
@@ -37,19 +36,4 @@ public static partial class MessagingEmbedCreator
 
         return embed;
     }
-
-    public static string StripMentions(this string message)
-    {
-        const string rolePinged = "**PLEASE DO NOT PING USERS VIA DEXTER**";
-
-        var regex = RoleRegex();
-
-        return
-            regex.Replace(message, rolePinged)
-            .Replace("@everyone", rolePinged)
-            .Replace("@here", rolePinged);
-    }
-
-    [GeneratedRegex("<@&[0-9]+>")]
-    private static partial Regex RoleRegex();
 }

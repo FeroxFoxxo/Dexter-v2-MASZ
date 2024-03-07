@@ -3,7 +3,6 @@ using Bot.Abstractions;
 using Bot.Attributes;
 using Discord;
 using Discord.Interactions;
-using Discord.WebSocket;
 using Microsoft.Extensions.Logging;
 using PrivateVcs.Data;
 using PrivateVcs.Services;

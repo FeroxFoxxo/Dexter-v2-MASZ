@@ -1,7 +1,4 @@
-﻿using Discord;
-using System.ComponentModel.DataAnnotations;
-
-namespace Levels.DTOs;
+﻿namespace Levels.DTOs;
 
 public class GuildLevelConfigDto
 {

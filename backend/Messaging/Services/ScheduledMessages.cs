@@ -68,7 +68,7 @@ public class ScheduledMessages(ILogger<ScheduledMessages> logger, IServiceProvid
 
             try
             {
-                await channel.SendMessageAsync(message.Content.StripMentions(), allowedMentions: AllowedMentions.None);
+                await channel.SendMessageAsync(message.Content.SanitizeMentions(), allowedMentions: AllowedMentions.None);
                 await repo.SetMessageAsSent(message.Id);
                 _logger.LogInformation(
                     $"Sent scheduled message {message.Id} for {message.GuildId}/{message.ChannelId} by {message.CreatorId}/{message.LastEditedById}.");

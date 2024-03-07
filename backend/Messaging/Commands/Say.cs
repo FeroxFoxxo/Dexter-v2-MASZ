@@ -42,7 +42,7 @@ public class Say : Command<Say>
 
         try
         {
-            var createdMessage = await channel.SendMessageAsync(message.StripMentions());
+            var createdMessage = await channel.SendMessageAsync(message.SanitizeMentions());
 
             await RespondInteraction(Translator.Get<MessagingTranslator>().MessageSent());
 

@@ -1,6 +1,5 @@
 ﻿using Bot.Models;
 using Discord;
-using System.Collections.Immutable;
 
 namespace Bot.DTOs;
 

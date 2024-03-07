@@ -3,7 +3,6 @@ using Discord;
 using Discord.WebSocket;
 using Lavalink4NET;
 using Lavalink4NET.Events.Players;
-using Lavalink4NET.InactivityTracking;
 using Lavalink4NET.Players;
 
 namespace Music.Services;
