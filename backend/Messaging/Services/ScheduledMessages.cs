@@ -6,6 +6,7 @@ using Discord;
 using Discord.Net;
 using Messaging.Data;
 using Messaging.Enums;
+using Messaging.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Net;
@@ -67,7 +68,7 @@ public class ScheduledMessages(ILogger<ScheduledMessages> logger, IServiceProvid
 
             try
             {
-                await channel.SendMessageAsync(message.Content, allowedMentions: AllowedMentions.None);
+                await channel.SendMessageAsync(message.Content.StripMentions(), allowedMentions: AllowedMentions.None);
                 await repo.SetMessageAsSent(message.Id);
                 _logger.LogInformation(
                     $"Sent scheduled message {message.Id} for {message.GuildId}/{message.ChannelId} by {message.CreatorId}/{message.LastEditedById}.");
