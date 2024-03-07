@@ -6,6 +6,7 @@ using Discord;
 using Discord.Interactions;
 using Discord.Rest;
 using Discord.WebSocket;
+using Messaging.Extensions;
 using Microsoft.Extensions.Logging;
 
 namespace Bot.Abstractions;
@@ -44,6 +45,8 @@ public abstract class Command<T> : InteractionModuleBase<SocketInteractionContex
     public async Task<RestInteractionMessage> RespondInteraction(string content = default,
         EmbedBuilder embedBuilder = null, ComponentBuilder componentBuilder = null)
     {
+        content = content.SanitizeMentions();
+
         var embed = embedBuilder?.Build();
         var components = componentBuilder?.Build();
 

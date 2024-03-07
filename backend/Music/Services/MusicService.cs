@@ -4,6 +4,7 @@ using Discord.WebSocket;
 using Lavalink4NET;
 using Lavalink4NET.Events.Players;
 using Lavalink4NET.Players;
+using Messaging.Extensions;
 
 namespace Music.Services;
 
@@ -32,22 +33,20 @@ public class MusicService(DiscordSocketClient client, IAudioService lavalink) : 
     {
         var currentTrack = e.Player.CurrentTrack;
 
-        await GetMusicChannel(e.Player)
-            .SendMessageAsync(
-                $"Now playing: {Format.Bold(Format.Sanitize(currentTrack?.Title ?? "Unknown"))} " +
-                $"by {Format.Bold(Format.Sanitize(currentTrack?.Author ?? "Unknown"))}"
-            );
+        var message = $"Now playing: {Format.Bold(Format.Sanitize(currentTrack?.Title ?? "Unknown"))} " +
+                $"by {Format.Bold(Format.Sanitize(currentTrack?.Author ?? "Unknown"))}";
+
+        await GetMusicChannel(e.Player).SendMessageAsync(message.SanitizeMentions());
     }
 
     public async Task OnTrackStuck(object _, TrackStuckEventArgs e)
     {
         var currentTrack = e.Player.CurrentTrack;
 
-        await GetMusicChannel(e.Player)
-            .SendMessageAsync(
-                $"Track stuck: {Format.Bold(Format.Sanitize(currentTrack?.Title ?? "Unknown"))} " +
-                $"by {Format.Bold(Format.Sanitize(currentTrack?.Author ?? "Unknown"))}"
-            );
+        var message = $"Track stuck: {Format.Bold(Format.Sanitize(currentTrack?.Title ?? "Unknown"))} " +
+                $"by {Format.Bold(Format.Sanitize(currentTrack?.Author ?? "Unknown"))}";
+
+        await GetMusicChannel(e.Player).SendMessageAsync(message.SanitizeMentions());
     }
 
     public async Task OnTrackEnd(object _, TrackEventArgs e)
@@ -57,21 +56,21 @@ public class MusicService(DiscordSocketClient client, IAudioService lavalink) : 
         if (currentTrack == null)
             return;
 
-        await GetMusicChannel(e.Player)
-            .SendMessageAsync(
-                $"Finished playing: {Format.Bold(Format.Sanitize(currentTrack.Title))} by " +
-                $"{Format.Bold(Format.Sanitize(currentTrack.Author))}"
-            );
+        var message = $"Finished playing: {Format.Bold(Format.Sanitize(currentTrack.Title))} by " +
+                $"{Format.Bold(Format.Sanitize(currentTrack.Author))}";
+
+        await GetMusicChannel(e.Player).SendMessageAsync(message);
     }
 
     public async Task OnTrackException(object _, TrackExceptionEventArgs e)
     {
         var currentTrack = e.Player.CurrentTrack;
 
+        var message = $"Error playing: {Format.Bold(Format.Sanitize(currentTrack?.Title ?? "Unknown"))} " +
+                $"by {Format.Bold(Format.Sanitize(currentTrack?.Author ?? "Unknown"))}";
+
         await GetMusicChannel(e.Player)
-            .SendMessageAsync(
-                $"Error playing: {Format.Bold(Format.Sanitize(currentTrack?.Title ?? "Unknown"))} " +
-                $"by {Format.Bold(Format.Sanitize(currentTrack?.Author ?? "Unknown"))}",
+            .SendMessageAsync(message.SanitizeMentions(),
                 embed: new EmbedBuilder()
                     .WithTitle("Error message")
                     .WithDescription(e.Exception.Message)
