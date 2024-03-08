@@ -45,7 +45,9 @@ public abstract class Command<T> : InteractionModuleBase<SocketInteractionContex
     public async Task<RestInteractionMessage> RespondInteraction(string content = default,
         EmbedBuilder embedBuilder = null, ComponentBuilder componentBuilder = null)
     {
-        content = content.SanitizeMentions();
+        if (content is not default(string) and not null)
+            if (!string.IsNullOrEmpty(content))
+                content = content.SanitizeMentions();
 
         var embed = embedBuilder?.Build();
         var components = componentBuilder?.Build();
