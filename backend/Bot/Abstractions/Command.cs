@@ -37,7 +37,11 @@ public abstract class Command<T> : InteractionModuleBase<SocketInteractionContex
         if (Identity == null)
             throw new InvalidIdentityException($"Failed to register command identity for '{Context.User.Id}'.");
 
-        await BeforeCommandExecute();
+        try
+        {
+            await BeforeCommandExecute();
+        }
+        catch (InteractionException) { }
     }
 
     public virtual async Task BeforeCommandExecute() => await DeferAsync();
