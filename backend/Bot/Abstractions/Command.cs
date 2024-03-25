@@ -60,7 +60,7 @@ public abstract class Command<T> : InteractionModuleBase<SocketInteractionContex
         {
             msg.Content = content;
             msg.Embed = embed;
-            msg.Components = components;
+            msg.Components = components ?? new ComponentBuilder().Build();
         }
 
         if (Context.Interaction is SocketMessageComponent castInteraction)
