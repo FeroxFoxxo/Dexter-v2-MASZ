@@ -148,6 +148,7 @@ public class ModCaseRepository : Repository,
         Translation translator)
     {
         var cases = await GetCasesForGuildAndUser(context.Guild.Id, user.Id);
+        cases = cases.Where(cases => cases.DeletedByUserId > 0).ToList();
         var activeCases = cases.FindAll(c => c.PunishmentActive);
 
         if (cases.Count > 0)
