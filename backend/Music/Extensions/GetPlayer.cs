@@ -5,6 +5,10 @@ using Lavalink4NET;
 using Music.Services;
 using Discord;
 using Lavalink4NET.DiscordNet;
+using Lavalink4NET.Integrations.SponsorBlock;
+using System.Collections.Immutable;
+using System.Numerics;
+using Lavalink4NET.Integrations.SponsorBlock.Extensions;
 
 namespace Music.Extensions;
 
@@ -29,7 +33,21 @@ public static class GetPlayer
                 await context.Interaction.FollowupAsync("Connecting to voice channel.");
 
                 music.SetStartTimeAsCurrent(context.Guild.Id);
-                return await audio.GetPlayerAsync(context, music, true);
+
+                var player = await audio.GetPlayerAsync(context, music, true); ;
+
+                var categories = ImmutableArray.Create(
+                    SegmentCategory.Intro,
+                    SegmentCategory.Sponsor,
+                    SegmentCategory.SelfPromotion,
+                    SegmentCategory.OfftopicMusic
+                );
+
+                await player
+                    .UpdateSponsorBlockCategoriesAsync(categories)
+                    .ConfigureAwait(false);
+
+                return player;
             }
 
             var errorMessage = result.Status switch

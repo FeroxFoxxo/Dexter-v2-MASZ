@@ -7,7 +7,9 @@ using Lavalink4NET.Extensions;
 using Lavalink4NET.InactivityTracking;
 using Lavalink4NET.InactivityTracking.Extensions;
 using Lavalink4NET.InactivityTracking.Trackers.Idle;
+using Lavalink4NET.Integrations.SponsorBlock.Extensions;
 using Lavalink4NET.Lyrics;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using System.Net;
 
@@ -53,6 +55,8 @@ public class MusicModule : Module
             })
             .AddLavalink();
     }
+
+    public override void ConfigureModules(List<Module> modules, WebApplication app) => app.UseSponsorBlock();
 
     public static IPAddress GetMyIp()
     {
