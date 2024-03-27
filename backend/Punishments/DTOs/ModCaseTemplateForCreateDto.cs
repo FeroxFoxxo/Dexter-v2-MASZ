@@ -20,7 +20,7 @@ public class ModCaseTemplateForCreateDto
     [Required(ErrorMessage = "Description field is required")]
     public string Description { get; set; }
 
-    public string[] Labels { get; set; } = Array.Empty<string>();
+    public string[] Labels { get; set; } = [];
 
     [Required(ErrorMessage = "PunishmentType field is required")]
     public PunishmentType PunishmentType { get; set; }

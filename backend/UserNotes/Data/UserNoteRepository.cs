@@ -89,11 +89,7 @@ public class UserNoteRepository(DiscordRest discordRest, UserNoteDatabase userNo
 
     public async Task<UserNote> CreateOrUpdateUserNote(ulong guildId, ulong userId, string content)
     {
-        var validUser = await _discordRest.FetchUserInfo(userId, false);
-
-        if (validUser == null)
-            throw new InvalidIUserException("User not found", userId);
-
+        var validUser = await _discordRest.FetchUserInfo(userId, false) ?? throw new InvalidIUserException("User not found", userId);
         UserNote userNote;
         var action = RestAction.Updated;
 

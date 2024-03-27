@@ -22,7 +22,7 @@ public class Unban : Command<Unban>
     public SettingsRepository SettingsRepository { get; set; }
 
     [Require(RequireCheck.GuildAdmin, RequireCheck.GuildStrictModeBan)]
-    [SlashCommand("unban", "Unban a user by deactivating all his banned mod cases.")]
+    [SlashCommand("unban", "Unban a user by deactivating all his banned mod-cases.")]
     public async Task UnbanCommand([Summary("user", "User to Unban")] IUser user)
     {
         ModCaseRepository.AsUser(Identity);

@@ -13,11 +13,11 @@ public class PauseCommand : MusicCommand<PauseCommand>
     {
         if (Player.State is PlayerState.Paused)
         {
-            await RespondAsync("Player is already paused.");
+            await RespondInteraction("Player is already paused.");
             return;
         }
 
         await Player.PauseAsync();
-        await RespondAsync("Paused.");
+        await RespondInteraction("Paused.");
     }
 }

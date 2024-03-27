@@ -22,7 +22,7 @@ public class GreeterMute : PunishmentCommand<GreeterMute>
         [Summary("title", "The title of the mute case")] [MaxLength(180)]
         string title,
         [Summary("user", "User to punish")] IGuildUser user,
-        [Summary("description", "The description of the mod case")]
+        [Summary("description", "The description of the mod-case")]
         string description = "")
     {
         var greetGate = await GreeterDatabase.GreeterConfigs.FindAsync(Context.Guild.Id);
@@ -75,7 +75,7 @@ public class GreeterMute : PunishmentCommand<GreeterMute>
         catch (Exception e)
         {
             Logger.LogError(e,
-                $"Error while announcing mod case {modCase.GuildId}/{modCase.CaseId} to {greetGate.LoggingChannel}.");
+                $"Error while announcing mod-case {modCase.GuildId}/{modCase.CaseId} to {greetGate.LoggingChannel}.");
         }
     }
 }

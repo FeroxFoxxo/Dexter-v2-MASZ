@@ -11,12 +11,12 @@ namespace Punishments.Commands;
 public class Ban : PunishmentCommand<Ban>
 {
     [Require(RequireCheck.GuildModerator, RequireCheck.GuildStrictModeBan)]
-    [SlashCommand("ban", "Ban a user and create a mod case")]
+    [SlashCommand("ban", "Ban a user and create a mod-case")]
     public async Task BanCommand(
-        [Summary("title", "The title of the mod case")] [MaxLength(200)]
+        [Summary("title", "The title of the mod-case")] [MaxLength(200)]
         string title,
         [Summary("user", "User to punish")] IUser user,
-        [Summary("description", "The description of the mod case")]
+        [Summary("description", "The description of the mod-case")]
         string description = "",
         [Summary("time", "The time to punish the user for")]
         TimeSpan time = default) =>

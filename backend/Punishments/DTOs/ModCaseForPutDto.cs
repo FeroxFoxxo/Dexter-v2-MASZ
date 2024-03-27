@@ -17,7 +17,7 @@ public class ModCaseForPutDto
 
     [DataType(DataType.Date)] public DateTime? OccurredAt { get; set; }
 
-    public string[] Labels { get; set; } = Array.Empty<string>();
+    public string[] Labels { get; set; } = [];
 
     public string Others { get; set; }
 

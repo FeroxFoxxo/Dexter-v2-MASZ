@@ -51,11 +51,10 @@ public class Experience : Command<Experience>
 
         if (roleTarget != null)
         {
-            guildlevelconfig.Levels.FirstOrDefault(e =>
+            found = guildlevelconfig.Levels.Any(e =>
             {
                 if (e.Value.Contains(roleTarget.Id))
                 {
-                    found = true;
                     roleTargetLevel = e.Key;
                     return true;
                 }
@@ -145,10 +144,11 @@ public class Experience : Command<Experience>
     private static string LevelTargetExpression(long currentXp, long targetXp, GuildLevelConfig config)
     {
         string textExpr;
+
         try
         {
             var textTime = TimeSpan.FromMinutes((targetXp - currentXp) /
-                                                ((config.MinimumTextXpGiven + config.MaximumTextXpGiven) >> 1));
+                                                ((config.Experience.MinimumTextXpGiven + config.Experience.MaximumTextXpGiven) >> 1));
             textExpr = textTime.Humanize(2, minUnit: TimeUnit.Minute);
         }
         catch
@@ -160,7 +160,7 @@ public class Experience : Command<Experience>
         try
         {
             var voiceTime = TimeSpan.FromMinutes((targetXp - currentXp) /
-                                                 ((config.MinimumVoiceXpGiven + config.MaximumVoiceXpGiven) >> 1));
+                                                 ((config.Experience.MinimumVoiceXpGiven + config.Experience.MaximumVoiceXpGiven) >> 1));
             voiceExpr = voiceTime.Humanize(2, minUnit: TimeUnit.Minute);
         }
         catch

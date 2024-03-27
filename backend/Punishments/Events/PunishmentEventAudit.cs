@@ -43,13 +43,13 @@ public class PunishmentEventAudit(AuditLogger auditLogger, PunishmentEventHandle
 
     private async Task OnModCaseDeleted(ModCase modCase, IUser actor) =>
         await _auditLogger.QueueLog(
-            $"**Mod case** `{modCase.GuildId}/{modCase.CaseId}` for <@{modCase.UserId}> deleted.");
+            $"**Mod-case** `{modCase.GuildId}/{modCase.CaseId}` for <@{modCase.UserId}> deleted.");
 
     private async Task OnModCaseUpdated(ModCase modCase, IUser actor) =>
         await _auditLogger.QueueLog(
-            $"**Mod case** `{modCase.GuildId}/{modCase.CaseId}` for <@{modCase.UserId}> by <@{modCase.LastEditedByModId}> updated.");
+            $"**Mod-case** `{modCase.GuildId}/{modCase.CaseId}` for <@{modCase.UserId}> by <@{modCase.LastEditedByModId}> updated.");
 
     private async Task OnModCaseCreated(ModCase modCase, IUser actor, AnnouncementResult result) =>
         await _auditLogger.QueueLog(
-            $"**Mod case** `{modCase.GuildId}/{modCase.CaseId}` for <@{modCase.UserId}> by <@{modCase.ModId}> created.");
+            $"**Mod-case** `{modCase.GuildId}/{modCase.CaseId}` for <@{modCase.UserId}> by <@{modCase.ModId}> created.");
 }

@@ -7,26 +7,17 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Bot.Abstractions;
 
-public abstract class Identity
+public abstract class Identity(string token, IServiceProvider serviceProvider)
 {
-    protected readonly DiscordRest DiscordRest;
-    public readonly IServiceProvider ServiceProvider;
+    protected readonly DiscordRest DiscordRest = serviceProvider.GetRequiredService<DiscordRest>();
+    public readonly IServiceProvider ServiceProvider = serviceProvider;
 
-    public readonly string Token;
+    public readonly string Token = token;
 
     protected IUser CurrentUser;
     protected List<UserGuild> CurrentUserGuilds;
 
-    public DateTime ValidUntil { get; set; }
-
-    protected Identity(string token, IServiceProvider serviceProvider)
-    {
-        Token = token;
-        ValidUntil = DateTime.UtcNow.AddMinutes(15);
-
-        ServiceProvider = serviceProvider;
-        DiscordRest = serviceProvider.GetRequiredService<DiscordRest>();
-    }
+    public DateTime ValidUntil { get; set; } = DateTime.UtcNow.AddMinutes(15);
 
     public abstract bool IsOnGuild(ulong guildId);
 

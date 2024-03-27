@@ -26,7 +26,7 @@ public class BotModule : WebModule
         loggingBuilder.AddProvider(new LoggerProvider());
     }
 
-    public override string[] AddAuthorizationPolicy() => new[] { "Cookies" };
+    public override string[] AddAuthorizationPolicy() => ["Cookies"];
 
     public override void AddPreServices(IServiceCollection services, CachedServices cachedServices,
         Action<DbContextOptionsBuilder> dbOption)
@@ -34,7 +34,7 @@ public class BotModule : WebModule
         foreach (var type in cachedServices.GetClassTypes<IDataContextInitialize>())
         {
             type.GetMethod("AddContextToServiceProvider")
-                ?.Invoke(null, new object[] { dbOption, services });
+                ?.Invoke(null, [dbOption, services]);
         }
 
         foreach (var type in cachedServices.GetClassTypes<Repository>())
@@ -94,7 +94,7 @@ public class BotModule : WebModule
                 options.Cookie.HttpOnly = false;
                 options.Events.OnRedirectToLogin = context =>
                 {
-                    context.Response.Headers["Location"] = context.RedirectUri;
+                    context.Response.Headers.Location = context.RedirectUri;
                     context.Response.StatusCode = 401;
                     return Task.CompletedTask;
                 };

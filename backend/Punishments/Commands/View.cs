@@ -22,12 +22,12 @@ public class View : Command<View>
     public SettingsRepository SettingsRepository { get; set; }
     public DiscordRest DiscordRest { get; set; }
 
-    [SlashCommand("view", "View details of a mod case.")]
+    [SlashCommand("view", "View details of a mod-case.")]
     public async Task ViewCommand([Summary("id", "the id of the case")] long caseId)
     {
         ModCaseRepository.AsUser(Identity);
 
-        await RespondInteraction("Getting mod cases...");
+        await RespondInteraction("Getting mod-cases...");
 
         try
         {

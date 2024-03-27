@@ -17,10 +17,10 @@ public class FinalWarning : PunishmentCommand<FinalWarning>
     [Require(RequireCheck.GuildModerator, RequireCheck.GuildStrictModeBan)]
     [SlashCommand("finalwarn", "Issues a final warning to a user, mutes them and records the final warn.")]
     public async Task FinalWarnCommand(
-        [Summary("title", "The title of the mod case")] [MaxLength(200)]
+        [Summary("title", "The title of the mod-case")] [MaxLength(200)]
         string title,
         [Summary("user", "User to punish")] IUser user,
-        [Summary("description", "The description of the mod case")]
+        [Summary("description", "The description of the mod-case")]
         string description = "")
     {
         if (await ModCaseRepository.GetFinalWarn(user.Id, Context.Guild.Id) != null)

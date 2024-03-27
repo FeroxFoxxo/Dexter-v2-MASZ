@@ -42,7 +42,7 @@ public class Say : Command<Say>
 
         try
         {
-            var createdMessage = await channel.SendMessageAsync(message);
+            var createdMessage = await channel.SendMessageAsync(message.SanitizeMentions());
 
             await RespondInteraction(Translator.Get<MessagingTranslator>().MessageSent());
 
@@ -54,8 +54,7 @@ public class Say : Command<Say>
             }
             catch (Exception ex)
             {
-                Logger.LogError(ex,
-                    $"Something went wrong while sending the internal notification for the say command by {Context.User.Id} in {Context.Guild.Id}/{Context.Channel.Id}.");
+                Logger.LogError(ex, $"Something went wrong while sending the internal notification for the say command by {Context.User.Id} in {Context.Guild.Id}/{Context.Channel.Id}.");
             }
         }
         catch (HttpException e)

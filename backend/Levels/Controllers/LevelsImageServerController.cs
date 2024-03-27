@@ -51,10 +51,10 @@ public class LevelsImageServerController(LevelsImageRepository levelsImageReposi
         return SendImage(fileInfo);
     }
 
-    private IActionResult SendImage(UploadedFile fileInfo)
+    private FileContentResult SendImage(UploadedFile fileInfo)
     {
-        HttpContext.Response.Headers.Add("Content-Disposition", fileInfo.ContentDisposition.ToString());
-        HttpContext.Response.Headers.Add("Content-Type", fileInfo.ContentType);
+        HttpContext.Response.Headers.ContentType = fileInfo.ContentType;
+        HttpContext.Response.Headers.ContentDisposition = fileInfo.ContentDisposition.ToString();
 
         return File(fileInfo.FileContent, fileInfo.ContentType);
     }

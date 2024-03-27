@@ -16,6 +16,6 @@ public class Records : Command<Records>
     public async Task RecordsCommand()
     {
         var appSettings = await SettingsRepository.GetAppSettings();
-        await RespondInteraction($"For your mod case records, please visit: {appSettings.GetServiceUrl()}/guilds/{Context.Guild.Id}");
+        await RespondInteraction($"For your mod-case records, please visit: {appSettings.GetServiceUrl()}/guilds/{Context.Guild.Id}");
     }
 }

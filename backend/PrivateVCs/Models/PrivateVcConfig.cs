@@ -11,6 +11,7 @@ public class PrivateVcConfig
     public ulong[] AllowedRoles { get; set; }
     public ulong[] CreatorRoles { get; set; }
     public string ChannelFilterRegex { get; set; }
+    public bool DeleteWaitingRoom { get; set; }
 
     public PrivateVcConfig()
     {
@@ -24,5 +25,6 @@ public class PrivateVcConfig
         AllowedRoles = dto.AllowedRoles;
         CreatorRoles = dto.CreatorRoles;
         ChannelFilterRegex = dto.ChannelFilterRegex;
+        DeleteWaitingRoom = dto.DeleteWaitingRoom;
     }
 }

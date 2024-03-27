@@ -260,12 +260,12 @@ public class BotTranslator : Translator
     public string OnlyBotChannel() =>
         PreferredLanguage switch
         {
-            Enums.Language.De => "Nur Botkanäle sind erlaubt",
-            Enums.Language.Fr => "Seuls les canaux de bots sont autorisés",
-            Enums.Language.Es => "Solo se permiten calanes de bots.",
-            Enums.Language.Ru => "Разрешены только бот-каналы.",
-            Enums.Language.It => "Sono consentiti solo canali bot.",
-            _ => "Only bot channels are allowed."
+            Enums.Language.De => "Nur Botkanäle sind erlaubt,",
+            Enums.Language.Fr => "Seuls les canaux de bots sont autorisés,",
+            Enums.Language.Es => "Solo se permiten calanes de bots,",
+            Enums.Language.Ru => "Разрешены только бот-каналы,",
+            Enums.Language.It => "Sono consentiti solo canali bot,",
+            _ => "Only bot channels are allowed, such as"
         };
 
     public string CannotViewOrDeleteInChannel() =>

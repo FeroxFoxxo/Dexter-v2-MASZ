@@ -33,11 +33,7 @@ public class GuildConfigRepository(BotDatabase context, DiscordRest discordRest,
 
     public async Task<GuildConfig> CreateGuildConfig(GuildConfig guildConfig, bool importExistingBans)
     {
-        var guild = _discordRest.FetchGuildInfo(guildConfig.GuildId, CacheBehavior.IgnoreCache);
-
-        if (guild is null)
-            throw new ResourceNotFoundException($"Guild with id {guildConfig.GuildId} not found.");
-
+        var guild = _discordRest.FetchGuildInfo(guildConfig.GuildId, CacheBehavior.IgnoreCache) ?? throw new ResourceNotFoundException($"Guild with id {guildConfig.GuildId} not found.");
         foreach (var role in guildConfig.ModRoles)
         {
             if (guild.Roles.All(r => r.Id != role))
@@ -59,11 +55,7 @@ public class GuildConfigRepository(BotDatabase context, DiscordRest discordRest,
 
     public async Task<GuildConfig> UpdateGuildConfig(GuildConfig guildConfig)
     {
-        var guild = _discordRest.FetchGuildInfo(guildConfig.GuildId, CacheBehavior.IgnoreCache);
-
-        if (guild is null)
-            throw new ResourceNotFoundException($"Guild with id {guildConfig.GuildId} not found.");
-
+        var guild = _discordRest.FetchGuildInfo(guildConfig.GuildId, CacheBehavior.IgnoreCache) ?? throw new ResourceNotFoundException($"Guild with id {guildConfig.GuildId} not found.");
         foreach (var role in guildConfig.ModRoles)
         {
             if (guild.Roles.All(r => r.Id != role))

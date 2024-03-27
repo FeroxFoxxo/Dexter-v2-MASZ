@@ -30,6 +30,18 @@ public class LevelsDatabase(DbContextOptions<LevelsDatabase> options) : DataCont
             .Property(e => e.LevelUpMessageOverrides)
             .HasConversion(new DictionaryDataConverter<int, string>(),
                 new DictionaryDataComparer<int, string>());
+
+        modelBuilder
+            .Entity<GuildLevelConfig>()
+            .Property(e => e.Experience)
+            .HasConversion(new JsonDataConverter<ExperienceConfig>(),
+                new JsonDataComparer<ExperienceConfig>());
+
+        modelBuilder
+            .Entity<GuildLevelConfig>()
+            .Property(e => e.ExperienceOverrides)
+            .HasConversion(new DictionaryDataConverter<ulong, ExperienceConfig>(),
+                new DictionaryDataComparer<ulong, ExperienceConfig>());
     }
 
     private static bool CheckNullAndReport([NotNullWhen(false)] object o, string name)
@@ -62,7 +74,7 @@ public class LevelsDatabase(DbContextOptions<LevelsDatabase> options) : DataCont
 
     public GuildUserLevel[] GetGuildUserLevelByGuild(ulong guildid) =>
         CheckNullAndReport(GuildUserLevels, "GuildUserLevels")
-            ? Array.Empty<GuildUserLevel>()
+            ? []
             : [.. GuildUserLevels.AsQueryable().Where(x => x.GuildId == guildid)];
 
     public async Task UpdateGuildUserLevel(GuildUserLevel guildUserLevel)
@@ -138,14 +150,14 @@ public class LevelsDatabase(DbContextOptions<LevelsDatabase> options) : DataCont
         CheckNullAndReport(GuildLevelConfigs, "GuildLevelsConfigs") ? null : GuildLevelConfigs.Find(guildid);
 
     public GuildLevelConfig[] GetAllGuildLevelConfigs() => CheckNullAndReport(GuildLevelConfigs, "GuildLevelsConfigs")
-        ? Array.Empty<GuildLevelConfig>()
+        ? []
         : [.. GuildLevelConfigs];
 
     public async Task UpdateGuildLevelConfig()
     {
         if (CheckNullAndReport(GuildLevelConfigs, "GuildLevelsConfigs"))
             return;
-        //GuildLevelConfigs.Update(guildLevelConfig);
+
         await SaveChangesAsync();
     }
 

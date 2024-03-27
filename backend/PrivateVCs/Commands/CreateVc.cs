@@ -32,9 +32,9 @@ public class CreateVc : Command<CreateVc>
             return;
         }
 
-        IGuildUser user = Context.Guild.GetUser(Context.User.Id);
+        var user = Context.Guild.GetUser(Context.User.Id);
 
-        if (!user.RoleIds.Any(r => config.CreatorRoles.Contains(r)))
+        if (!user.Roles.Any(r => config.CreatorRoles.Contains(r.Id)))
         {
             await RespondInteraction(
                 embedBuilder: new EmbedBuilder()

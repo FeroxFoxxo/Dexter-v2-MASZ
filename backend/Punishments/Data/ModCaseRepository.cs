@@ -111,7 +111,7 @@ public class ModCaseRepository : Repository,
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Failed to delete files directory for mod case.");
+                _logger.LogError(e, "Failed to delete files directory for mod-case.");
             }
 
             await _punishmentDatabase.DeleteSpecificModCase(modCase);
@@ -148,6 +148,7 @@ public class ModCaseRepository : Repository,
         Translation translator)
     {
         var cases = await GetCasesForGuildAndUser(context.Guild.Id, user.Id);
+        cases = cases.Where(cases => cases.DeletedByUserId > 0).ToList();
         var activeCases = cases.FindAll(c => c.PunishmentActive);
 
         if (cases.Count > 0)
@@ -176,8 +177,14 @@ public class ModCaseRepository : Repository,
                     activeInfo.Append($"{translator.Get<PunishmentEnumTranslator>().Enum(modCase.PunishmentType)} ");
 
                     if (modCase.PunishedUntil != null)
-                        activeInfo.Append(
-                            $"({translator.Get<BotTranslator>().Until()} {modCase.PunishedUntil.Value.ToDiscordTs()}) ");
+                    {
+                        activeInfo.Append('(');
+
+                        if (modCase.PunishmentType == PunishmentType.FinalWarn)
+                            activeInfo.Append($"{translator.Get<PunishmentEnumTranslator>().Enum(PunishmentType.Mute)} ");
+
+                        activeInfo.Append($"{translator.Get<BotTranslator>().Until()} {modCase.PunishedUntil.Value.ToDiscordTs()}) ");
+                    }
 
                     activeInfo.Append($"[{modCase.CaseId} - {modCase.Title.Truncate(50)}]");
                     activeInfo.Append($"({config.GetServiceUrl()}/guilds/{modCase.GuildId}/cases/{modCase.CaseId})\n");
@@ -215,7 +222,7 @@ public class ModCaseRepository : Repository,
             modCase.LastEditedAt = modCase.CreatedAt;
             modCase.LastEditedByModId = Identity.Id;
 
-            modCase.Labels = modCase.Labels != null ? modCase.Labels.Distinct().ToArray() : Array.Empty<string>();
+            modCase.Labels = modCase.Labels != null ? modCase.Labels.Distinct().ToArray() : [];
 
             modCase.Valid = true;
 
@@ -273,7 +280,7 @@ public class ModCaseRepository : Repository,
 
             if (currentReportedUser == null)
             {
-                _logger.LogError("Failed to fetch mod case suspect.");
+                _logger.LogError("Failed to fetch mod-case suspect.");
 
                 throw new InvalidIUserException(modCase.ModId);
             }
@@ -325,7 +332,7 @@ public class ModCaseRepository : Repository,
             modCase.LastEditedAt = modCase.CreatedAt;
             modCase.LastEditedByModId = Identity.Id;
 
-            modCase.Labels = modCase.Labels != null ? modCase.Labels.Distinct().ToArray() : Array.Empty<string>();
+            modCase.Labels = modCase.Labels != null ? modCase.Labels.Distinct().ToArray() : [];
 
             modCase.Valid = true;
 
@@ -397,7 +404,7 @@ public class ModCaseRepository : Repository,
             catch (Exception e)
             {
                 _logger.LogError(e,
-                    $"Error while announcing mod case {modCase.GuildId}/{modCase.CaseId} in DMs to {modCase.UserId}.");
+                    $"Error while announcing mod-case {modCase.GuildId}/{modCase.CaseId} in DMs to {modCase.UserId}.");
 
                 announceResult = AnnouncementResult.Failed;
             }
@@ -447,7 +454,7 @@ public class ModCaseRepository : Repository,
     {
         var modCase = await _punishmentDatabase.SelectSpecificModCase(guildId, caseId);
 
-        return modCase ?? throw new ResourceNotFoundException($"Mod case with id {caseId} does not exist.");
+        return modCase ?? throw new ResourceNotFoundException($"Mod-case with id {caseId} does not exist.");
     }
 
     public async Task<ModCase> DeleteModCase(ulong guildId, int caseId, bool forceDelete = false,
@@ -465,7 +472,7 @@ public class ModCaseRepository : Repository,
             }
             catch (Exception e)
             {
-                _logger.LogError(e, $"Failed to delete files directory for mod case {guildId}/{caseId}.");
+                _logger.LogError(e, $"Failed to delete files directory for mod-case {guildId}/{caseId}.");
             }
 
             _logger.LogInformation($"Force deleting modCase {guildId}/{caseId}.");
@@ -479,7 +486,7 @@ public class ModCaseRepository : Repository,
             modCase.DeletedByUserId = Identity.Id;
             modCase.PunishmentActive = false;
 
-            _logger.LogInformation($"Marking mod case {guildId}/{caseId} as deleted.");
+            _logger.LogInformation($"Marking mod-case {guildId}/{caseId} as deleted.");
             await _punishmentDatabase.UpdateModCase(modCase);
 
             _eventHandler.ModCaseMarkedToBeDeletedEvent.Invoke(modCase, Identity);
@@ -510,7 +517,7 @@ public class ModCaseRepository : Repository,
 
             if (currentReportedUser == null)
             {
-                _logger.LogError("Failed to fetch mod case suspect.");
+                _logger.LogError("Failed to fetch mod-case suspect.");
 
                 throw new InvalidIUserException(modCase.ModId);
             }
@@ -681,7 +688,7 @@ public class ModCaseRepository : Repository,
         }
         catch (Exception e)
         {
-            _logger.LogError(e, $"Failed to handle punishment for mod case {guildId}/{caseId}.");
+            _logger.LogError(e, $"Failed to handle punishment for mod-case {guildId}/{caseId}.");
         }
 
         return modCase;
@@ -712,7 +719,7 @@ public class ModCaseRepository : Repository,
         }
         catch (Exception e)
         {
-            _logger.LogError(e, $"Failed to handle punishment for mod case {guildId}/{caseId}.");
+            _logger.LogError(e, $"Failed to handle punishment for mod-case {guildId}/{caseId}.");
         }
 
         return modCase;
@@ -736,7 +743,7 @@ public class ModCaseRepository : Repository,
         }
         catch (Exception e)
         {
-            _logger.LogError(e, $"Failed to handle punishment for mod case {guildId}/{caseId}.");
+            _logger.LogError(e, $"Failed to handle punishment for mod-case {guildId}/{caseId}.");
         }
 
         return modCase;
@@ -761,7 +768,7 @@ public class ModCaseRepository : Repository,
             }
             catch (Exception e)
             {
-                _logger.LogError(e, $"Failed to handle punishment for mod case {modCase.GuildId}/{modCase.CaseId}.");
+                _logger.LogError(e, $"Failed to handle punishment for mod-case {modCase.GuildId}/{modCase.CaseId}.");
             }
         }
     }

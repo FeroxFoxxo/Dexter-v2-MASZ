@@ -12,8 +12,8 @@ public class AutoModConfigForPutDto
 
     public PunishmentType? PunishmentType { get; set; }
     public int? PunishmentDurationMinutes { get; set; }
-    public ulong[] IgnoreChannels { get; set; } = Array.Empty<ulong>();
-    public ulong[] IgnoreRoles { get; set; } = Array.Empty<ulong>();
+    public ulong[] IgnoreChannels { get; set; } = [];
+    public ulong[] IgnoreRoles { get; set; } = [];
     public int? TimeLimitMinutes { get; set; }
     public int? Limit { get; set; }
     public string CustomWordFilter { get; set; }

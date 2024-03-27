@@ -35,7 +35,7 @@ public partial class UserRoleTiedToMenu : Migration
             name: "PK_UserRoles",
             schema: "RoleReactions",
             table: "UserRoles",
-            columns: new[] { "GuildId", "ChannelId", "Id", "UserId" });
+            columns: ["GuildId", "ChannelId", "Id", "UserId"]);
     }
 
     /// <inheritdoc />
@@ -60,6 +60,6 @@ public partial class UserRoleTiedToMenu : Migration
             name: "PK_UserRoles",
             schema: "RoleReactions",
             table: "UserRoles",
-            columns: new[] { "GuildId", "UserId" });
+            columns: ["GuildId", "UserId"]);
     }
 }

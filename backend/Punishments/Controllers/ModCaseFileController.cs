@@ -45,8 +45,8 @@ public class ModCaseFileController(IdentityManager identityManager, ModCaseFileR
 
         var fileInfo = await _caseFileRepository.GetCaseFile(guildId, caseId, filename);
 
-        HttpContext.Response.Headers.Add("Content-Disposition", fileInfo.ContentDisposition.ToString());
-        HttpContext.Response.Headers.Add("Content-Type", fileInfo.ContentType);
+        HttpContext.Response.Headers.ContentDisposition = fileInfo.ContentDisposition.ToString();
+        HttpContext.Response.Headers.ContentType = fileInfo.ContentType;
 
         return File(fileInfo.FileContent, fileInfo.ContentType);
     }

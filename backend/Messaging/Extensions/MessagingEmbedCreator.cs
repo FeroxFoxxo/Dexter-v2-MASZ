@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Messaging.Extensions;
 
-public static class MessagingEmbedCreator
+public static partial class MessagingEmbedCreator
 {
     public static async Task<EmbedBuilder> CreateMessageSentEmbed(this IMessage message,
         ITextChannel channel, IUser user, IServiceProvider provider)

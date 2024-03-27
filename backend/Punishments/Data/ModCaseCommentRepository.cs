@@ -76,11 +76,7 @@ public class ModCaseCommentRepository : Repository, IAddGuildStats
         if (modCase.MarkedToDeleteAt.HasValue)
             throw new CaseMarkedToBeDeletedException();
 
-        var newComment = modCase.Comments.FirstOrDefault(c => c.Id == commentId);
-
-        if (newComment == null)
-            throw new ResourceNotFoundException();
-
+        var newComment = modCase.Comments.FirstOrDefault(c => c.Id == commentId) ?? throw new ResourceNotFoundException();
         newComment.Message = newMessage;
 
         await _punishmentDatabase.UpdateModCaseComment(newComment);
@@ -100,11 +96,7 @@ public class ModCaseCommentRepository : Repository, IAddGuildStats
         if (modCase.MarkedToDeleteAt.HasValue)
             throw new CaseMarkedToBeDeletedException();
 
-        var deleteComment = modCase.Comments.FirstOrDefault(c => c.Id == commentId);
-
-        if (deleteComment == null)
-            throw new ResourceNotFoundException();
-
+        var deleteComment = modCase.Comments.FirstOrDefault(c => c.Id == commentId) ?? throw new ResourceNotFoundException();
         await _punishmentDatabase.DeleteSpecificModCaseComment(deleteComment);
 
         _eventHandler.ModCaseCommentDeletedEvent.Invoke(deleteComment, Identity);

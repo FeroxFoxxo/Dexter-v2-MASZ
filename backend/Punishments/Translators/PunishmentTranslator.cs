@@ -160,7 +160,7 @@ public class PunishmentTranslator : Translator
             Language.Ru =>
                 $"Обращение `# {caseId}` создано: {caseLink}\nУ пользователя зарегистрировано `{caseCount}` случаев модификации.",
             Language.It => $"Caso `#{caseId}` creato: {caseLink}\nL'utente ha registrato casi mod `{caseCount}`.",
-            _ => $"Case `#{caseId}` created: {caseLink}\nUser has `{caseCount}` mod case(s) recorded."
+            _ => $"Case `#{caseId}` created: {caseLink}\nUser has `{caseCount}` mod-case(s) recorded."
         };
 
     public string ReportFailed() =>

@@ -6,6 +6,7 @@ using Discord;
 using Discord.Interactions;
 using Discord.Rest;
 using Discord.WebSocket;
+using Messaging.Extensions;
 using Microsoft.Extensions.Logging;
 
 namespace Bot.Abstractions;
@@ -36,7 +37,11 @@ public abstract class Command<T> : InteractionModuleBase<SocketInteractionContex
         if (Identity == null)
             throw new InvalidIdentityException($"Failed to register command identity for '{Context.User.Id}'.");
 
-        await BeforeCommandExecute();
+        try
+        {
+            await BeforeCommandExecute();
+        }
+        catch (InteractionException) { }
     }
 
     public virtual async Task BeforeCommandExecute() => await DeferAsync();
@@ -44,6 +49,10 @@ public abstract class Command<T> : InteractionModuleBase<SocketInteractionContex
     public async Task<RestInteractionMessage> RespondInteraction(string content = default,
         EmbedBuilder embedBuilder = null, ComponentBuilder componentBuilder = null)
     {
+        if (content is not default(string) and not null)
+            if (!string.IsNullOrEmpty(content))
+                content = content.SanitizeMentions();
+
         var embed = embedBuilder?.Build();
         var components = componentBuilder?.Build();
 
@@ -51,7 +60,7 @@ public abstract class Command<T> : InteractionModuleBase<SocketInteractionContex
         {
             msg.Content = content;
             msg.Embed = embed;
-            msg.Components = components;
+            msg.Components = components ?? new ComponentBuilder().Build();
         }
 
         if (Context.Interaction is SocketMessageComponent castInteraction)

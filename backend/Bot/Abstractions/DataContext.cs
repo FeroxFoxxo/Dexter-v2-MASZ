@@ -4,13 +4,9 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Bot.Abstractions;
 
-public abstract class DataContext<TContext> : DbContext
+public abstract class DataContext<TContext>(DbContextOptions<TContext> options) : DbContext(options)
     where TContext : DbContext
 {
-    protected DataContext(DbContextOptions<TContext> options) : base(options)
-    {
-    }
-
     protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
     {
         configurationBuilder.Properties<ulong[]>().HaveConversion<UlongArrayConverter>();
