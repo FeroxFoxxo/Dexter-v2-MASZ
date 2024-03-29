@@ -6,7 +6,7 @@ namespace Music.Commands;
 
 public class VolumeCommand : MusicCommand<StopCommand>
 {
-    [SlashCommand("volume", description: "Sets the player volume (0 - 1000%)", runMode: RunMode.Async)]
+    [SlashCommand("volume", description: "Sets the player volume (0 - 1000%)")]
     [BotChannel]
     public async Task Volume(int volume = 100)
     {

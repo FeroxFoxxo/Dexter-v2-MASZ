@@ -11,6 +11,7 @@ public class LeaveCommand : MusicCommand<LeaveCommand>
     public async Task Leave()
     {
         await Player.StopAsync();
+        await Player.DisconnectAsync();
 
         await RespondInteraction("Left this session, the queue has been cleaned");
     }
