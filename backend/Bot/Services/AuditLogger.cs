@@ -116,31 +116,40 @@ public class AuditLogger(DiscordSocketClient client, ILogger<AuditLogger> logger
         }
     }
 
-    private async Task OnLog(Exception e)
+    public bool GetExceptionMessage(Exception e, out string description)
     {
+        description = string.Empty;
+
         if (e == null)
-            return;
+            return false;
 
         if (e is GatewayReconnectException ||
             _modules.Any(x => e.GetType().Namespace.Contains(x.GetType().Namespace)) || e is HttpException)
-            return;
+            return false;
 
-        var description = Format.Sanitize(e.ToString());
+        description = Format.Sanitize(e.ToString());
 
         switch (e.InnerException)
         {
             case WebSocketException when e.Message.Contains("WebSocket connection was closed"):
-                return;
+                return false;
             case ExternalException ee:
                 description = $"Error Code: {ee.ErrorCode}\n" + description;
                 break;
             case WebSocketClosedException:
-                return;
+                return false;
             case HttpRequestException:
-                return;
+                return false;
         }
 
         description = description[..Math.Min(1000, description.Length)];
+        return true;
+    }
+
+    private async Task OnLog(Exception e)
+    {
+        if (!GetExceptionMessage(e, out var description))
+            return;
 
         await QueueLog("======= ERROR ENCOUNTERED =======", true);
 

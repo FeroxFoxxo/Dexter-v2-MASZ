@@ -271,28 +271,29 @@ public class DiscordBot(ILogger<DiscordBot> logger, DiscordSocketClient client, 
 
             switch (result)
             {
+                case ParseResult pResult:
+                    await SendError(info, translation, context, pResult.ErrorReason, "PARSE RESULT");
+                    break;
                 case ExecuteResult eResult:
+                    if (eResult.Exception is ApiException exception)
                     {
-                        if (eResult.Exception is ApiException exception)
-                        {
-                            var errorCode = "#" + ((int)exception.Error).ToString("D4");
+                        var errorCode = "#" + ((int)exception.Error).ToString("D4");
 
-                            await SendError(info, translation, context,
-                                $"{translation.Get<BotEnumTranslator>().Enum(exception.Error)}: {exception.Message}",
-                                errorCode);
-                        }
-                        else
-                        {
-                            await SendError(info, translation, context, result.ErrorReason, result.Error.Value.ToString());
-
-                            _logger.LogError(
-                            $"Command '{info.Name}' invoked by '{context.User.Username}' failed: " +
-                            eResult.Exception.Message + "\n" + eResult.Exception.StackTrace);
-                        }
-
-                        _eventHandler.CommandErroredEvent.Invoke(eResult.Exception);
-                        break;
+                        await SendError(info, translation, context,
+                            $"{translation.Get<BotEnumTranslator>().Enum(exception.Error)}: {exception.Message}",
+                            errorCode);
                     }
+                    else
+                    {
+                        await SendError(info, translation, context, result.ErrorReason, result.Error.Value.ToString());
+
+                        _logger.LogError(
+                        $"Command '{info.Name}' invoked by '{context.User.Username}' failed: " +
+                        eResult.Exception.Message + "\n" + eResult.Exception.StackTrace);
+                    }
+
+                    _eventHandler.CommandErroredEvent.Invoke(eResult.Exception);
+                    break;
                 case PreconditionResult preResult:
                     await SendError(info, translation, context, preResult.ErrorReason, "PRECON");
                     break;
