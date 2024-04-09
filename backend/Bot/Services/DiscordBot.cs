@@ -310,7 +310,7 @@ public class DiscordBot(ILogger<DiscordBot> logger, DiscordSocketClient client, 
         }
     }
 
-    private async Task SendExceptionError(ICommandInfo info, Translation translation, IInteractionContext context,  ApiException exception)
+    private async Task SendExceptionError(ICommandInfo info, Translation translation, IInteractionContext context, ApiException exception)
     {
         var errorCode = "#" + ((int)exception.Error).ToString("D4");
 
