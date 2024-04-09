@@ -285,7 +285,7 @@ public class DiscordBot(ILogger<DiscordBot> logger, DiscordSocketClient client, 
                     }
                     else
                     {
-                        await SendError(info, translation, context, result.ErrorReason, result.Error.Value.ToString());
+                        await SendError(info, translation, context, $"{result.ErrorReason}\n{eResult.Exception.Message}", result.Error.Value.ToString());
 
                         _logger.LogError(
                         $"Command '{info.Name}' invoked by '{context.User.Username}' failed: " +
