@@ -275,24 +275,24 @@ public class DiscordBot(ILogger<DiscordBot> logger, DiscordSocketClient client, 
                     await SendError(info, translation, context, pResult.ErrorReason, "PARSE RESULT");
                     break;
                 case ExecuteResult eResult:
-                    if (eResult.Exception is ApiException exception)
-                    {
-                        var errorCode = "#" + ((int)exception.Error).ToString("D4");
+                    var exception = eResult.Exception;
 
-                        await SendError(info, translation, context,
-                            $"{translation.Get<BotEnumTranslator>().Enum(exception.Error)}: {exception.Message}",
-                            errorCode);
+                    if (exception is InteractionException interactionException)
+                        exception = interactionException.InnerException;
+
+                    if (exception is ApiException apiException)
+                    {
+                        await SendExceptionError(info, translation, context, apiException);
                     }
                     else
                     {
-                        await SendError(info, translation, context, $"{result.ErrorReason}\n{eResult.Exception.Message}", result.Error.Value.ToString());
+                        await SendError(info, translation, context, $"{result.ErrorReason}\n{exception.Message}", result.Error.Value.ToString());
 
-                        _logger.LogError(
-                        $"Command '{info.Name}' invoked by '{context.User.Username}' failed: " +
-                        eResult.Exception.Message + "\n" + eResult.Exception.StackTrace);
+                        _logger.LogError($"Command '{info.Name}' invoked by '{context.User.Username}' failed: " +
+                            exception.Message + "\n" + exception.StackTrace);
                     }
 
-                    _eventHandler.CommandErroredEvent.Invoke(eResult.Exception);
+                    _eventHandler.CommandErroredEvent.Invoke(exception);
                     break;
                 case PreconditionResult preResult:
                     await SendError(info, translation, context, preResult.ErrorReason, "PRECON");
@@ -308,6 +308,15 @@ public class DiscordBot(ILogger<DiscordBot> logger, DiscordSocketClient client, 
                     break;
             }
         }
+    }
+
+    private async Task SendExceptionError(ICommandInfo info, Translation translation, IInteractionContext context,  ApiException exception)
+    {
+        var errorCode = "#" + ((int)exception.Error).ToString("D4");
+
+        await SendError(info, translation, context,
+            $"{translation.Get<BotEnumTranslator>().Enum(exception.Error)}: {exception.Message}",
+            errorCode);
     }
 
     private async Task SendError(ICommandInfo info, Translation translation, IInteractionContext context,
