@@ -348,8 +348,7 @@ public class DiscordRest(ILogger<DiscordRest> logger, IServiceProvider servicePr
         var response = await client.GetAsync(imageUrl);
 
         return response.IsSuccessStatusCode
-            ? true
-            : response.StatusCode == HttpStatusCode.NotFound ? false : throw new UnauthorizedException();
+|| (response.StatusCode == HttpStatusCode.NotFound ? false : throw new UnauthorizedException());
     }
 
     public async Task<List<IGuildUser>> FetchGuildUsers(ulong guildId, CacheBehavior cacheBehavior)

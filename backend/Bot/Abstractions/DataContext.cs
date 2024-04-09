@@ -25,15 +25,15 @@ public abstract class DataContext<TContext>(DbContextOptions<TContext> options) 
         FloatArrayComparer floatArrayComparer = new();
 
         foreach (var entityType in modelBuilder.Model.GetEntityTypes())
-        foreach (var property in entityType.GetProperties())
-        {
-            if (property.ClrType == typeof(ulong[]))
-                property.SetValueComparer(ulongArrayComparer);
-            else if (property.ClrType == typeof(string[]))
-                property.SetValueComparer(stringArrayComparer);
-            else if (property.ClrType == typeof(float[]))
-                property.SetValueComparer(floatArrayComparer);
-        }
+            foreach (var property in entityType.GetProperties())
+            {
+                if (property.ClrType == typeof(ulong[]))
+                    property.SetValueComparer(ulongArrayComparer);
+                else if (property.ClrType == typeof(string[]))
+                    property.SetValueComparer(stringArrayComparer);
+                else if (property.ClrType == typeof(float[]))
+                    property.SetValueComparer(floatArrayComparer);
+            }
 
         OverrideModelCreating(modelBuilder);
     }

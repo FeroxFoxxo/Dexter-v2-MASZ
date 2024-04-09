@@ -1,14 +1,14 @@
-﻿using Discord.Interactions;
+﻿using Bot.Exceptions;
 using Discord;
+using Discord.Interactions;
+using Greeting.Attributes;
 using Greeting.Data;
+using Humanizer;
+using Microsoft.Extensions.Logging;
 using Punishments.Abstractions;
 using Punishments.Enums;
-using Punishments.Models;
-using Greeting.Attributes;
-using Bot.Exceptions;
-using Microsoft.Extensions.Logging;
 using Punishments.Extensions;
-using Humanizer;
+using Punishments.Models;
 
 namespace Greeting.Commands;
 

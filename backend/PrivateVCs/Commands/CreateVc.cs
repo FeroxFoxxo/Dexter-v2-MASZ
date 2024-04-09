@@ -86,7 +86,7 @@ public class CreateVc : Command<CreateVc>
             );
             return;
         }
-        
+
         if (user.VoiceChannel == null)
         {
             await RespondInteraction(
@@ -167,7 +167,7 @@ public class CreateVc : Command<CreateVc>
                 )
             );
         }
-        
+
         await user.ModifyAsync(properties => properties.Channel = new Optional<IVoiceChannel>(newChannel));
 
         await RespondInteraction(

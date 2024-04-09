@@ -33,7 +33,8 @@ public class VcChecker(DiscordSocketClient client, IServiceProvider serviceProvi
                 await CheckRemoveVCs(guild);
         };
 
-        _client.UserVoiceStateUpdated += async (_, voiceChannel, _) => {
+        _client.UserVoiceStateUpdated += async (_, voiceChannel, _) =>
+        {
             if (voiceChannel.VoiceChannel is not null)
                 await CheckRemoveVCs(voiceChannel.VoiceChannel.Guild);
         };
@@ -146,7 +147,7 @@ public class VcChecker(DiscordSocketClient client, IServiceProvider serviceProvi
             return;
 
         var guild = voiceChannel.Guild;
-        
+
         using var scope = _serviceProvider.CreateScope();
 
         var config = await scope.ServiceProvider.GetRequiredService<PrivateVcConfigRepository>()
@@ -211,19 +212,19 @@ public class VcChecker(DiscordSocketClient client, IServiceProvider serviceProvi
             switch (authorized.TargetType)
             {
                 case PermissionTarget.Role:
-                {
-                    var role = guild.GetRole(authorized.TargetId);
-                    if (role.Permissions.MentionEveryone)
-                        continue;
-                    break;
-                }
+                    {
+                        var role = guild.GetRole(authorized.TargetId);
+                        if (role.Permissions.MentionEveryone)
+                            continue;
+                        break;
+                    }
                 case PermissionTarget.User:
-                {
-                    var user = guild.GetUser(authorized.TargetId);
-                    if (user.GuildPermissions.MentionEveryone)
-                        continue;
-                    break;
-                }
+                    {
+                        var user = guild.GetUser(authorized.TargetId);
+                        if (user.GuildPermissions.MentionEveryone)
+                            continue;
+                        break;
+                    }
                 default:
                     throw new InvalidDataException($"Unknown target type for private VCs of: {authorized.TargetType}");
             }

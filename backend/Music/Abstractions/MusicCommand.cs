@@ -22,7 +22,7 @@ public class MusicCommand<T> : Command<T>
             throw new UserNotInVoiceChannel();
 
         Player = await Audio.GetPlayerAsync(Context, Music);
-        
+
         Music.SetCurrentChannelId(Context.Guild.Id, Context.Channel.Id);
     }
 }

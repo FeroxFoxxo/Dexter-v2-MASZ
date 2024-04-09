@@ -156,7 +156,7 @@ public class Initialize
 
         var connectionString = $"Server={databaseSettings.Host};Port={databaseSettings.Port};" +
                                $"Database={databaseSettings.Database};Uid={databaseSettings.User};Pwd={databaseSettings.Pass};";
-        
+
         return x => x.UseMySql(
             connectionString,
             ServerVersion.AutoDetect(connectionString),

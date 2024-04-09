@@ -21,7 +21,7 @@ public class UserNetworkController(GuildConfigRepository guildConfigRepository, 
     private readonly IServiceProvider _serviceProvider = serviceProvider;
 
     [HttpGet("user")]
-    public async Task<IActionResult> GetUserNetwork([FromQuery] [Required] ulong userId)
+    public async Task<IActionResult> GetUserNetwork([FromQuery][Required] ulong userId)
     {
         var identity = await SetupAuthentication();
 

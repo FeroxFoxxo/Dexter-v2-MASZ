@@ -1,14 +1,13 @@
-﻿using Lavalink4NET.Players.Vote;
-using Lavalink4NET.Players;
-using Music.Exceptions;
+﻿using Discord;
 using Lavalink4NET;
-using Music.Services;
-using Discord;
 using Lavalink4NET.DiscordNet;
 using Lavalink4NET.Integrations.SponsorBlock;
-using System.Collections.Immutable;
-using System.Numerics;
 using Lavalink4NET.Integrations.SponsorBlock.Extensions;
+using Lavalink4NET.Players;
+using Lavalink4NET.Players.Vote;
+using Music.Exceptions;
+using Music.Services;
+using System.Collections.Immutable;
 
 namespace Music.Extensions;
 

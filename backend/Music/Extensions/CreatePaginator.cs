@@ -14,20 +14,20 @@ public static class CreatePaginator
         switch (pageBuilders.Length)
         {
             case > 1:
-            {
-                Paginator paginator = new StaticPaginatorBuilder()
-                    .WithPages(pageBuilders)
-                    .WithDefaultEmotes()
-                    .AddUser(context.User)
-                    .WithFooter(PaginatorFooter.PageNumber)
-                    .WithActionOnCancellation(ActionOnStop.DeleteInput)
-                    .WithActionOnTimeout(ActionOnStop.DeleteInput)
-                    .Build();
+                {
+                    Paginator paginator = new StaticPaginatorBuilder()
+                        .WithPages(pageBuilders)
+                        .WithDefaultEmotes()
+                        .AddUser(context.User)
+                        .WithFooter(PaginatorFooter.PageNumber)
+                        .WithActionOnCancellation(ActionOnStop.DeleteInput)
+                        .WithActionOnTimeout(ActionOnStop.DeleteInput)
+                        .Build();
 
-                await interactive.SendPaginatorAsync(paginator, context.Interaction,
-                    responseType: InteractionResponseType.DeferredChannelMessageWithSource);
-                break;
-            }
+                    await interactive.SendPaginatorAsync(paginator, context.Interaction,
+                        responseType: InteractionResponseType.DeferredChannelMessageWithSource);
+                    break;
+                }
             case 1:
                 await context.Interaction.ModifyOriginalResponseAsync(x =>
                 {

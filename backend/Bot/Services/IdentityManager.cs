@@ -47,10 +47,10 @@ public class IdentityManager(BotEventHandler eventHandler, IServiceProvider serv
         var guildConfigs = await database.SelectAllGuildConfigs();
 
         var guilds = (from guildConfig in guildConfigs
-            select discordRest.FetchGuildUserInfo(guildConfig.GuildId, user.Id, CacheBehavior.Default)
+                      select discordRest.FetchGuildUserInfo(guildConfig.GuildId, user.Id, CacheBehavior.Default)
             into gUser
-            where gUser is not null
-            select UserGuild.GetUserGuild(gUser)).ToList();
+                      where gUser is not null
+                      select UserGuild.GetUserGuild(gUser)).ToList();
 
         var identity = new DiscordCommandIdentity(user, guilds, _serviceProvider);
         _identities[key] = identity;

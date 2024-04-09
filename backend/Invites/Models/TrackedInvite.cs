@@ -48,7 +48,7 @@ public class TrackedInvite
     public ulong GuildId { get; set; }
     public DateTime? ExpiresAt { get; set; }
 
-    public bool IsExpired() => ExpiresAt == null ? false : ExpiresAt < DateTime.UtcNow;
+    public bool IsExpired() => ExpiresAt != null && ExpiresAt < DateTime.UtcNow;
 
     public bool HasNewUses(int currentUses) => currentUses != Uses;
 }

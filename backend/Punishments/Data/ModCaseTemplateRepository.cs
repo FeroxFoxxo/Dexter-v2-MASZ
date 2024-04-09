@@ -65,20 +65,13 @@ public class ModCaseTemplateRepository(PunishmentDatabase punishmentDatabase, Pu
         return filteredTemplates;
     }
 
-    private async Task<bool> AllowedToView(ModCaseTemplate template, Identity identity)
-    {
-        if (identity.GetCurrentUser().IsBot)
-            return true;
-
-        return await identity.IsSiteAdmin()
-            ? true
-            : template.UserId == Identity.Id
-            ? true
-            : template.ViewPermission switch
-        {
-            ViewPermission.Self => false,
-            ViewPermission.Global => true,
-            _ => await identity.HasPermission(DiscordPermission.Moderator, template.CreatedForGuildId)
-        };
-    }
+    private async Task<bool> AllowedToView(ModCaseTemplate template, Identity identity) => identity.GetCurrentUser().IsBot
+|| await identity.IsSiteAdmin()
+|| template.UserId == Identity.Id
+|| template.ViewPermission switch
+{
+    ViewPermission.Self => false,
+    ViewPermission.Global => true,
+    _ => await identity.HasPermission(DiscordPermission.Moderator, template.CreatedForGuildId)
+};
 }

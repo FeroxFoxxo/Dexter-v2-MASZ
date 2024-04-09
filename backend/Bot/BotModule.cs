@@ -151,7 +151,7 @@ public class BotModule : WebModule
                 options.RoutePrefix = string.Empty;
             });
         }
-        
+
         app.UseMiddleware<HeaderMiddleware>();
         app.UseMiddleware<RequestLoggingMiddleware>();
         app.UseMiddleware<ApiExceptionHandlingMiddleware>();

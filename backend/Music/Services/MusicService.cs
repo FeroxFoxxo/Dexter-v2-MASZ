@@ -87,7 +87,7 @@ public class MusicService(DiscordSocketClient client, IAudioService lavalink) : 
 
         return _client.GetGuild(player.GuildId).GetTextChannel(channelId);
     }
-    
+
     private async Task CheckLeft(SocketUser user, SocketVoiceState originalState, SocketVoiceState newState)
     {
         if (newState.VoiceChannel == null)
@@ -111,7 +111,7 @@ public class MusicService(DiscordSocketClient client, IAudioService lavalink) : 
                 StartTimes[guildId] = DateTime.UtcNow;
         }
     }
-    
+
     public DateTime GetStartTime(ulong guildId)
     {
         lock (StartTimes)

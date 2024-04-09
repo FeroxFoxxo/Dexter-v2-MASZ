@@ -73,9 +73,11 @@ public class MusicModule : Module
         using var webclient = new HttpClient();
 
         foreach (var service in services)
-            try {
+            try
+            {
                 return IPAddress.Parse(webclient.GetStringAsync(service).Result);
-            } catch { }
+            }
+            catch { }
 
         return null;
     }

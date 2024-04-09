@@ -187,7 +187,7 @@ public class AutoModChecker(DiscordSocketClient client, ILogger<AutoModChecker> 
 
         if (modType != AutoModType.TooManyAutomods)
             await CheckAutoMod(AutoModType.TooManyAutomods, message, CheckMultipleEvents, scope);
-        
+
         return true;
     }
 

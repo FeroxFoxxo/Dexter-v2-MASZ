@@ -33,7 +33,7 @@ public class Unwarn : Command<Unwarn>
         }
 
         var mCase = modCases.FirstOrDefault();
-        
+
         var embed = new EmbedBuilder()
             .WithAuthor(user)
             .WithDescription($"Found last warning of `{mCase.Title}` for {mCase.Username}. Do you want to delete the warning?")

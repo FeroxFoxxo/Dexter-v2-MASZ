@@ -15,7 +15,7 @@ public class BotEnumControllers(Translation translator, ILogger<EnumController<B
         await TranslateEnum<ApiError>(language);
 
     [HttpGet("editstatus")]
-    public async Task<IActionResult> ViewEditStatus([FromQuery] Language? language = null) => 
+    public async Task<IActionResult> ViewEditStatus([FromQuery] Language? language = null) =>
         await TranslateEnum<EditStatus>(language);
 
     [HttpGet("language")]

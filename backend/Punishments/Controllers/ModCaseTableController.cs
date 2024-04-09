@@ -25,18 +25,18 @@ public class ModCaseTableController(GuildConfigRepository guildConfigRepository,
 
     [HttpPost("modcasetable")]
     public async Task<IActionResult> GetAllModCases([FromRoute] ulong guildId,
-        [FromQuery] [Range(0, int.MaxValue)] int startPage = 0, [FromBody] ModCaseTableFilterDto search = null) =>
+        [FromQuery][Range(0, int.MaxValue)] int startPage = 0, [FromBody] ModCaseTableFilterDto search = null) =>
         Ok(await GenerateTable(guildId, ModCaseTableType.Default, startPage, search));
 
     [HttpPost("expiringpunishment")]
     public async Task<IActionResult> GetExpiringPunishments([FromRoute] ulong guildId,
-        [FromQuery] [Range(0, int.MaxValue)] int startPage = 0, [FromBody] ModCaseTableFilterDto search = null) =>
+        [FromQuery][Range(0, int.MaxValue)] int startPage = 0, [FromBody] ModCaseTableFilterDto search = null) =>
         Ok(await GenerateTable(guildId, ModCaseTableType.OnlyPunishments, startPage, search,
             ModCaseTableSortType.SortByExpiring));
 
     [HttpPost("casebin")]
     public async Task<IActionResult> GetDeletedModCases([FromRoute] ulong guildId,
-        [FromQuery] [Range(0, int.MaxValue)] int startPage = 0, [FromBody] ModCaseTableFilterDto search = null) =>
+        [FromQuery][Range(0, int.MaxValue)] int startPage = 0, [FromBody] ModCaseTableFilterDto search = null) =>
         Ok(await GenerateTable(guildId, ModCaseTableType.OnlyBin, startPage, search,
             ModCaseTableSortType.SortByDeleting));
 

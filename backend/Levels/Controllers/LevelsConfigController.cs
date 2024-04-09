@@ -34,7 +34,7 @@ public class LevelsConfigController(IdentityManager identityManager, GuildLevelC
         var dto = new GuildLevelConfigDto
         {
             Id = guildId,
-            
+
             Coefficients = config.Coefficients,
             XpInterval = config.XpInterval,
 
@@ -94,13 +94,14 @@ public class LevelsConfigController(IdentityManager identityManager, GuildLevelC
         existing.Coefficients = config.Coefficients;
         existing.XpInterval = config.XpInterval;
 
-        existing.Experience = new ExperienceConfig() {
+        existing.Experience = new ExperienceConfig()
+        {
             MaximumTextXpGiven = config.MaximumTextXpGiven,
             MaximumVoiceXpGiven = config.MaximumVoiceXpGiven,
             MinimumTextXpGiven = config.MinimumTextXpGiven,
             MinimumVoiceXpGiven = config.MinimumVoiceXpGiven
         };
-        
+
         existing.VoiceXpRequiredMembers = config.VoiceXpRequiredMembers;
         existing.VoiceXpCountMutedMembers = config.VoiceXpCountMutedMembers;
 

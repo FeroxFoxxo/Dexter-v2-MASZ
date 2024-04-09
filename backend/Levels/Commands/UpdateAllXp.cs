@@ -1,9 +1,9 @@
 ﻿using Bot.Abstractions;
 using Bot.Attributes;
-using Discord.Interactions;
 using Bot.Enums;
-using Levels.Data;
 using Discord;
+using Discord.Interactions;
+using Levels.Data;
 using Levels.Models;
 
 namespace Levels.Commands;

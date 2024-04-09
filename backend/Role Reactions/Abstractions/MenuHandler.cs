@@ -1,5 +1,5 @@
-﻿using Discord.Interactions;
-using Discord;
+﻿using Discord;
+using Discord.Interactions;
 using Microsoft.Extensions.DependencyInjection;
 using RoleReactions.Data;
 

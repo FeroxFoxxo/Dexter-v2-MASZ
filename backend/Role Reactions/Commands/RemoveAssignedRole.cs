@@ -56,7 +56,7 @@ public class RemoveAssignedRole : RoleMenuCommand<RemoveAssignedRole>
                 $"Please delete and recreate the menu.");
             return;
         }
-        
+
         menu.RoleToEmote.Remove(role.Id);
         await Database.SaveChangesAsync();
 

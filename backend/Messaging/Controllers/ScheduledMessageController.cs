@@ -23,7 +23,7 @@ public class ScheduledMessageController(MessagingRepository messagingRepo, Guild
 
     [HttpGet]
     public async Task<IActionResult> GetMessages([FromRoute] ulong guildId,
-        [FromQuery] [Range(0, int.MaxValue)] int page = 0)
+        [FromQuery][Range(0, int.MaxValue)] int page = 0)
     {
         var identity = await SetupAuthentication();
 

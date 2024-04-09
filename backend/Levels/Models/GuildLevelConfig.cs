@@ -37,7 +37,8 @@ public class GuildLevelConfig
     {
     }
 
-    public GuildLevelConfig(ulong guildId) {
+    public GuildLevelConfig(ulong guildId)
+    {
         Id = guildId;
 
         Experience = new ExperienceConfig()
@@ -68,12 +69,12 @@ public class GuildLevelConfig
     public ExperienceConfig GetExperienceConfig(IChannel channel)
     {
         Experience ??= new ExperienceConfig()
-            {
-                MaximumTextXpGiven = 0,
-                MaximumVoiceXpGiven = 0,
-                MinimumTextXpGiven = 0,
-                MinimumVoiceXpGiven = 0
-            };
+        {
+            MaximumTextXpGiven = 0,
+            MaximumVoiceXpGiven = 0,
+            MinimumTextXpGiven = 0,
+            MinimumVoiceXpGiven = 0
+        };
 
         ExperienceOverrides ??= [];
 

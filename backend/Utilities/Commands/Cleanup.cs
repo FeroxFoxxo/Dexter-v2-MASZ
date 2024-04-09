@@ -117,17 +117,17 @@ public class Cleanup : Command<Cleanup>
             switch (toDelete.Count)
             {
                 case >= 2:
-                {
-                    RequestOptions options = new()
                     {
-                        AuditLogReason =
-                            $"Bulkdelete by {currentActor.Username} ({currentActor.Id})."
-                    };
+                        RequestOptions options = new()
+                        {
+                            AuditLogReason =
+                                $"Bulkdelete by {currentActor.Username} ({currentActor.Id})."
+                        };
 
-                    await channel.DeleteMessagesAsync(toDelete, options);
-                    toDelete.Clear();
-                    break;
-                }
+                        await channel.DeleteMessagesAsync(toDelete, options);
+                        toDelete.Clear();
+                        break;
+                    }
                 case > 0:
                     await toDelete.First().DeleteAsync();
                     toDelete.Clear();

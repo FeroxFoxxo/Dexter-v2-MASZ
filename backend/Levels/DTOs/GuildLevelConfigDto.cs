@@ -25,5 +25,5 @@ public class GuildLevelConfigDto
     public ulong NicknameDisabledReplacement { get; set; }
 
     public Dictionary<int, ulong[]> Levels { get; set; }
-    public Dictionary<int, string> LevelUpMessageOverrides { get; set; } 
+    public Dictionary<int, string> LevelUpMessageOverrides { get; set; }
 }

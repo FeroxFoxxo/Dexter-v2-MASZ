@@ -19,9 +19,9 @@ public class StatusController(SettingsRepository settingsRepository) : BaseContr
     {
         var config = await _settingsRepository.GetAppSettings();
 
-        if (!HttpContext.Request.Headers.TryGetValue("Accept", out var value)) return Ok("OK");
-
-        return value.ToString().Search("application/json")
+        return !HttpContext.Request.Headers.TryGetValue("Accept", out var value)
+            ? Ok("OK")
+            : value.ToString().Search("application/json")
             ? Ok(new
             {
                 status = "OK",

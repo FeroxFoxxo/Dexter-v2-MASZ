@@ -18,7 +18,7 @@ public class AutoModEventController(IdentityManager identityManager, AutoModEven
 
     [HttpGet]
     public async Task<IActionResult> GetAllItems([FromRoute] ulong guildId,
-        [FromQuery] [Range(0, int.MaxValue)] int startPage = 0)
+        [FromQuery][Range(0, int.MaxValue)] int startPage = 0)
     {
         var identity = await SetupAuthentication();
 

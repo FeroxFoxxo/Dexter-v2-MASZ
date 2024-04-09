@@ -8,7 +8,7 @@ namespace PrivateVcs.Data;
 public class PrivateVcDatabase(DbContextOptions<PrivateVcDatabase> options) : DataContext<PrivateVcDatabase>(options), IDataContextCreate
 {
     public DbSet<PrivateVcConfig> PrivateVcConfigs { get; set; }
-    
+
     public static void AddContextToServiceProvider(Action<DbContextOptionsBuilder> optionsAction,
         IServiceCollection serviceCollection) =>
         serviceCollection.AddDbContext<PrivateVcDatabase>(optionsAction);

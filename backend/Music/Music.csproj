@@ -9,15 +9,15 @@
 
     <ItemGroup>
       <PackageReference Include="Fergun.Interactive" Version="1.7.5" />
-      <PackageReference Include="Lavalink4NET" Version="4.0.17" />
-      <PackageReference Include="Lavalink4NET.Artwork" Version="4.0.17" />
-      <PackageReference Include="Lavalink4NET.Discord.NET" Version="4.0.17" />
-      <PackageReference Include="Lavalink4NET.InactivityTracking" Version="4.0.17" />
-      <PackageReference Include="Lavalink4NET.Integrations.Lavasearch" Version="4.0.17" />
-      <PackageReference Include="Lavalink4NET.Integrations.Lavasrc" Version="4.0.17" />
-      <PackageReference Include="Lavalink4NET.Integrations.SponsorBlock" Version="4.0.17" />
-      <PackageReference Include="Lavalink4NET.Lyrics" Version="4.0.17" />
-      <PackageReference Include="Lavalink4NET.Rest" Version="4.0.17" />
+      <PackageReference Include="Lavalink4NET" Version="4.0.18" />
+      <PackageReference Include="Lavalink4NET.Artwork" Version="4.0.18" />
+      <PackageReference Include="Lavalink4NET.Discord.NET" Version="4.0.18" />
+      <PackageReference Include="Lavalink4NET.InactivityTracking" Version="4.0.18" />
+      <PackageReference Include="Lavalink4NET.Integrations.Lavasearch" Version="4.0.18" />
+      <PackageReference Include="Lavalink4NET.Integrations.Lavasrc" Version="4.0.18" />
+      <PackageReference Include="Lavalink4NET.Integrations.SponsorBlock" Version="4.0.18" />
+      <PackageReference Include="Lavalink4NET.Lyrics" Version="4.0.18" />
+      <PackageReference Include="Lavalink4NET.Rest" Version="4.0.18" />
     </ItemGroup>
 
     <ItemGroup>

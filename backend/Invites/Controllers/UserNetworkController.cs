@@ -17,7 +17,7 @@ public class UserNetworkController(IdentityManager identityManager, DiscordRest 
     private readonly InviteRepository _inviteRepository = inviteRepository;
 
     [HttpGet("invite")]
-    public async Task<IActionResult> GetInviteNetwork([FromQuery] [Required] string inviteUrl)
+    public async Task<IActionResult> GetInviteNetwork([FromQuery][Required] string inviteUrl)
     {
         var identity = await SetupAuthentication();
 

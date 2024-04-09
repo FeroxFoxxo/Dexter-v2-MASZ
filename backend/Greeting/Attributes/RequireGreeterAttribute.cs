@@ -1,8 +1,8 @@
 ﻿using Bot.Exceptions;
-using Discord.Interactions;
 using Discord;
-using Microsoft.Extensions.DependencyInjection;
+using Discord.Interactions;
 using Greeting.Data;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Greeting.Attributes;
 

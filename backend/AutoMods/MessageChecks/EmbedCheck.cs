@@ -6,5 +6,5 @@ namespace AutoMods.MessageChecks;
 
 public static class EmbedCheck
 {
-    public static bool Check(IMessage message, AutoModConfig config, DiscordSocketClient _) => config.Limit == null ? false : message.Embeds == null ? false : message.Embeds.Count > config.Limit;
+    public static bool Check(IMessage message, AutoModConfig config, DiscordSocketClient _) => config.Limit != null && message.Embeds != null && message.Embeds.Count > config.Limit;
 }

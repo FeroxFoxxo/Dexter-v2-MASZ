@@ -50,10 +50,9 @@ public class DiscordCommandIdentity : Identity
 
             var guildUser = GetGuildMembership(guildId);
 
-            return guildUser is null
-                ? false
-                : guildUser.Guild.OwnerId == guildUser.Id ||
-                   guildUser.RoleIds.Any(x => guildConfig.AdminRoles.Contains(x));
+            return guildUser is not null
+&& (guildUser.Guild.OwnerId == guildUser.Id ||
+                   guildUser.RoleIds.Any(x => guildConfig.AdminRoles.Contains(x)));
         }
         catch (ResourceNotFoundException)
         {
@@ -75,12 +74,10 @@ public class DiscordCommandIdentity : Identity
 
             var guildUser = GetGuildMembership(guildId);
 
-            return guildUser is null
-                ? false
-                : guildUser.Guild.OwnerId == guildUser.Id
-                ? true
-                : guildUser.RoleIds.Any(x => guildConfig.AdminRoles.Contains(x) ||
-                                              guildConfig.ModRoles.Contains(x));
+            return guildUser is not null
+&& (guildUser.Guild.OwnerId == guildUser.Id
+|| guildUser.RoleIds.Any(x => guildConfig.AdminRoles.Contains(x) ||
+                                              guildConfig.ModRoles.Contains(x)));
         }
         catch (ResourceNotFoundException)
         {

@@ -51,28 +51,28 @@ public class GuildAuditor(DiscordSocketClient client, IServiceProvider servicePr
         var guildConfigRepository = scope.ServiceProvider.GetRequiredService<GuildConfigRepository>();
 
         embed.WithColor(eventType switch
-            {
-                GuildAuditLogEvent.MessageSent => Color.Green,
-                GuildAuditLogEvent.MessageUpdated => Color.Orange,
-                GuildAuditLogEvent.MessageDeleted => Color.Red,
-                GuildAuditLogEvent.UsernameUpdated => Color.Orange,
-                GuildAuditLogEvent.AvatarUpdated => Color.Orange,
-                GuildAuditLogEvent.NicknameUpdated => Color.Orange,
-                GuildAuditLogEvent.UserRolesUpdated => Color.Orange,
-                GuildAuditLogEvent.UserJoined => Color.Green,
-                GuildAuditLogEvent.UserRemoved => Color.Red,
-                GuildAuditLogEvent.BanAdded => Color.Red,
-                GuildAuditLogEvent.BanRemoved => Color.Green,
-                GuildAuditLogEvent.InviteCreated => Color.Green,
-                GuildAuditLogEvent.InviteDeleted => Color.Red,
-                GuildAuditLogEvent.ThreadCreated => Color.Green,
-                GuildAuditLogEvent.VoiceJoined => Color.Green,
-                GuildAuditLogEvent.VoiceLeft => Color.Red,
-                GuildAuditLogEvent.VoiceMoved => Color.Orange,
-                GuildAuditLogEvent.ReactionAdded => Color.Green,
-                GuildAuditLogEvent.ReactionRemoved => Color.Red,
-                _ => throw new NotImplementedException()
-            })
+        {
+            GuildAuditLogEvent.MessageSent => Color.Green,
+            GuildAuditLogEvent.MessageUpdated => Color.Orange,
+            GuildAuditLogEvent.MessageDeleted => Color.Red,
+            GuildAuditLogEvent.UsernameUpdated => Color.Orange,
+            GuildAuditLogEvent.AvatarUpdated => Color.Orange,
+            GuildAuditLogEvent.NicknameUpdated => Color.Orange,
+            GuildAuditLogEvent.UserRolesUpdated => Color.Orange,
+            GuildAuditLogEvent.UserJoined => Color.Green,
+            GuildAuditLogEvent.UserRemoved => Color.Red,
+            GuildAuditLogEvent.BanAdded => Color.Red,
+            GuildAuditLogEvent.BanRemoved => Color.Green,
+            GuildAuditLogEvent.InviteCreated => Color.Green,
+            GuildAuditLogEvent.InviteDeleted => Color.Red,
+            GuildAuditLogEvent.ThreadCreated => Color.Green,
+            GuildAuditLogEvent.VoiceJoined => Color.Green,
+            GuildAuditLogEvent.VoiceLeft => Color.Red,
+            GuildAuditLogEvent.VoiceMoved => Color.Orange,
+            GuildAuditLogEvent.ReactionAdded => Color.Green,
+            GuildAuditLogEvent.ReactionRemoved => Color.Red,
+            _ => throw new NotImplementedException()
+        })
             .WithCurrentTimestamp();
 
         try
