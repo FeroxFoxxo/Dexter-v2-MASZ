@@ -17,7 +17,7 @@ public class Cleanup : Command<Cleanup>
         await Context.Interaction.DeferAsync(!GuildConfig.StaffChannels.Contains(Context.Channel.Id));
 
     [Require(RequireCheck.GuildModerator)]
-    [SlashCommand("cleanup", "Cleanup specific data from the server and/or channel.")]
+    [SlashCommand("cleanup", "Cleanup specific messages from the server and/or channel.")]
     public async Task CleanupCommand(
         [Summary("mode", "The data you wish to clean up.")]
         CleanupMode cleanupMode,
