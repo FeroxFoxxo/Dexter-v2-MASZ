@@ -20,6 +20,6 @@ public class Leaderboard : Command<Leaderboard>
         var builder = new ComponentBuilder()
             .WithButton("View Leaderboard", style: ButtonStyle.Link, url: url);
 
-        await RespondInteraction("Here you go! Remember to log into the website before viewing 💙", null, builder);
+        await RespondInteraction("Here you go! 💙\nRemember to log into the website before viewing, or you'll see a time out message.", null, builder);
     }
 }
