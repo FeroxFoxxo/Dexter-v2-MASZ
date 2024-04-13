@@ -19,7 +19,7 @@ public class PlayCommand : MusicCommand<PlayCommand>
     [BotChannel]
     public async Task Play(
         [Summary("query", "Music query")] string query,
-        [Summary("source", "Music source")] MusicSource source = MusicSource.Default)
+        [Summary("source", "Music source")] MusicSource source)
     {
         StringBuilder tInfoSb = new();
         var searchMode = source.GetSearchMode();
@@ -41,9 +41,6 @@ public class PlayCommand : MusicCommand<PlayCommand>
         {
             if (query != null)
             {
-                if (source == MusicSource.Default)
-                    searchMode = TrackSearchMode.YouTube;
-
                 var tracks = await Audio.Tracks.LoadTracksAsync(query, searchMode);
 
                 var lavalinkTracks = tracks.Tracks.ToList();
