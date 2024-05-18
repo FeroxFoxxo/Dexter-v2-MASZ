@@ -66,7 +66,7 @@ public class BotModule : WebModule
             LogLevel = LogSeverity.Verbose
         });
 
-        services.AddSingleton<InteractionService>();
+        services.AddSingleton(p => new InteractionService(p.GetRequiredService<DiscordSocketClient>()));
     }
 
     public override void AddServices(IServiceCollection services, CachedServices cachedServices, AppSettings settings)
