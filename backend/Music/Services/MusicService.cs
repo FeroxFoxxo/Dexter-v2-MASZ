@@ -25,7 +25,6 @@ public class MusicService(DiscordSocketClient client, IAudioService lavalink) : 
 
         _lavalink.TrackStarted += OnTrackStarted;
         _lavalink.TrackStuck += OnTrackStuck;
-        _lavalink.TrackEnded += OnTrackEnd;
         _lavalink.TrackException += OnTrackException;
     }
 
@@ -47,19 +46,6 @@ public class MusicService(DiscordSocketClient client, IAudioService lavalink) : 
                 $"by {Format.Bold(Format.Sanitize(currentTrack?.Author ?? "Unknown"))}";
 
         await GetMusicChannel(e.Player).SendMessageAsync(message.SanitizeMentions());
-    }
-
-    public async Task OnTrackEnd(object _, TrackEventArgs e)
-    {
-        var currentTrack = e.Player.CurrentTrack;
-
-        if (currentTrack == null)
-            return;
-
-        var message = $"Finished playing: {Format.Bold(Format.Sanitize(currentTrack.Title))} by " +
-                $"{Format.Bold(Format.Sanitize(currentTrack.Author))}";
-
-        await GetMusicChannel(e.Player).SendMessageAsync(message);
     }
 
     public async Task OnTrackException(object _, TrackExceptionEventArgs e)
