@@ -93,7 +93,7 @@ public class DiscordBot(ILogger<DiscordBot> logger, DiscordSocketClient client, 
         }
         catch (Exception)
         {
-            _logger.LogInformation($"Unable to execute {arg.Type} in channel {arg.Channel}");
+            _logger.LogInformation("Unable to execute {ArgType} in channel {ArgChannel}", arg.Type, arg.Channel);
 
             if (arg.Type is InteractionType.ApplicationCommand)
                 await arg.GetOriginalResponseAsync().ContinueWith(async msg => await msg.Result.DeleteAsync());
@@ -145,7 +145,7 @@ public class DiscordBot(ILogger<DiscordBot> logger, DiscordSocketClient client, 
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Something went wrong while handling guild join for {guild.Id}.");
+                _logger.LogError(ex, "Something went wrong while handling guild join for {GuildId}.", guild.Id);
             }
         }
 
@@ -171,9 +171,9 @@ public class DiscordBot(ILogger<DiscordBot> logger, DiscordSocketClient client, 
         };
 
         if (logMessage.Exception is null)
-            logger.Log(level, logMessage.Message);
+            logger.Log(level, "{Message}", logMessage.Message);
         else
-            logger.LogError(logMessage.Exception, logMessage.Message);
+            logger.LogError(logMessage.Exception, "{Message}", logMessage.Message);
 
         return Task.CompletedTask;
     }
@@ -184,7 +184,7 @@ public class DiscordBot(ILogger<DiscordBot> logger, DiscordSocketClient client, 
             guild.Id
         );
 
-        _logger.LogInformation($"Initialized guild commands for guild {guild.Name}.");
+        _logger.LogInformation("Initialized guild commands for guild {GuildName}.", guild.Name);
     }
 
     private Task GuildBanRemoved(SocketUser user, SocketGuild guild)
@@ -248,7 +248,7 @@ public class DiscordBot(ILogger<DiscordBot> logger, DiscordSocketClient client, 
 
     private Task GuildCreatedHandler(SocketGuild guild)
     {
-        _logger.LogInformation($"Joined guild '{guild.Name}' with ID: '{guild.Id}'");
+        _logger.LogInformation("Joined guild {GuildName} ({GuildId})", guild.Name, guild.Id);
         return Task.CompletedTask;
     }
 
@@ -288,7 +288,7 @@ public class DiscordBot(ILogger<DiscordBot> logger, DiscordSocketClient client, 
                     {
                         await SendError(info, translation, context, $"{result.ErrorReason}\n{exception.Message}", result.Error.Value.ToString());
 
-                        _logger.LogError($"Command '{info.Name}' invoked by '{context.User.Username}' failed: " +
+                        _logger.LogError("Command '{Name}' invoked by '{Username}' failed: {Message}", info.Name, context.User.Username,
                             exception.Message + "\n" + exception.StackTrace);
                     }
 
@@ -301,7 +301,8 @@ public class DiscordBot(ILogger<DiscordBot> logger, DiscordSocketClient client, 
                     await SendError(info, translation, context, result.ErrorReason, result.Error.Value.ToString());
 
                     _logger.LogError(
-                        $"Command '{info.Name}' ({result.GetType()}) invoked by '{context.User.Username}' failed due to {result.Error}: {result.ErrorReason}.");
+                        "Command '{Name}' ({Result}) invoked by '{Username}' failed due to {Error}: {ErrorReason}.",
+                        info.Name, result.GetType(), context.User.Username, result.Error, result.ErrorReason);
 
                     _eventHandler.CommandErroredEvent.Invoke(
                         new Exception($"{result.ErrorReason}\nResult Type: {result.GetType()}"));
@@ -323,7 +324,9 @@ public class DiscordBot(ILogger<DiscordBot> logger, DiscordSocketClient client, 
         string errorReason, string code)
     {
         _logger.LogError(
-            $"Command '{info.Name}' invoked by '{context.User.Username}' failed: {errorReason}");
+            "Command '{Name}' invoked by '{Username}' failed: {ErrorReason}",
+            info.Name, context.User.Username, errorReason
+        );
 
         var builder = new EmbedBuilder()
             .WithTitle(translation.Get<BotTranslator>().SomethingWentWrong())

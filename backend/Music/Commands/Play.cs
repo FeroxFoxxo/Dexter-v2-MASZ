@@ -4,7 +4,6 @@ using Discord;
 using Discord.Interactions;
 using Discord.WebSocket;
 using Lavalink4NET.Players;
-using Lavalink4NET.Rest.Entities.Tracks;
 using Lavalink4NET.Tracks;
 using Music.Abstractions;
 using Music.Enums;

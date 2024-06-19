@@ -192,11 +192,11 @@ public class DiscordRest(ILogger<DiscordRest> logger, IServiceProvider servicePr
                 .Select(x => x as IBan)
                 .Where(x => x is not null)
                 .ToListAsync();
-            _logger.LogInformation(string.Join(", ", bans));
+            _logger.LogInformation("{Bans}", string.Join(", ", bans));
         }
         catch (Exception e)
         {
-            _logger.LogError(e, $"Failed to fetch guild bans for guild '{guildId}' from API.");
+            _logger.LogError(e, "Failed to fetch guild bans for guild '{GuildId}' from API.", guildId);
             return FallBackToCache<List<IBan>>(cacheKey, cacheBehavior);
         }
 
@@ -233,7 +233,7 @@ public class DiscordRest(ILogger<DiscordRest> logger, IServiceProvider servicePr
         }
         catch (Exception e)
         {
-            _logger.LogError(e, $"Failed to fetch guild ban for guild '{guildId}' and user '{userId}' from API.");
+            _logger.LogError(e, "Failed to fetch guild ban for guild '{GuildId}' and user '{UserId}' from API.", guildId, userId);
             return FallBackToCache<IBan>(cacheKey, cacheBehavior);
         }
 
@@ -316,7 +316,7 @@ public class DiscordRest(ILogger<DiscordRest> logger, IServiceProvider servicePr
         }
         catch (Exception e)
         {
-            _logger.LogError(e, $"Failed to fetch user '{userId}' from API.");
+            _logger.LogError(e, "Failed to fetch user '{UserId}' from API.", userId);
 
             user = FallBackToCache<IUser>(cacheKey, cachingType);
 
@@ -341,7 +341,7 @@ public class DiscordRest(ILogger<DiscordRest> logger, IServiceProvider servicePr
 
     private async Task<bool> IsImageAvailable(string imageUrl)
     {
-        _logger.LogInformation($"Fetching {imageUrl} from API for user download.");
+        _logger.LogInformation("Fetching {ImageUrl} from API for user download.", imageUrl);
 
         using var client = new HttpClient();
 
@@ -375,7 +375,7 @@ public class DiscordRest(ILogger<DiscordRest> logger, IServiceProvider servicePr
         }
         catch (Exception e)
         {
-            _logger.LogError(e, $"Failed to fetch users for guild '{guildId}' from API.");
+            _logger.LogError(e, "Failed to fetch users for guild '{GuildId}' from API.", guildId);
             return FallBackToCache<List<IGuildUser>>(cacheKey, cacheBehavior);
         }
 
@@ -413,7 +413,7 @@ public class DiscordRest(ILogger<DiscordRest> logger, IServiceProvider servicePr
         }
         catch (Exception e)
         {
-            _logger.LogError(e, $"Failed to fetch current user for token '{token}' from API.");
+            _logger.LogError(e, "Failed to fetch current user for token '{Token}' from API.", token);
             return FallBackToCache<ISelfUser>(cacheKey, cacheBehavior);
         }
 
@@ -448,7 +448,7 @@ public class DiscordRest(ILogger<DiscordRest> logger, IServiceProvider servicePr
         }
         catch (Exception e)
         {
-            _logger.LogError(e, $"Failed to fetch guild channels for guild '{guildId}' from API.");
+            _logger.LogError(e, "Failed to fetch guild channels for guild '{GuildId}' from API.", guildId);
             return FallBackToCache<List<IGuildChannel>>(cacheKey, cacheBehavior);
         }
 
@@ -480,7 +480,7 @@ public class DiscordRest(ILogger<DiscordRest> logger, IServiceProvider servicePr
         }
         catch (Exception e)
         {
-            _logger.LogError(e, $"Failed to fetch guild '{guildId}' from API.");
+            _logger.LogError(e, "Failed to fetch guild '{GuildId}' from API.", guildId);
             return FallBackToCache<SocketGuild>(cacheKey, cacheBehavior);
         }
 
@@ -515,7 +515,7 @@ public class DiscordRest(ILogger<DiscordRest> logger, IServiceProvider servicePr
         }
         catch (Exception e)
         {
-            _logger.LogError(e, $"Failed to fetch guilds of current user for token '{token}' from API.");
+            _logger.LogError(e, "Failed to fetch guilds of current user for token '{Token}' from API.", token);
             return FallBackToCache<List<UserGuild>>(cacheKey, cacheBehavior);
         }
 
@@ -547,7 +547,7 @@ public class DiscordRest(ILogger<DiscordRest> logger, IServiceProvider servicePr
         }
         catch (Exception e)
         {
-            _logger.LogError(e, $"Failed to fetch guild '{guildId}' user '{userId}' from API.");
+            _logger.LogError(e, "Failed to fetch guild '{GuildId}' user '{UserId}' from API.", guildId, userId);
             return FallBackToCache<IGuildUser>(cacheKey, cacheBehavior);
         }
 
@@ -572,7 +572,7 @@ public class DiscordRest(ILogger<DiscordRest> logger, IServiceProvider servicePr
         }
         catch (Exception e)
         {
-            _logger.LogError(e, $"Failed to ban user '{userId}' from guild '{guildId}'.");
+            _logger.LogError(e, "Failed to ban user '{UserId}' from guild '{GuildId}'.", userId, guildId);
             return false;
         }
 
@@ -594,7 +594,7 @@ public class DiscordRest(ILogger<DiscordRest> logger, IServiceProvider servicePr
         }
         catch (Exception e)
         {
-            _logger.LogError(e, $"Failed to unban user '{userId}' from guild '{guildId}'.");
+            _logger.LogError(e, "Failed to unban user '{UserId}' from guild '{GuildId}'.", userId, guildId);
             return false;
         }
 
@@ -621,7 +621,7 @@ public class DiscordRest(ILogger<DiscordRest> logger, IServiceProvider servicePr
         }
         catch (Exception e)
         {
-            _logger.LogError(e, $"Failed to grant user '{userId}' from guild '{guildId}' timeout '{timeOutDuration}'.");
+            _logger.LogError(e, "Failed to grant user '{UserId}' from guild '{GuildId}' timeout '{TimeOutDuration}'.", userId, guildId, timeOutDuration);
             return false;
         }
 
@@ -647,7 +647,7 @@ public class DiscordRest(ILogger<DiscordRest> logger, IServiceProvider servicePr
         }
         catch (Exception e)
         {
-            _logger.LogError(e, $"Failed to revoke user '{userId}' from guild '{guildId}' timeout.");
+            _logger.LogError(e, "Failed to revoke user '{UserId}' from guild '{GuildId}' timeout.", userId, guildId);
             return false;
         }
 
@@ -672,7 +672,7 @@ public class DiscordRest(ILogger<DiscordRest> logger, IServiceProvider servicePr
         }
         catch (Exception e)
         {
-            _logger.LogError(e, $"Failed to kick user '{userId}' from guild '{guildId}'.");
+            _logger.LogError(e, "Failed to kick user '{UserId}' from guild '{GuildId}'.", userId, guildId);
             return false;
         }
 
@@ -702,7 +702,7 @@ public class DiscordRest(ILogger<DiscordRest> logger, IServiceProvider servicePr
         }
         catch (Exception e)
         {
-            _logger.LogError(e, $"Failed to create dm with user '{userId}'.");
+            _logger.LogError(e, "Failed to create dm with user '{UserId}'.", userId);
             return FallBackToCache<RestDMChannel>(cacheKey, CacheBehavior.Default);
         }
 

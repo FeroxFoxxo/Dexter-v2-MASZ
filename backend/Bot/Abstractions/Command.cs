@@ -23,7 +23,9 @@ public abstract class Command<T> : InteractionModuleBase<SocketInteractionContex
     public override async Task BeforeExecuteAsync(ICommandInfo command)
     {
         Logger.LogInformation(
-            $"{Context.User.Id} used {command.Name} in {Context.Channel.Id} | {Context.Guild.Id} {Context.Guild.Name}");
+            "{Username} used {CommandName} in {ChannelName} | {GuildName} ({GuildId})",
+            Context.User.Username, command.Name, Context.Channel.Name, Context.Guild.Name, Context.Guild.Id
+        );
 
         GuildConfig = await GuildConfigRepository.GetGuildConfig(Context.Guild.Id);
 

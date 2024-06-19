@@ -6,6 +6,7 @@ using Discord.Interactions;
 using Levels.Data;
 using Levels.Models;
 using Levels.Services;
+using Microsoft.Extensions.Logging;
 using Color = Discord.Color;
 
 namespace Levels.Commands;
@@ -25,7 +26,7 @@ public class UpdateRoles : Command<UpdateRoles>
     [SlashCommand("updateroles", "Update a user's roles to match their level.", runMode: RunMode.Async)]
     public async Task RankCommand(
         [Summary("user", "User to update roles for. Defaults to oneself.")]
-        IGuildUser user = null
+    IGuildUser user = null
     )
     {
         user ??= Context.Guild.GetUser(Context.User.Id);
@@ -43,6 +44,9 @@ public class UpdateRoles : Command<UpdateRoles>
         var totalLevel = calclevel.Total.Level;
 
         var result = await LevelingService.HandleLevelRoles(level, totalLevel, user, GuildLevelConfigRepository);
+
+        Logger.LogInformation("{RunAgent} used the update roles command on {Affected} in {GuildName} ({GuildId})",
+            Context.User.Username, user.Username, Context.Guild.Name, Context.Guild.Id);
 
         var embed = new EmbedBuilder()
             .WithTitle("Role update")
