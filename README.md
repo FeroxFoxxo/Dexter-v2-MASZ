@@ -52,10 +52,6 @@
 
 ![dashboard preview](https://raw.githubusercontent.com/FeroxFoxxo/DexterMASZ/master/.github/dashboard.png)
 
-### 🤝 Support Server
-
-Join this server to receive update information or get support: [https://discord.gg/DBS664yjWN](https://discord.gg/DBS664yjWN)
-
 ## 🛠 Hosting
 
 You can **host your own instance of Dexter** by using the instructions below.\
