@@ -117,12 +117,18 @@ public class Initialize
         {
             var client = ConsoleHelper.AskAndSet("Discord OAuth Client ID", "DISCORD_OAUTH_CLIENT_ID");
 
-            if (!ulong.TryParse(client.Key, out var clientId))
-                continue;
+            if (ulong.TryParse(client.Key, out var clientId))
+            {
+                ConsoleHelper.AddSubHeading("Found Client ID", clientId.ToString());
 
-            ConsoleHelper.AddSubHeading("Found Client ID", clientId.ToString());
+                return clientId;
+            }
 
-            return clientId;
+            if (!ConsoleHelper.ShouldEdit || Console.IsInputRedirected)
+                throw new InvalidOperationException(
+                    "DISCORD_OAUTH_CLIENT_ID must be a numeric Discord application client ID.");
+
+            ConsoleHelper.AddSubHeading("Invalid Client ID", client.Key);
         }
     }
 
