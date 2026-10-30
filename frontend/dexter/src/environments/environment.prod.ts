@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  url: "https://dexter.furriesadrift.gay",
+  url: "https://dexter.feroxfoxxo.com",
   cors: false
 };
