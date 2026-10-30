@@ -16,8 +16,7 @@ namespace Punishments.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasDefaultSchema("Punishments")
-                .HasAnnotation("ProductVersion", "6.0.8")
+                .HasAnnotation("ProductVersion", "10.0.14")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Punishments.Models.ModCase", b =>
@@ -42,9 +41,6 @@ namespace Punishments.Migrations
                         .HasColumnType("bigint unsigned");
 
                     b.Property<string>("Description")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Discriminator")
                         .HasColumnType("longtext");
 
                     b.Property<ulong>("GuildId")
@@ -106,7 +102,7 @@ namespace Punishments.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ModCases", "Punishments");
+                    b.ToTable("ModCases");
                 });
 
             modelBuilder.Entity("Punishments.Models.ModCaseComment", b =>
@@ -131,7 +127,7 @@ namespace Punishments.Migrations
 
                     b.HasIndex("ModCaseId");
 
-                    b.ToTable("ModCaseComments", "Punishments");
+                    b.ToTable("ModCaseComments");
                 });
 
             modelBuilder.Entity("Punishments.Models.ModCaseTemplate", b =>
@@ -178,7 +174,7 @@ namespace Punishments.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ModCaseTemplates", "Punishments");
+                    b.ToTable("ModCaseTemplates");
                 });
 
             modelBuilder.Entity("Punishments.Models.PunishmentConfig", b =>
@@ -195,7 +191,7 @@ namespace Punishments.Migrations
 
                     b.HasKey("GuildId");
 
-                    b.ToTable("PunishmentConfig", "Punishments");
+                    b.ToTable("PunishmentConfig");
                 });
 
             modelBuilder.Entity("Punishments.Models.ModCaseComment", b =>

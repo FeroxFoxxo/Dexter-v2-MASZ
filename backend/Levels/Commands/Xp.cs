@@ -5,7 +5,6 @@ using Bot.Services;
 using Discord;
 using Discord.Interactions;
 using Humanizer;
-using Humanizer.Localisation;
 using Levels.Data;
 using Levels.Enums;
 using Levels.Models;

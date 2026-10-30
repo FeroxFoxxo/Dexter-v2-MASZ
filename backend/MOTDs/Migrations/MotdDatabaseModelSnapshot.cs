@@ -16,8 +16,7 @@ namespace MOTDs.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasDefaultSchema("MOTDs")
-                .HasAnnotation("ProductVersion", "6.0.1")
+                .HasAnnotation("ProductVersion", "10.0.14")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("MOTDs.Models.GuildMotd", b =>
@@ -43,7 +42,7 @@ namespace MOTDs.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("GuildMotDs", "MOTDs");
+                    b.ToTable("GuildMotDs");
                 });
 #pragma warning restore 612, 618
         }

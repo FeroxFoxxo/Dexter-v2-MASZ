@@ -16,8 +16,7 @@ namespace UserMaps.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasDefaultSchema("UserMaps")
-                .HasAnnotation("ProductVersion", "6.0.1")
+                .HasAnnotation("ProductVersion", "10.0.14")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("UserMaps.Models.UserMap", b =>
@@ -46,7 +45,7 @@ namespace UserMaps.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserMaps", "UserMaps");
+                    b.ToTable("UserMaps");
                 });
 #pragma warning restore 612, 618
         }

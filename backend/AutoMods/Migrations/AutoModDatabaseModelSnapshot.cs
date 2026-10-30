@@ -16,8 +16,7 @@ namespace AutoMods.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasDefaultSchema("AutoMods")
-                .HasAnnotation("ProductVersion", "7.0.13")
+                .HasAnnotation("ProductVersion", "10.0.14")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("AutoMods.Models.AutoModConfig", b =>
@@ -64,7 +63,7 @@ namespace AutoMods.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AutoModConfigs", "AutoMods");
+                    b.ToTable("AutoModConfigs");
                 });
 
             modelBuilder.Entity("AutoMods.Models.AutoModEvent", b =>
@@ -105,7 +104,7 @@ namespace AutoMods.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AutoModEvents", "AutoMods");
+                    b.ToTable("AutoModEvents");
                 });
 #pragma warning restore 612, 618
         }

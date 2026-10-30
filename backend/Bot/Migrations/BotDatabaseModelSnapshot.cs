@@ -15,8 +15,7 @@ namespace Bot.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasDefaultSchema("Bot")
-                .HasAnnotation("ProductVersion", "6.0.9")
+                .HasAnnotation("ProductVersion", "10.0.14")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Bot.Models.AppSettings", b =>
@@ -60,7 +59,7 @@ namespace Bot.Migrations
 
                     b.HasKey("ClientId");
 
-                    b.ToTable("AppSettings", "Bot");
+                    b.ToTable("AppSettings");
                 });
 
             modelBuilder.Entity("Bot.Models.GuildConfig", b =>
@@ -104,7 +103,7 @@ namespace Bot.Migrations
 
                     b.HasKey("GuildId");
 
-                    b.ToTable("GuildConfigs", "Bot");
+                    b.ToTable("GuildConfigs");
                 });
 
             modelBuilder.Entity("Bot.Models.LeftUser", b =>
@@ -130,7 +129,7 @@ namespace Bot.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("LeftUsers", "Bot");
+                    b.ToTable("LeftUsers");
                 });
 #pragma warning restore 612, 618
         }

@@ -16,8 +16,7 @@ namespace UserNotes.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasDefaultSchema("UserNotes")
-                .HasAnnotation("ProductVersion", "6.0.1")
+                .HasAnnotation("ProductVersion", "10.0.14")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("UserNotes.Models.UserNote", b =>
@@ -43,7 +42,7 @@ namespace UserNotes.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserNotes", "UserNotes");
+                    b.ToTable("UserNotes");
                 });
 #pragma warning restore 612, 618
         }

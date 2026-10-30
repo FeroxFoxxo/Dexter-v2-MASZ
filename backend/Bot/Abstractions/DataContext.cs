@@ -16,8 +16,6 @@ public abstract class DataContext<TContext>(DbContextOptions<TContext> options) 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.HasDefaultSchema(GetType().Namespace?.Split('.').FirstOrDefault());
-
         StringArrayComparer stringArrayComparer = new();
 
         UlongArrayComparer ulongArrayComparer = new();

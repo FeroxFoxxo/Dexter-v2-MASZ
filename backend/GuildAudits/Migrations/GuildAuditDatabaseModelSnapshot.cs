@@ -15,8 +15,7 @@ namespace GuildAudits.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasDefaultSchema("GuildAudits")
-                .HasAnnotation("ProductVersion", "6.0.8")
+                .HasAnnotation("ProductVersion", "10.0.14")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("GuildAudits.Models.GuildAuditConfig", b =>
@@ -45,7 +44,7 @@ namespace GuildAudits.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("GuildAuditConfigs", "GuildAudits");
+                    b.ToTable("GuildAuditConfigs");
                 });
 #pragma warning restore 612, 618
         }

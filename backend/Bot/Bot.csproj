@@ -21,7 +21,7 @@
 		<PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.14" />
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.14" />
 
-		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0" />
+		<PackageReference Include="MySql.EntityFrameworkCore" Version="10.0.12" />
 
 		<PackageReference Include="AspNet.Security.OAuth.Discord" Version="10.0.0" />
 

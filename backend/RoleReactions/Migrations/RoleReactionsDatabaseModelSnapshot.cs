@@ -15,8 +15,7 @@ namespace RoleReactions.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasDefaultSchema("RoleReactions")
-                .HasAnnotation("ProductVersion", "8.0.0")
+                .HasAnnotation("ProductVersion", "10.0.14")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("RoleReactions.Models.RoleMenu", b =>
@@ -47,7 +46,7 @@ namespace RoleReactions.Migrations
 
                     b.HasKey("GuildId", "ChannelId", "Id");
 
-                    b.ToTable("RoleReactionsMenu", "RoleReactions");
+                    b.ToTable("RoleReactionsMenu");
                 });
 
             modelBuilder.Entity("RoleReactions.Models.UserRoles", b =>
@@ -69,7 +68,7 @@ namespace RoleReactions.Migrations
 
                     b.HasKey("GuildId", "ChannelId", "Id", "UserId");
 
-                    b.ToTable("UserRoles", "RoleReactions");
+                    b.ToTable("UserRoles");
                 });
 #pragma warning restore 612, 618
         }

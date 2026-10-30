@@ -15,8 +15,7 @@ namespace PrivateVcs.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasDefaultSchema("PrivateVcs")
-                .HasAnnotation("ProductVersion", "8.0.1")
+                .HasAnnotation("ProductVersion", "10.0.14")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("PrivateVcs.Models.PrivateVcConfig", b =>
@@ -45,7 +44,7 @@ namespace PrivateVcs.Migrations
 
                     b.HasKey("GuildId");
 
-                    b.ToTable("PrivateVcConfigs", "PrivateVcs");
+                    b.ToTable("PrivateVcConfigs");
                 });
 #pragma warning restore 612, 618
         }

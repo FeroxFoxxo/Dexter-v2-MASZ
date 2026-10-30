@@ -2,7 +2,7 @@
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing;
 using SixLabors.ImageSharp.Drawing.Processing;
-using SixLabors.ImageSharp.Processing;
+using SixLabors.ImageSharp.PixelFormats;
 using System.Numerics;
 
 namespace Levels.Extensions;
@@ -18,10 +18,10 @@ public static class Graphics
         var r = (byte)(code % 256);
         code >>= 8;
         var a = (byte)code;
-        return Color.FromRgba(r, g, b, a);
+        return Color.FromPixel(new Rgba32(r, g, b, a));
     }
 
-    public static IImageProcessingContext DrawTextInRect(this IImageProcessingContext context, string text,
+    public static void DrawTextInRect(this DrawingCanvas canvas, string text,
         RectangleF rect, Font font, Color color = default, HorizontalAlignment horAlignment = HorizontalAlignment.Left,
         VerticalAlignment verAlignment = VerticalAlignment.Top)
     {
@@ -44,7 +44,7 @@ public static class Graphics
                 }
             )
         };
-        return context.DrawText(opts, text, color);
+        canvas.DrawText(opts, text, new SolidBrush(color), null);
     }
 
     public static IPath RoundedRect(Rectangle bounds, int radius)
@@ -76,7 +76,7 @@ public static class Graphics
 
     public static float GetBrightness(this Color color)
     {
-        var vec4 = (Vector4)color;
+        var vec4 = color.ToScaledVector4();
         return (vec4.X + vec4.Y + vec4.Z) / 3;
     }
 }

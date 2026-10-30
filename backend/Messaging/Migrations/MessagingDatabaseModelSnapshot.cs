@@ -16,8 +16,7 @@ namespace Messaging.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasDefaultSchema("Messaging")
-                .HasAnnotation("ProductVersion", "6.0.1")
+                .HasAnnotation("ProductVersion", "10.0.14")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Messaging.Models.ScheduledMessage", b =>
@@ -61,7 +60,7 @@ namespace Messaging.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ScheduledMessages", "Messaging");
+                    b.ToTable("ScheduledMessages");
                 });
 #pragma warning restore 612, 618
         }

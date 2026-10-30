@@ -15,8 +15,7 @@ namespace JoinLeave.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasDefaultSchema("JoinLeave")
-                .HasAnnotation("ProductVersion", "7.0.12")
+                .HasAnnotation("ProductVersion", "10.0.14")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("JoinLeave.Models.JoinLeaveConfig", b =>
@@ -42,7 +41,7 @@ namespace JoinLeave.Migrations
 
                     b.HasKey("GuildId");
 
-                    b.ToTable("JoinLeaveConfig", "JoinLeave");
+                    b.ToTable("JoinLeaveConfig");
                 });
 #pragma warning restore 612, 618
         }

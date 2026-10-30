@@ -15,8 +15,7 @@ namespace Levels.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasDefaultSchema("Levels")
-                .HasAnnotation("ProductVersion", "8.0.2")
+                .HasAnnotation("ProductVersion", "10.0.14")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Levels.Models.GuildLevelConfig", b =>
@@ -78,7 +77,7 @@ namespace Levels.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("GuildLevelConfigs", "Levels");
+                    b.ToTable("GuildLevelConfigs");
                 });
 
             modelBuilder.Entity("Levels.Models.GuildUserLevel", b =>
@@ -97,7 +96,7 @@ namespace Levels.Migrations
 
                     b.HasKey("GuildId", "UserId");
 
-                    b.ToTable("GuildUserLevels", "Levels");
+                    b.ToTable("GuildUserLevels");
                 });
 
             modelBuilder.Entity("Levels.Models.UserRankcardConfig", b =>
@@ -147,7 +146,7 @@ namespace Levels.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserRankcardConfigs", "Levels");
+                    b.ToTable("UserRankcardConfigs");
                 });
 #pragma warning restore 612, 618
         }

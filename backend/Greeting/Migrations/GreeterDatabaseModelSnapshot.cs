@@ -16,8 +16,7 @@ namespace Greeting.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasDefaultSchema("Greeting")
-                .HasAnnotation("ProductVersion", "7.0.13")
+                .HasAnnotation("ProductVersion", "10.0.14")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Greeting.Models.GreetGateModel", b =>
@@ -46,7 +45,7 @@ namespace Greeting.Migrations
 
                     b.HasKey("GuildId");
 
-                    b.ToTable("GreeterConfigs", "Greeting");
+                    b.ToTable("GreeterConfigs");
                 });
 #pragma warning restore 612, 618
         }

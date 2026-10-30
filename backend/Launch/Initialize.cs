@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
 using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 namespace Launch;
 
@@ -157,14 +156,9 @@ public class Initialize
         var connectionString = $"Server={databaseSettings.Host};Port={databaseSettings.Port};" +
                                $"Database={databaseSettings.Database};Uid={databaseSettings.User};Pwd={databaseSettings.Pass};";
 
-        return x => x.UseMySql(
+        return x => x.UseMySQL(
             connectionString,
-            ServerVersion.AutoDetect(connectionString),
-            o =>
-            {
-                o.SchemaBehavior(MySqlSchemaBehavior.Translate, (schema, table) => $"{schema}_{table}");
-                o.EnableRetryOnFailure();
-            }
+            o => o.EnableRetryOnFailure()
         );
     }
 
@@ -338,7 +332,7 @@ public class Initialize
         {
             foreach (var dataContext in cachedServices.GetInitializedClasses<DbContext>(scope.ServiceProvider))
             {
-                ConsoleHelper.AddSubHeading("Adding migrations for", dataContext.GetType().Name);
+                ConsoleHelper.AddSubHeading("Applying migrations for", dataContext.GetType().Name);
 
                 await dataContext.Database.MigrateAsync();
             }
@@ -346,7 +340,7 @@ public class Initialize
 
         Console.WriteLine();
 
-        ConsoleHelper.AddSubHeading("Successfully added", "migrations to databases");
+        ConsoleHelper.AddSubHeading("Successfully applied", "database migrations");
     }
 
     private static void ConfigureApp(List<Module> modules, CachedServices cachedServices, AppSettings appSettings,
