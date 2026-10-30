@@ -1,70 +1,71 @@
-version: '2.2'
 
-volumes:
-  mysql:
-  filehost:
-
+    
+  
 services:
   db:
     container_name: dexter_db
     image: mysql:8.0
-    volumes:
-        - mysql:/var/lib/mysql
     restart: unless-stopped
     environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
-      - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-      - MYSQL_PORT=${MYSQL_PORT}
-      - MYSQL_ROOT_HOST=%
-    expose:
-      - "3306"
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Set MYSQL_ROOT_PASSWORD in .env}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:?Set MYSQL_DATABASE in .env}
+      MYSQL_USER: ${MYSQL_USER:?Set MYSQL_USER in .env}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:?Set MYSQL_PASSWORD in .env}
+    volumes:
+      - mysql:/var/lib/mysql
     healthcheck:
-            test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
-            timeout: 20s
-            retries: 10
+      test:
+        - CMD-SHELL
+        - 'mysql --protocol=tcp -h 127.0.0.1 -u "$$MYSQL_USER" -p"$$MYSQL_PASSWORD" "$$MYSQL_DATABASE" -e "SELECT 1" >/dev/null 2>&1'
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 40s
     networks:
       - appnetwork
 
   backend:
     container_name: dexter_backend
     image: ghcr.io/feroxfoxxo/dexter_backend:latest
-    depends_on:
-        db:
-          condition: service_healthy
     restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
     environment:
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
-      - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-      - MYSQL_PORT=${MYSQL_PORT}
-      - MYSQL_HOST=db
-      - DISCORD_BOT_TOKEN=${DISCORD_BOT_TOKEN}
-      - DISCORD_OAUTH_CLIENT_ID=${DISCORD_OAUTH_CLIENT_ID}
-      - DISCORD_OAUTH_CLIENT_SECRET=${DISCORD_OAUTH_CLIENT_SECRET}
-      - DISCORD_SITE_ADMINS=${DISCORD_SITE_ADMINS}
-      - META_SERVICE_BASE_URL=${META_SERVICE_BASE_URL}
-      - META_SERVICE_NAME=${META_SERVICE_NAME}
-      - META_SERVICE_DOMAIN=${META_SERVICE_DOMAIN}
-      - ABSOLUTE_PATH_TO_FILE_UPLOAD=/filehost/
-    networks:
-      - appnetwork
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_HOST: db
+      MYSQL_PORT: '3306'
+      DISCORD_BOT_TOKEN: ${DISCORD_BOT_TOKEN:?Set DISCORD_BOT_TOKEN in .env}
+      DISCORD_OAUTH_CLIENT_ID: ${DISCORD_OAUTH_CLIENT_ID:?Set DISCORD_OAUTH_CLIENT_ID in .env}
+      DISCORD_OAUTH_CLIENT_SECRET: ${DISCORD_OAUTH_CLIENT_SECRET:?Set DISCORD_OAUTH_CLIENT_SECRET in .env}
+      DISCORD_SITE_ADMINS: ${DISCORD_SITE_ADMINS:-}
+      META_SERVICE_BASE_URL: ${META_SERVICE_BASE_URL:?Set META_SERVICE_BASE_URL in .env}
+      META_SERVICE_NAME: ${META_SERVICE_NAME:-Dexter}
+      META_SERVICE_DOMAIN: ${META_SERVICE_DOMAIN:?Set META_SERVICE_DOMAIN in .env}
+      ABSOLUTE_PATH_TO_FILE_UPLOAD: /filehost/
     volumes:
       - filehost:/filehost
+    networks:
+      - appnetwork
 
   nginx:
     container_name: dexter_frontend
     image: ghcr.io/feroxfoxxo/dexter_frontend:latest
     restart: unless-stopped
     depends_on:
-        - db
-        - backend
+      - backend
     ports:
-      - "127.0.0.1:5565:80"
+      - '127.0.0.1:5565:80'
     networks:
-    - appnetwork
+      - appnetwork
+
+volumes:
+  mysql:
+  filehost:
 
 networks:
   appnetwork:
     driver: bridge
+
