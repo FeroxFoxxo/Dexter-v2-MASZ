@@ -31,7 +31,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Music", "Music\Music.csproj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PrivateVcs", "PrivateVCs\PrivateVcs.csproj", "{E7106923-2541-4585-BD9D-223D4FE715EB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RoleReactions", "Role Reactions\RoleReactions.csproj", "{673A8646-1E45-408B-B550-AF75E0D1DB14}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RoleReactions", "RoleReactions\RoleReactions.csproj", "{673A8646-1E45-408B-B550-AF75E0D1DB14}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JoinLeave", "JoinLeave\JoinLeave.csproj", "{0FB633E1-2E69-47D1-BB4D-F19FA8755F61}"
 EndProject

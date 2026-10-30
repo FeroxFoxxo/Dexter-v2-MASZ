@@ -27,7 +27,7 @@
 		<ProjectReference Include="..\Music\Music.csproj" />
 		<ProjectReference Include="..\PrivateVCs\PrivateVcs.csproj" />
 		<ProjectReference Include="..\Punishments\Punishments.csproj" />
-		<ProjectReference Include="..\Role Reactions\RoleReactions.csproj" />
+		<ProjectReference Include="..\RoleReactions\RoleReactions.csproj" />
 		<ProjectReference Include="..\UserMaps\UserMaps.csproj" />
 		<ProjectReference Include="..\UserNotes\UserNotes.csproj" />
 		<ProjectReference Include="..\Utilities\Utilities.csproj" />

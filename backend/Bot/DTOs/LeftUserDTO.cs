@@ -67,6 +67,9 @@ public class LeftUserDto : IUser
     /// <inheritdoc />
     public string GlobalName => Username;
 
+    /// <inheritdoc />
+    public PrimaryGuild? PrimaryGuild => null;
+
     public string AvatarDecorationHash => throw new NotImplementedException();
 
     public ulong? AvatarDecorationSkuId => throw new NotImplementedException();
