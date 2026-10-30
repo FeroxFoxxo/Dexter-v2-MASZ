@@ -1,27 +1,43 @@
+
 name: .NET
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
+
+permissions:
+  contents: read
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 8.0.*
+      - name: Checkout repository
+        uses: actions/checkout@v7
 
-    - name: Build
-      run: |
-        cd backend
-        dotnet clean
-        dotnet restore
-        dotnet build --no-restore -c Release -o deploy
-        dotnet test --no-build --verbosity normal
+      - name: Setup .NET 10
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Display .NET version
+        run: dotnet --info
+
+      - name: Clean
+        working-directory: ./backend
+        run: dotnet clean Dexter.sln -c Release
+
+      - name: Restore dependencies
+        working-directory: ./backend
+        run: dotnet restore Dexter.sln
+
+      - name: Build
+        working-directory: ./backend
+        run: dotnet build Dexter.sln --no-restore -c Release
+
+      - name: Test
+        working-directory: ./backend
+        run: dotnet test Dexter.sln --no-build -c Release --verbosity normal

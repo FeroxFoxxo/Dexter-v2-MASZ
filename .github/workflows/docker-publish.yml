@@ -1,40 +1,54 @@
+
 name: Docker
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
+
+permissions:
+  contents: read
+  packages: write
 
 jobs:
   build:
-    if: github.repository_owner  == 'FeroxFoxxo'
+    if: github.repository_owner == 'FeroxFoxxo'
     runs-on: [self-hosted, linux]
+
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
-        
+        uses: actions/checkout@v7
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Build backend
         run: |
-          cd backend
-          docker build -t ghcr.io/feroxfoxxo/dexter_backend:latest .
-     
+          docker build \
+            -t ghcr.io/feroxfoxxo/dexter_backend:latest \
+            ./backend
+
       - name: Push backend
         run: |
-          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u FeroxFoxxo --password-stdin
           docker push ghcr.io/feroxfoxxo/dexter_backend:latest
-          
+
       - name: Build frontend
         run: |
-          cd frontend
-          docker build -t ghcr.io/feroxfoxxo/dexter_frontend:latest .
-     
+          docker build \
+            -t ghcr.io/feroxfoxxo/dexter_frontend:latest \
+            ./frontend
+
       - name: Push frontend
         run: |
-          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u FeroxFoxxo --password-stdin
           docker push ghcr.io/feroxfoxxo/dexter_frontend:latest
 
-      - name: Send discord notification
+      - name: Send Discord notification
+        if: success()
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-        uses: Ilshidur/action-discord@master
+        uses: Ilshidur/action-discord@0.4.0
         with:
-          args: "🚀 Published 🚀"
+          args: "🚀 Published Dexter backend and frontend successfully! 🚀"
