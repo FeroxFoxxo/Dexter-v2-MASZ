@@ -1,10 +1,14 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
+# syntax=docker/dockerfile:1
+
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build-env
 WORKDIR /backend
 
 COPY ./ ./
-RUN dotnet publish -c Release -o ./bin
+RUN --mount=type=secret,id=sixlabors_license_key \
+	dotnet publish -c Release -o ./bin \
+	-p:SixLaborsLicenseKey="$(cat /run/secrets/sixlabors_license_key)"
 
-FROM mcr.microsoft.com/dotnet/nightly/aspnet:8.0
+FROM mcr.microsoft.com/dotnet/aspnet:10.0
 WORKDIR /backend/bin
 COPY --from=build-env /backend/bin/ .
 

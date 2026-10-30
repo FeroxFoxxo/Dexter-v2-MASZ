@@ -26,8 +26,11 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build backend
+        env:
+          SIXLABORS_LICENSE_KEY: ${{ secrets.SIXLABORS_LICENSE_KEY }}
         run: |
           docker build \
+            --secret id=sixlabors_license_key,env=SIXLABORS_LICENSE_KEY \
             -t ghcr.io/feroxfoxxo/dexter_backend:latest \
             ./backend
 
