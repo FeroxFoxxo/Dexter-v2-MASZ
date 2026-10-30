@@ -140,7 +140,7 @@ public static partial class Rankcard
         }
 
         Func<IImageProcessingContext, IImageProcessingContext> bgTransform;
-        Action<DrawingCanvas> pfpTransform;
+        Func<IImageProcessingContext, IImageProcessingContext> pfpTransform;
 
         var xpColor = rankcardConfig.XpColor.ColorFromArgb();
         var offColor = rankcardConfig.OffColor.ColorFromArgb();
@@ -206,10 +206,10 @@ public static partial class Rankcard
                 pfp.Mutate(ctx => ctx.Resize(rectPfp.Size));
 
                 pfpTransform = rankcardConfig.RankcardFlags.HasFlag(RankcardFlags.ClipPfp)
-                    ? g => g.Apply(new PathBuilder().AddArc(rectPfp, 0, 0, 360).Build(),
+                    ? g => g.Clip(new PathBuilder().AddArc(rectPfp, 0, 0, 360).Build(),
                         clipg => clipg.DrawImage(pfp, new Point(rectPfp.Left, rectPfp.Top), 1)
                     )
-                    : g => g.Apply(rectPfp, ctx => ctx.DrawImage(pfp, new Point(rectPfp.Left, rectPfp.Top), 1));
+                    : g => g.DrawImage(pfp, new Point(rectPfp.Left, rectPfp.Top), 1);
             }
             catch (HttpRequestException)
             {
@@ -229,42 +229,39 @@ public static partial class Rankcard
 
             g = bgTransform(g);
 
-            g.Paint(canvas =>
-            {
-                canvas.Fill(new SolidBrush(lvlBgColor), TitleRect(rankcardConfig));
-                canvas.DrawTextInRect("LEVEL", rectLevelLabel, fontMini, offColor, HorizontalAlignment.Right,
+            g = g.Fill(lvlBgColor, TitleRect(rankcardConfig))
+                .DrawTextInRect("LEVEL", rectLevelLabel, fontMini, offColor, HorizontalAlignment.Right,
                     VerticalAlignment.Bottom);
-                canvas.DrawTextInRect(totallevel.ToString(), rectLevelText, fontTitle, xpColor, HorizontalAlignment.Left,
+                g = g.DrawTextInRect(totallevel.ToString(), rectLevelText, fontTitle, xpColor, HorizontalAlignment.Left,
                     VerticalAlignment.Bottom);
-                canvas.DrawTextInRect(totallevelstr,
+                g = g.DrawTextInRect(totallevelstr,
                     new Rectangle(rectLevelText.X + (int)offset.Width + margin, rectLevelText.Y,
                         Widthmain / 2 - MiniLabelWidth - margin - (int)offset.Width,
                         LabelHeight + LabelBaselineDeltaNormal),
                     fontDefault, xpColor, HorizontalAlignment.Left, VerticalAlignment.Bottom);
 
-                canvas.DrawLevels(fontTitle, fontDefault, fontMini, levelsData, rankcardConfig);
-
-                const int pfpmargin = 3;
-                if (rankcardConfig.RankcardFlags.HasFlag(RankcardFlags.PfpBackground))
-                    canvas.Fill(new SolidBrush(0xff3f3f3f.ColorFromArgb()),
-                        new EllipsePolygon(rectPfp.X + rectPfp.Width / 2, rectPfp.Y + rectPfp.Height / 2,
-                            rectPfp.Width + 2 * pfpmargin, rectPfp.Height + 2 * pfpmargin));
-
-                if (rankcardConfig.RankcardFlags.HasFlag(RankcardFlags.DisplayPfp))
-                    pfpTransform(canvas);
-
-                canvas.DrawTextInRect(user.Username, NameRect(rankcardConfig), fontDefault,
-                    offColor,
-                    HorizontalAlignment.Right, VerticalAlignment.Bottom);
-            });
+            g = g.DrawLevels(fontTitle, fontDefault, fontMini, levelsData, rankcardConfig);
 
             bg?.Dispose();
+
+            const int pfpmargin = 3;
+            if (rankcardConfig.RankcardFlags.HasFlag(RankcardFlags.PfpBackground))
+                g = g.Fill(0xff3f3f3f.ColorFromArgb()
+                    , new EllipsePolygon(rectPfp.X + rectPfp.Width / 2, rectPfp.Y + rectPfp.Height / 2, rectPfp.Width + 2 * pfpmargin, rectPfp.Height + 2 * pfpmargin));
+
+            if (rankcardConfig.RankcardFlags.HasFlag(RankcardFlags.DisplayPfp))
+                g = pfpTransform(g);
+
             pfp?.Dispose();
+
+            g = g.DrawTextInRect(user.Username, NameRect(rankcardConfig), fontDefault,
+                offColor,
+                HorizontalAlignment.Right, VerticalAlignment.Bottom);
         });
         return result;
     }
 
-    private static void DrawLevels(this DrawingCanvas g, Font fontTitle, Font fontDefault,
+    private static IImageProcessingContext DrawLevels(this IImageProcessingContext g, Font fontTitle, Font fontDefault,
         Font fontMini, IEnumerable<RankcardLevelData> levels, UserRankcardConfig prefs)
     {
         var xpColor = prefs.XpColor.ColorFromArgb();
@@ -282,25 +279,25 @@ public static partial class Rankcard
                     barRect.Height / 2 - 2);
             var levelRenderArea = levelPath.Clip(barWholePath);
 
-            g.Fill(new SolidBrush(0xe0000000.ColorFromArgb()), barWholePath);
-            g.Apply(barInnerClipPath,
-                gclip => gclip.Paint(canvas => canvas.Fill(new SolidBrush(xpColor), barXpgPath)));
-            g.Fill(new SolidBrush(prefs.LevelBgColor.ColorFromArgb()), levelRenderArea);
-            g.DrawTextInRect(ld.XpType, ld.Rects.TypeLabel, fontTitle, offColor, HorizontalAlignment.Center,
-                VerticalAlignment.Center);
+            g = g.Fill(0xe0000000.ColorFromArgb(), barWholePath)
+                .Clip(barInnerClipPath,
+                    gclip => gclip.Fill(xpColor, barXpgPath))
+                .Fill(prefs.LevelBgColor.ColorFromArgb(), levelRenderArea)
+                .DrawTextInRect(ld.XpType, ld.Rects.TypeLabel, fontTitle, offColor, HorizontalAlignment.Center,
+                    VerticalAlignment.Center);
 
             if (ld.Rects.RankLabel != default)
-                g.DrawTextInRect("RANK", ld.Rects.RankLabel, fontMini, offColor, HorizontalAlignment.Right,
+                g = g.DrawTextInRect("RANK", ld.Rects.RankLabel, fontMini, offColor, HorizontalAlignment.Right,
                     VerticalAlignment.Bottom);
 
             if (ld.Rects.RankText != default)
-                g.DrawTextInRect($"#{ld.Rank}", ld.Rects.RankText, fontTitle, offColor, HorizontalAlignment.Left,
+                g = g.DrawTextInRect($"#{ld.Rank}", ld.Rects.RankText, fontTitle, offColor, HorizontalAlignment.Left,
                     VerticalAlignment.Bottom);
 
-            g.DrawTextInRect(ld.Level.ToString(), ld.Rects.CurrentLevel, fontTitle, xpColor,
+            g = g.DrawTextInRect(ld.Level.ToString(), ld.Rects.CurrentLevel, fontTitle, xpColor,
                 HorizontalAlignment.Center, VerticalAlignment.Center);
             if (ld.Rects.NextLevel != default)
-                g.DrawTextInRect((ld.Level + 1).ToString(), ld.Rects.NextLevel, fontTitle, xpColor,
+                g = g.DrawTextInRect((ld.Level + 1).ToString(), ld.Rects.NextLevel, fontTitle, xpColor,
                     HorizontalAlignment.Center, VerticalAlignment.Center);
 
             var textXpTarget = ld.Rects.ExpText;
@@ -313,18 +310,19 @@ public static partial class Rankcard
             if (ld.IsHybrid)
             {
                 var overXpColor = xpColor.GetBrightness() < 0.5 ? Color.White : Color.Black;
-                g.DrawTextInRect(ld.XpExpr, textXpTarget, fontDefault, xpColor, HorizontalAlignment.Center,
-                    VerticalAlignment.Bottom);
-                g.Apply(barXpgPath,
-                    gclip => gclip.Paint(canvas => canvas.DrawTextInRect(ld.XpExpr, textXpTarget, fontDefault,
-                        overXpColor, HorizontalAlignment.Center, VerticalAlignment.Bottom)));
+                g = g.DrawTextInRect(ld.XpExpr, textXpTarget, fontDefault, xpColor, HorizontalAlignment.Center,
+                        VerticalAlignment.Bottom)
+                    .Clip(barXpgPath,
+                        gclip => gclip.DrawTextInRect(ld.XpExpr, textXpTarget, fontDefault, overXpColor,
+                            HorizontalAlignment.Center, VerticalAlignment.Bottom));
             }
             else
             {
-                g.DrawTextInRect(ld.XpExpr, textXpTarget, fontDefault, xpColor, HorizontalAlignment.Right,
+                g = g.DrawTextInRect(ld.XpExpr, textXpTarget, fontDefault, xpColor, HorizontalAlignment.Right,
                     VerticalAlignment.Bottom);
             }
         }
+        return g;
     }
 
     internal class LevelRect
